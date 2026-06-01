@@ -103,13 +103,6 @@ const ICON_PATHS={
   Users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   UtensilsCrossed:'<path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/><path d="m19 5-7 7"/>',
   X:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
-  Bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
-  BellDot:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><circle cx="19" cy="4" r="3" fill="#E8730A" stroke="none"/>',
-  BarChart2:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-  Award:'<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
-  Wallet:'<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>',
-  RefreshCw:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
-  Filter:'<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
 };
 function Icon({name,size=16,color="currentColor"}){
   const p=ICON_PATHS[name];
@@ -164,18 +157,6 @@ const MOCK_TRANSACTIONS=[
   {id:"t3",member:"Carmen Lim",benefit:"Unlimited Weekday Movie Pass",partner:"SM Cinemas",amount:100,method:"Maya",date:"May 25, 2026",voucher:"PRA-WT9J-6L3D",status:"Completed"},
   {id:"t4",member:"Roberto Cruz",benefit:"Grandparent's Weekend Feast",partner:"Max's Restaurant",amount:578,method:"GCash",date:"May 24, 2026",voucher:"PRA-HQ2E-8F7C",status:"Completed"},
 ];
-
-// SRRV expiry dates keyed by praId
-const SRRV_EXPIRY_MAP={
-  "SRRV-2022-001":"2027-03-12",
-  "SRRV-2021-045":"2026-08-05",
-  "SRRV-2023-088":"2027-11-18",
-  "SRRV-2020-012":"2025-02-22",
-};
-// Demo savings per benefit (what member saves vs original)
-const BENEFIT_SAVINGS={
-  "med-city":1700,"henann":6600,"maxs":102,"sm-cinema":250,
-};
 
 const CATEGORIES=[
   {id:"all",label:"All Benefits",iconName:"Star"},
@@ -269,20 +250,7 @@ function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C}){
             </div>
           </div>
         )}
-        {!compact&&(()=>{
-          const validityText=item.voucherValidity||"";
-          const dateMatch=validityText.match(/(\w+ \d+, \d{4}|\d{4}-\d{2}-\d{2})/);
-          let badge=null;
-          if(dateMatch){
-            const expDate=new Date(dateMatch[1]);
-            const now=new Date();
-            const daysLeft=Math.ceil((expDate-now)/(1000*60*60*24));
-            if(daysLeft<0) badge=<span style={{background:"rgba(192,57,43,0.12)",color:"#C0392B",fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,marginLeft:6}}>⚠ Expired</span>;
-            else if(daysLeft<=7) badge=<span style={{background:"rgba(232,115,10,0.12)",color:"#E8730A",fontSize:11,fontWeight:700,padding:"2px 8px",borderRadius:20,marginLeft:6}}>Expires in {daysLeft}d</span>;
-            else if(daysLeft<=30) badge=<span style={{background:"rgba(232,115,10,0.08)",color:"#E8730A",fontSize:11,fontWeight:600,padding:"2px 8px",borderRadius:20,marginLeft:6}}>{daysLeft} days left</span>;
-          }
-          return <div style={{fontSize:12,color:C.textSub,marginBottom:12,display:"flex",alignItems:"center",gap:5}}><Icon name="Calendar" size={12} color={C.textSub}/> {validityText}{badge}</div>;
-        })()}
+        {!compact&&<div style={{fontSize:12,color:C.textSub,marginBottom:12,display:"flex",alignItems:"center",gap:5}}><Icon name="Calendar" size={12} color={C.textSub}/> {item.voucherValidity}</div>}
         {item.type==="purchase"
           ?<button className="btn-primary" style={{width:"100%",fontSize:compact?14:15}} onClick={()=>onPurchase(item)}><Icon name="ShoppingCart" size={16} color="white"/> {compact?"Book":"Purchase / Secure Voucher"}</button>
           :<button className="btn-claim" style={{width:"100%",opacity:claimed?.75:1,fontSize:compact?14:15}} onClick={()=>!claimed&&onClaim(item)}>
@@ -462,53 +430,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         </div>
       </div>
 
-      {/* SRRV Renewal Tracker */}
-      {(()=>{
-        const expiry=SRRV_EXPIRY_MAP[member.praId];
-        if(!expiry)return null;
-        const expiryDate=new Date(expiry);
-        const now=new Date();
-        const daysLeft=Math.ceil((expiryDate-now)/(1000*60*60*24));
-        const totalDays=365*5; // 5 year SRRV
-        const progress=Math.max(0,Math.min(100,(daysLeft/totalDays)*100));
-        const isUrgent=daysLeft<90;
-        const isExpired=daysLeft<=0;
-        return(
-          <div className="card fade-in" style={{padding:"18px 20px",marginBottom:20,border:`1.5px solid ${isExpired?"#C0392B":isUrgent?"#E8730A":C.border}`}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-              <div style={{display:"flex",alignItems:"center",gap:8}}><Icon name="ShieldCheck" size={18} color={isExpired?"#C0392B":isUrgent?"#E8730A":"#1A7A4A"}/><div style={{fontSize:15,fontWeight:700,color:C.text}}>SRRV Visa Status</div></div>
-              {isExpired?<StatusBadge type="red">Expired</StatusBadge>:isUrgent?<StatusBadge type="orange">Renew Soon</StatusBadge>:<StatusBadge type="green">Active</StatusBadge>}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-              <span style={{fontSize:13,color:C.textSub}}>Visa Expiry</span>
-              <span style={{fontSize:13,fontWeight:700,color:C.text}}>{expiryDate.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"})}</span>
-            </div>
-            <div style={{background:C.gray200,borderRadius:6,height:8,overflow:"hidden",marginBottom:8}}>
-              <div style={{height:"100%",borderRadius:6,background:isExpired?"#C0392B":isUrgent?"#E8730A":"#1A7A4A",width:`${progress}%`,transition:"width 1s ease"}}/>
-            </div>
-            <div style={{fontSize:13,color:isExpired?"#C0392B":isUrgent?"#E8730A":C.textSub,fontWeight:isUrgent?700:400}}>
-              {isExpired?"Your SRRV has expired. Please contact PRA immediately.":daysLeft===1?"1 day remaining — please begin renewal process!":daysLeft<30?`${daysLeft} days remaining — begin renewal process now.`:daysLeft<90?`${daysLeft} days remaining — renewal recommended soon.`:`${daysLeft} days remaining`}
-            </div>
-          </div>
-        );
-      })()}
-      {/* Savings Summary Widget */}
-      {(claimedIds.length>0||true)&&(()=>{
-        const totalSavings=Object.entries(BENEFIT_SAVINGS).reduce((sum,[id,saving])=>{
-          return sum+saving;
-        },0);
-        return(
-          <div className="card fade-in" style={{padding:"16px 20px",marginBottom:20,background:`linear-gradient(135deg,${C.navy} 0%,#163A5F 100%)`,border:"none"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
-              <Icon name="Award" size={18} color="#F08030"/>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>Total Savings Unlocked</div>
-            </div>
-            <div style={{fontSize:28,fontWeight:800,color:"white",fontFamily:"'Libre Baskerville',serif",marginBottom:2}}>PhP {(totalSavings).toLocaleString()}.00</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,0.55)"}}>Across {BENEFITS.length} available benefits — your PRA membership pays for itself</div>
-          </div>
-        );
-      })()}
-      <div style={{marginTop:8,marginBottom:8}}>
+      <div style={{marginTop:24,marginBottom:8}}>
         <div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}>Your Digital Benefits Card</div>
         <PRACard member={member} C={C}/>
       </div>
@@ -519,10 +441,6 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
 function BenefitsHub({member,initialCategory="all",onPurchase,C}){
   const[activeCategory,setActiveCategory]=useState(initialCategory);
   const[claimedIds,setClaimedIds]=useState([]);
-  const[purchasedVouchers,setPurchasedVouchers]=useState([]);
-  const[notifOpen,setNotifOpen]=useState(false);
-  const[readNotifs,setReadNotifs]=useState([]);
-  const[ratings,setRatings]=useState({});
   const[claimFeedback,setClaimFeedback]=useState(null);
   const[search,setSearch]=useState("");
   const handleClaim=(item)=>{setClaimedIds(ids=>[...ids,item.id]);setClaimFeedback(item.partner);setTimeout(()=>setClaimFeedback(null),3000);};
@@ -630,11 +548,8 @@ function CheckoutPage({item,member,onSuccess,onBack,C}){
   );
 }
 
-function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
+function PaymentSuccess({result,member,onDone,C}){
   const methodLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
-  const[showRating,setShowRating]=useState(true);
-  const[ratingDone,setRatingDone]=useState(0);
-  const[hoverStar,setHoverStar]=useState(0);
   const now=new Date();
   const dateStr=now.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
   const timeStr=now.toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
@@ -665,142 +580,12 @@ function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
         </div>
       </div>
       <button className="btn-primary" style={{width:"100%",marginBottom:10}} onClick={()=>window.print()}><Icon name="Printer" size={16} color="white"/> Print / Save Voucher</button>
-      <button className="btn-primary" style={{width:"100%",marginBottom:10}} onClick={()=>onViewVouchers&&onViewVouchers()}><Icon name="Wallet" size={16} color="white"/> View My Vouchers</button>
       <button className="btn-ghost" style={{width:"100%"}} onClick={onDone}><Icon name="ArrowLeft" size={16} color="currentColor"/> Back to Benefits</button>
-      {showRating&&(
-        <div className="card fade-in" style={{marginTop:18,padding:"18px 20px",border:"1.5px solid #E8730A"}}>
-          <div style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:4}}>How was this benefit?</div>
-          <div style={{fontSize:13,color:C.textSub,marginBottom:12}}>Rate your experience with <strong>{result.item.partner}</strong></div>
-          <div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:12}}>
-            {[1,2,3,4,5].map(s=>(
-              <button key={s} onClick={()=>{onRate&&onRate(result.item.id,s);setShowRating(false);setRatingDone(s);}} style={{background:"none",border:"none",cursor:"pointer",fontSize:28,lineHeight:1,color:s<=(hoverStar||0)?"#F08030":"#D0D5DD",transition:"color .15s"}} onMouseEnter={()=>setHoverStar(s)} onMouseLeave={()=>setHoverStar(0)}>★</button>
-            ))}
-          </div>
-        </div>
-      )}
-      {ratingDone>0&&<div style={{marginTop:14,textAlign:"center",fontSize:13,color:"#1A7A4A",fontWeight:600}}>✓ Thanks for your {ratingDone}-star rating!</div>}
     </div>
   );
 }
 
-function MyVouchersPage({member,purchasedVouchers,claimedIds,ratings,setRatings,C,onNavigate}){
-  const[activeTab,setActiveTab]=useState("purchased");
-  const[expandedId,setExpandedId]=useState(null);
-  const statusColor={active:"green",used:"gray",expired:"red"};
-  const payLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
-  const qrChars="0123456789ABCDEF";
-  const makeQR=(code)=>{
-    // Simple visual QR placeholder using the code chars as seed
-    const seed=code.split("").reduce((a,c)=>a+c.charCodeAt(0),0);
-    return Array.from({length:21},(_,r)=>Array.from({length:21},(_,c)=>{
-      const v=(seed*31+r*17+c*13)%4;
-      return v<2||(r<7&&c<7&&r>0&&c>0&&!(r>1&&r<5&&c>1&&c<5))||(r<7&&c>13&&r>0&&c<20&&!(r>1&&r<5&&c>14&&c<19))||(r>13&&c<7&&r<20&&c>0&&!(r>14&&r<18&&c>1&&c<5));
-    }));
-  };
-  const claimedBenefits=BENEFITS.filter(b=>claimedIds.includes(b.id));
-  return(
-    <div className="fade-in" style={{padding:"24px 18px"}}>
-      <div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>My Vouchers</div>
-      <div style={{color:C.textSub,fontSize:14,marginBottom:20}}>Your purchased vouchers and claimed benefits</div>
-      <div style={{display:"flex",gap:0,marginBottom:20,borderBottom:`1.5px solid ${C.border}`}}>
-        {[{id:"purchased",label:"Purchased",count:purchasedVouchers.length},{id:"claimed",label:"Claimed",count:claimedBenefits.length}].map(t=>(
-          <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{background:"none",border:"none",borderBottom:activeTab===t.id?"2.5px solid #E8730A":"2.5px solid transparent",color:activeTab===t.id?"#E8730A":C.textSub,fontWeight:activeTab===t.id?700:500,fontSize:14,padding:"10px 18px",cursor:"pointer",marginBottom:-1.5,display:"flex",alignItems:"center",gap:6}}>
-            {t.label}
-            <span style={{background:activeTab===t.id?"#E8730A":C.gray200,color:activeTab===t.id?"white":C.textSub,borderRadius:20,fontSize:11,fontWeight:700,padding:"1px 7px"}}>{t.count}</span>
-          </button>
-        ))}
-      </div>
-      {activeTab==="purchased"&&(
-        purchasedVouchers.length===0
-          ?<div style={{textAlign:"center",padding:"56px 24px",color:C.textSub}}>
-            <div style={{display:"flex",justifyContent:"center",marginBottom:14,opacity:.35}}><Icon name="Ticket" size={42} color={C.textSub}/></div>
-            <div style={{fontSize:16,fontWeight:700,marginBottom:6}}>No vouchers yet</div>
-            <div style={{fontSize:14,marginBottom:20}}>Purchase a benefit to get your first voucher</div>
-            <button className="btn-primary" onClick={()=>onNavigate("benefits","all")} style={{fontSize:14,padding:"12px 24px"}}>Browse Benefits</button>
-          </div>
-          :<div style={{display:"flex",flexDirection:"column",gap:14}}>
-            {purchasedVouchers.map(v=>(
-              <div key={v.id} className="card" style={{overflow:"visible",border:`1.5px solid ${expandedId===v.id?"#E8730A":C.border}`}}>
-                <div style={{padding:"16px 18px",cursor:"pointer"}} onClick={()=>setExpandedId(expandedId===v.id?null:v.id)}>
-                  <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                    <div style={{width:42,height:42,borderRadius:10,background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={v.iconName} size={20} color={v.iconColor}/></div>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:15,fontWeight:700,color:C.text}}>{v.benefit}</div>
-                      <div style={{fontSize:13,color:"#E8730A",fontWeight:600}}>{v.partner}</div>
-                      <div style={{fontSize:12,color:C.textSub,marginTop:2}}>{v.date}</div>
-                    </div>
-                    <div style={{textAlign:"right",flexShrink:0}}>
-                      <StatusBadge type={statusColor[v.status]||"green"}>{v.status}</StatusBadge>
-                      <div style={{fontSize:14,fontWeight:800,color:C.text,marginTop:4}}>{fmt(v.amount)}</div>
-                    </div>
-                  </div>
-                </div>
-                {expandedId===v.id&&(
-                  <div className="fade-in" style={{borderTop:`1px solid ${C.border}`,padding:"16px 18px"}}>
-                    <div style={{display:"flex",gap:16,alignItems:"flex-start",marginBottom:16}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:24,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:3,marginBottom:4}}>{v.id}</div>
-                        <div style={{fontSize:12,color:C.textSub}}>Voucher Reference Number</div>
-                        <div style={{marginTop:10,fontSize:13,color:C.textSub}}>Paid via {payLabel[v.payMethod]||v.payMethod}</div>
-                        <div style={{fontSize:12,color:C.textSub,marginTop:4,display:"flex",alignItems:"center",gap:4}}><Icon name="Calendar" size={12} color={C.textSub}/> {v.validity}</div>
-                      </div>
-                      <div style={{flexShrink:0}}>
-                        <div style={{background:"white",padding:8,borderRadius:8,border:`1px solid ${C.border}`,display:"inline-block"}}>
-                          {makeQR(v.id).map((row,ri)=>(
-                            <div key={ri} style={{display:"flex"}}>
-                              {row.map((cell,ci)=><div key={ci} style={{width:5,height:5,background:cell?"#0A2540":"white"}}/>)}
-                            </div>
-                          ))}
-                        </div>
-                        <div style={{fontSize:10,color:C.textSub,textAlign:"center",marginTop:4}}>Scan QR at venue</div>
-                      </div>
-                    </div>
-                    {/* Star rating */}
-                    <div style={{background:C.gray50,borderRadius:10,padding:"12px 14px",border:`1px solid ${C.border}`}}>
-                      <div style={{fontSize:13,fontWeight:600,color:C.text,marginBottom:8}}>Rate this benefit:</div>
-                      <div style={{display:"flex",gap:6}}>
-                        {[1,2,3,4,5].map(s=>(
-                          <button key={s} onClick={()=>setRatings(r=>({...r,[v.id]:s}))} style={{background:"none",border:"none",cursor:"pointer",fontSize:22,lineHeight:1,color:s<=(ratings[v.id]||0)?"#E8730A":"#D0D5DD",transition:"color .15s"}}>★</button>
-                        ))}
-                        {ratings[v.id]&&<span style={{fontSize:12,color:C.textSub,alignSelf:"center",marginLeft:4}}>You rated {ratings[v.id]} star{ratings[v.id]>1?"s":""}</span>}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-      )}
-      {activeTab==="claimed"&&(
-        claimedBenefits.length===0
-          ?<div style={{textAlign:"center",padding:"56px 24px",color:C.textSub}}>
-            <div style={{display:"flex",justifyContent:"center",marginBottom:14,opacity:.35}}><Icon name="BadgeCheck" size={42} color={C.textSub}/></div>
-            <div style={{fontSize:16,fontWeight:700,marginBottom:6}}>No claimed benefits yet</div>
-            <div style={{fontSize:14,marginBottom:20}}>Claim free benefits from the Benefits tab</div>
-            <button className="btn-primary" onClick={()=>onNavigate("benefits","all")} style={{fontSize:14,padding:"12px 24px"}}>Browse Benefits</button>
-          </div>
-          :<div style={{display:"flex",flexDirection:"column",gap:12}}>
-            {claimedBenefits.map(b=>(
-              <div key={b.id} className="card" style={{padding:"14px 18px"}}>
-                <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                  <div style={{width:40,height:40,borderRadius:10,background:C.greenLight,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={b.iconName} size={18} color={b.iconColor}/></div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:14,fontWeight:700,color:C.text}}>{b.title}</div>
-                    <div style={{fontSize:13,color:"#E8730A",fontWeight:600}}>{b.partner}</div>
-                    <div style={{fontSize:12,color:C.textSub,marginTop:2,display:"flex",alignItems:"center",gap:4}}><Icon name="Calendar" size={11} color={C.textSub}/> {b.voucherValidity}</div>
-                  </div>
-                  <StatusBadge type="green">Claimed</StatusBadge>
-                </div>
-                <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,fontSize:12,color:C.textSub}}>Show your PRA Benefits Card at {b.partner} to avail this discount.</div>
-              </div>
-            ))}
-          </div>
-      )}
-    </div>
-  );
-}
-
-function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouchers,claimedIds}){
+function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C}){
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
       <div style={{fontSize:22,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:18}}>My Profile</div>
@@ -813,14 +598,6 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouc
           <div key={label} style={{display:"flex",justifyContent:"space-between",gap:12,padding:"9px 0",borderBottom:`1px solid ${C.border}`}}>
             <span style={{fontSize:14,color:C.textSub,flexShrink:0,minWidth:130}}>{label}</span>
             <span style={{fontSize:14,fontWeight:600,color:C.text,textAlign:"right"}}>{value}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:18}}>
-        {[{label:"Vouchers Purchased",value:(purchasedVouchers||[]).length,icon:"Ticket",color:"#E8730A"},{label:"Benefits Claimed",value:(claimedIds||[]).length,icon:"BadgeCheck",color:"#1A7A4A"}].map(s=>(
-          <div key={s.label} className="card" style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:36,height:36,borderRadius:10,background:s.color+"18",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={s.icon} size={18} color={s.color}/></div>
-            <div><div style={{fontSize:18,fontWeight:800,color:C.text}}>{s.value}</div><div style={{fontSize:12,color:C.textSub}}>{s.label}</div></div>
           </div>
         ))}
       </div>
@@ -845,9 +622,8 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouc
   );
 }
 
-function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotifs,setReadNotifs,announcements}){"
-
-  const tabs=[{id:"dashboard",label:"Home",iconName:"LayoutDashboard"},{id:"benefits",label:"Benefits",iconName:"Ticket"},{id:"vouchers",label:"My Vouchers",iconName:"Wallet"},{id:"profile",label:"Profile",iconName:"UserCircle"}];
+function NavBar({active,onNavigate,memberName,C}){
+  const tabs=[{id:"dashboard",label:"Home",iconName:"LayoutDashboard"},{id:"benefits",label:"Benefits",iconName:"Ticket"},{id:"profile",label:"Profile",iconName:"UserCircle"}];
   return(
     <>
       <div style={{background:C.navy,padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
@@ -855,30 +631,7 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
           <div style={{background:"#E8730A",borderRadius:7,padding:"5px 9px",fontWeight:800,fontSize:13,color:"white",letterSpacing:1}}>PRA</div>
           <div style={{color:"rgba(255,255,255,0.9)",fontWeight:700,fontSize:15}}>Senior Benefits</div>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{position:"relative"}}>
-            <button onClick={()=>setNotifOpen(o=>!o)} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",position:"relative"}}>
-              <Icon name={announcements.filter(a=>!readNotifs.includes(a.id)).length>0?"BellDot":"Bell"} size={16} color="white"/>
-              {announcements.filter(a=>!readNotifs.includes(a.id)).length>0&&<span style={{position:"absolute",top:4,right:4,width:8,height:8,borderRadius:"50%",background:"#E8730A",border:"2px solid #0A2540"}}/>}
-            </button>
-            {notifOpen&&(
-              <div style={{position:"absolute",top:42,right:0,width:300,background:"white",borderRadius:12,boxShadow:"0 8px 30px rgba(0,0,0,0.18)",border:"1px solid #E4E8EE",zIndex:200,overflow:"hidden"}}>
-                <div style={{padding:"12px 16px",borderBottom:"1px solid #E4E8EE",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <span style={{fontSize:14,fontWeight:700,color:"#2D3748"}}>Notifications</span>
-                  <button onClick={()=>{setReadNotifs(announcements.map(a=>a.id));setNotifOpen(false);}} style={{fontSize:11,color:"#E8730A",background:"none",border:"none",cursor:"pointer",fontWeight:600}}>Mark all read</button>
-                </div>
-                {announcements.slice(0,4).map(ann=>(
-                  <div key={ann.id} onClick={()=>setReadNotifs(rs=>[...new Set([...rs,ann.id])])} style={{padding:"10px 16px",borderBottom:"1px solid #F0F0F0",background:readNotifs.includes(ann.id)?"white":"#FFF8F0",cursor:"pointer",display:"flex",gap:10,alignItems:"flex-start"}}>
-                    {!readNotifs.includes(ann.id)&&<div style={{width:7,height:7,borderRadius:"50%",background:"#E8730A",flexShrink:0,marginTop:5}}/>}
-                    {readNotifs.includes(ann.id)&&<div style={{width:7,height:7,flexShrink:0}}/>}
-                    <div><div style={{fontSize:13,fontWeight:600,color:"#2D3748",lineHeight:1.3}}>{ann.title}</div><div style={{fontSize:11,color:"#4A5568",marginTop:2}}>{ann.date}</div></div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div style={{color:"rgba(255,255,255,0.65)",fontSize:13,display:"flex",alignItems:"center",gap:6}}><Icon name="UserCircle" size={14} color="rgba(255,255,255,0.65)"/> {memberName}</div>
-        </div>
+        <div style={{color:"rgba(255,255,255,0.65)",fontSize:13,display:"flex",alignItems:"center",gap:6}}><Icon name="UserCircle" size={14} color="rgba(255,255,255,0.65)"/> {memberName}</div>
       </div>
       <div style={{position:"fixed",bottom:0,left:0,right:0,background:C.surface,borderTop:`1.5px solid ${C.border}`,display:"flex",zIndex:100,boxShadow:"0 -3px 12px rgba(0,0,0,0.06)"}}>
         {tabs.map(t=>(
@@ -889,89 +642,6 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
         ))}
       </div>
     </>
-  );
-}
-
-function MembersTab({C}){
-  const[search,setSearch]=useState("");
-  const[statusFilter,setStatusFilter]=useState("All");
-  const filtered=MOCK_MEMBERS.filter(m=>{
-    const ms=statusFilter==="All"||m.status===statusFilter;
-    const mq=!search||m.firstName.toLowerCase().includes(search.toLowerCase())||m.lastName.toLowerCase().includes(search.toLowerCase())||m.email.toLowerCase().includes(search.toLowerCase())||m.praId.toLowerCase().includes(search.toLowerCase());
-    return ms&&mq;
-  });
-  return(
-    <div>
-      <div style={{display:"flex",gap:10,marginBottom:14}}>
-        <div style={{position:"relative",flex:1}}>
-          <span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><Icon name="Search" size={15} color={C.textSub}/></span>
-          <input className="form-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search name, email, PRA ID..." style={{paddingLeft:36,paddingRight:search?36:14,fontSize:14}}/>
-          {search&&<button onClick={()=>setSearch("")} style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",display:"flex"}}><Icon name="X" size={14} color={C.textSub}/></button>}
-        </div>
-        <select className="form-input" value={statusFilter} onChange={e=>setStatusFilter(e.target.value)} style={{width:130,fontSize:14}}>
-          <option value="All">All Status</option>
-          <option value="Active">Active</option>
-          <option value="Pending">Pending</option>
-        </select>
-      </div>
-      {filtered.length===0?<div style={{textAlign:"center",padding:"32px",color:C.textSub,fontSize:14}}>No members match your search.</div>
-      :<div style={{display:"flex",flexDirection:"column",gap:12}}>
-        {filtered.map(m=>(
-          <div key={m.id} className="card" style={{padding:"16px 18px"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-              <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                <div style={{width:42,height:42,borderRadius:"50%",background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:16,color:"#E8730A",flexShrink:0}}>{m.firstName[0]}{m.lastName[0]}</div>
-                <div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{m.firstName} {m.lastName}</div><div style={{fontSize:13,color:C.textSub}}>{m.email}</div><div style={{fontSize:12,color:C.textSub,marginTop:2}}>{m.praId} - Age {m.age} - {m.city}</div></div>
-              </div>
-              <StatusBadge type={m.status==="Active"?"green":"gray"}>{m.status}</StatusBadge>
-            </div>
-            <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,fontSize:12,color:C.textSub}}>Member since: {m.joinDate} - {m.province}</div>
-          </div>
-        ))}
-      </div>}
-    </div>
-  );
-}
-
-function AdminAnalyticsChart({C}){
-  const data=[
-    {month:"Jan",amount:1200,count:2},{month:"Feb",amount:4500,count:3},{month:"Mar",amount:2100,count:2},
-    {month:"Apr",amount:8900,count:5},{month:"May",amount:22878,count:4},{month:"Jun",amount:0,count:0},
-  ];
-  const maxAmt=Math.max(...data.map(d=>d.amount));
-  const catData=[
-    {cat:"Health",amount:6800,color:"#e74c3c"},{cat:"Travel",amount:15400,color:"#3498db"},
-    {cat:"Dining",amount:578,color:"#27ae60"},{cat:"Cinema",amount:100,color:"#9b59b6"},
-  ];
-  const maxCat=Math.max(...catData.map(d=>d.amount));
-  return(
-    <div className="card" style={{padding:"20px 22px",marginBottom:20}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:18}}>
-        <Icon name="BarChart2" size={18} color="#E8730A"/>
-        <div style={{fontSize:15,fontWeight:700,color:C.text}}>Revenue Analytics</div>
-      </div>
-      <div style={{fontSize:13,color:C.textSub,marginBottom:10,fontWeight:600}}>Monthly Revenue (PhP)</div>
-      <div style={{display:"flex",gap:6,alignItems:"flex-end",height:90,marginBottom:20}}>
-        {data.map((d,i)=>(
-          <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-            <div style={{width:"100%",borderRadius:"4px 4px 0 0",background:d.amount>0?"#E8730A":C.gray200,height:d.amount>0?`${Math.max(8,(d.amount/maxAmt)*80)}px`:"8px",transition:"height .5s ease",position:"relative"}} title={`PhP ${d.amount.toLocaleString()}`}/>
-            <span style={{fontSize:10,color:C.textSub,fontWeight:600}}>{d.month}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{fontSize:13,color:C.textSub,marginBottom:10,fontWeight:600}}>Revenue by Category</div>
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-        {catData.map(d=>(
-          <div key={d.cat} style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:60,fontSize:12,color:C.textSub,flexShrink:0}}>{d.cat}</div>
-            <div style={{flex:1,height:10,background:C.gray200,borderRadius:6,overflow:"hidden"}}>
-              <div style={{height:"100%",borderRadius:6,background:d.color,width:`${(d.amount/maxCat)*100}%`,transition:"width .8s ease"}}/>
-            </div>
-            <div style={{fontSize:12,fontWeight:700,color:C.text,minWidth:60,textAlign:"right"}}>PhP {d.amount.toLocaleString()}</div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -1029,7 +699,6 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C}){
                   </div>
                 ))}
               </div>
-              <AdminAnalyticsChart C={C}/>
               <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:12}}>Recent Transactions</div>
               <div className="card" style={{overflow:"hidden"}}>
                 {MOCK_TRANSACTIONS.slice(0,3).map((tx,i)=>(
@@ -1043,15 +712,10 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C}){
           )}
           {activeTab==="members"&&(
             <div className="fade-in">
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
                 <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif"}}>Members</div>
                 <StatusBadge type="blue">{MOCK_MEMBERS.length} Total</StatusBadge>
               </div>
-              <MembersTab C={C}/>
-            </div>
-          )}
-          {activeTab==="members_PLACEHOLDER_NEVER_MATCH"&&(
-            <div>
               <div style={{display:"flex",flexDirection:"column",gap:12}}>
                 {MOCK_MEMBERS.map(m=>(
                   <div key={m.id} className="card" style={{padding:"16px 18px"}}>
@@ -1189,25 +853,7 @@ function App(){
   useEffect(()=>{document.body.className=darkMode?"dark":"light";},[darkMode]);
   const nav=(page,cat="all")=>{setBenefitCategory(cat);setView(page);window.scrollTo({top:0,behavior:"smooth"});};
   const purchase=(item)=>{setSelectedBenefit(item);setView("checkout");window.scrollTo({top:0,behavior:"smooth"});};
-  const paySuccess=(result)=>{
-    setSuccessResult(result);
-    const voucherRecord={
-      id:result.voucher,
-      benefit:result.item.title,
-      partner:result.item.partner,
-      iconName:result.item.iconName,
-      iconColor:result.item.iconColor,
-      amount:result.amount,
-      payMethod:result.payMethod,
-      date:new Date().toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}),
-      validity:result.item.voucherValidity,
-      status:"active",
-      category:result.item.category,
-    };
-    setPurchasedVouchers(vs=>[voucherRecord,...vs]);
-    setView("success");
-    window.scrollTo({top:0,behavior:"smooth"});
-  };
+  const paySuccess=(result)=>{setSuccessResult(result);setView("success");window.scrollTo({top:0,behavior:"smooth"});};
   const claim=(item)=>setClaimedIds(ids=>[...ids,item.id]);
   const toggleDark=()=>setDarkMode(d=>!d);
   return(
@@ -1215,14 +861,13 @@ function App(){
       {view==="register"&&<RegistrationPage onComplete={data=>{setMember(data);setView("dashboard");}} C={C}/>}
       {view!=="register"&&member&&mode==="member"&&(
         <div style={{paddingBottom:80,background:C.bg,minHeight:"100vh"}}>
-          <NavBar active={["checkout","success"].includes(view)?"benefits":["vouchers"].includes(view)?"vouchers":view} onNavigate={nav} memberName={member.firstName} C={C} notifOpen={notifOpen} setNotifOpen={setNotifOpen} readNotifs={readNotifs} setReadNotifs={setReadNotifs} announcements={ANNOUNCEMENTS}/>
+          <NavBar active={["checkout","success"].includes(view)?"benefits":view} onNavigate={nav} memberName={member.firstName} C={C}/>
           <div style={{maxWidth:640,margin:"0 auto"}}>
             {view==="dashboard"&&<Dashboard member={member} onNavigate={nav} onPurchase={purchase} onClaim={claim} claimedIds={claimedIds} benefits={BENEFITS} announcements={ANNOUNCEMENTS} C={C}/>}
             {view==="benefits"&&<BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={purchase} C={C}/>}
             {view==="checkout"&&selectedBenefit&&<CheckoutPage item={selectedBenefit} member={member} onSuccess={paySuccess} onBack={()=>setView("benefits")} C={C}/>}
-            {view==="success"&&successResult&&<PaymentSuccess result={successResult} member={member} onDone={()=>{setView("benefits");window.scrollTo({top:0});}} onViewVouchers={()=>{setView("vouchers");window.scrollTo({top:0});}} onRate={(id,stars)=>setRatings(r=>({...r,[id]:stars}))} C={C}/>}
-            {view==="profile"&&<ProfilePage member={member} onSwitchToAdmin={()=>setMode("admin")} darkMode={darkMode} toggleDark={toggleDark} C={C} purchasedVouchers={purchasedVouchers} claimedIds={claimedIds}/>}
-            {view==="vouchers"&&<MyVouchersPage member={member} purchasedVouchers={purchasedVouchers} claimedIds={claimedIds} ratings={ratings} setRatings={setRatings} C={C} onNavigate={nav}/>}
+            {view==="success"&&successResult&&<PaymentSuccess result={successResult} member={member} onDone={()=>{setView("benefits");window.scrollTo({top:0});}} C={C}/>}
+            {view==="profile"&&<ProfilePage member={member} onSwitchToAdmin={()=>setMode("admin")} darkMode={darkMode} toggleDark={toggleDark} C={C}/>}
           </div>
         </div>
       )}
