@@ -1,7 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { 
+  Heart, Pill, Plane, Utensils, Film, Ticket, 
+  Sparkles, CheckCircle2, Hand, ShoppingCart, 
+  Info, Lock, Printer, Wallet, CreditCard, 
+  ChevronRight, Sun, Moon, User, Home, Gift, 
+  Plus, Shield, Users, Activity, FileText 
+} from "lucide-react";
 
-// ─── MOCK DATA ────────────────────────────────────────────────────────────────
-const BENEFITS = [
+// MOCK DATA 
+const ANNOUNCEMENTS = [
+  { id: 1, title: "New Partnership with Philippine Airlines", date: "June 1, 2026", text: "Enjoy exclusive base fare discounts starting next month." },
+  { id: 2, title: "Updated OSCA ID Requirements", date: "May 28, 2026", text: "Please ensure your senior citizen IDs are updated for verification." }
+];
+
+const INITIAL_BENEFITS = [
   {
     id: "med-city",
     category: "health",
@@ -9,12 +21,11 @@ const BENEFITS = [
     title: "Executive Check-up Package",
     partner: "The Medical City",
     location: "Ortigas Center, Pasig City",
-    description:
-      "Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist. Book at any The Medical City branch nationwide.",
+    description: "Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist. Book at any The Medical City branch nationwide.",
     originalPrice: 8500,
     discountPct: 20,
     tag: "20% off for PRA Members",
-    icon: "🏥",
+    iconId: "heart",
     type: "purchase",
     voucherValidity: "Valid until December 31, 2025",
   },
@@ -25,28 +36,26 @@ const BENEFITS = [
     title: "Maintenance Medication Discount",
     partner: "Mercury Drug",
     location: "All branches nationwide",
-    description:
-      "Extra 5% discount on top of the standard 20% senior citizen discount on all maintenance medications. Present your PRA Senior Benefits Card upon purchase.",
+    description: "Extra 5% discount on top of the standard 20% senior citizen discount on all maintenance medications. Present your PRA Senior Benefits Card upon purchase.",
     originalPrice: null,
     discountPct: 5,
     tag: "Extra 5% on senior discount",
-    icon: "💊",
+    iconId: "pill",
     type: "claim",
-    voucherValidity: "Ongoing benefit – no expiry",
+    voucherValidity: "Ongoing benefit no expiry",
   },
   {
     id: "henann",
     category: "travel",
     categoryLabel: "Travel & Hotels",
-    title: "Staycation Package – 3D2N",
+    title: "Staycation Package 3D2N",
     partner: "Henann Resort Boracay",
     location: "White Beach, Boracay Island",
-    description:
-      "Exclusive retiree off-season rate: 3 days, 2 nights in a Deluxe Sea View Room, daily breakfast for 2, complimentary airport transfer, and access to all resort amenities.",
+    description: "Exclusive retiree off-season rate: 3 days, 2 nights in a Deluxe Sea View Room, daily breakfast for 2, complimentary airport transfer, and access to all resort amenities.",
     originalPrice: 22000,
     discountPct: 30,
     tag: "Exclusive retiree off-season rate",
-    icon: "🏝️",
+    iconId: "plane",
     type: "purchase",
     voucherValidity: "Valid for bookings until March 31, 2026",
   },
@@ -54,15 +63,14 @@ const BENEFITS = [
     id: "cebupac",
     category: "travel",
     categoryLabel: "Travel & Hotels",
-    title: "Domestic Flight – Zero Booking Fee",
+    title: "Domestic Flight Zero Booking Fee",
     partner: "Cebu Pacific",
     location: "All domestic routes",
-    description:
-      "Book any Cebu Pacific domestic flight with zero booking convenience fees. Available on cebu-air.com and all Cebu Pacific ticketing offices when you present your PRA ID.",
+    description: "Book any Cebu Pacific domestic flight with zero booking convenience fees. Available on cebu-air.com and all Cebu Pacific ticketing offices when you present your PRA ID.",
     originalPrice: null,
     discountPct: null,
     tag: "Zero booking fees for retirees",
-    icon: "✈️",
+    iconId: "plane",
     type: "claim",
     voucherValidity: "Valid for travel dates within 2025",
   },
@@ -72,13 +80,12 @@ const BENEFITS = [
     categoryLabel: "Food & Dining",
     title: "Grandparent's Weekend Feast",
     partner: "Max's Restaurant",
-    location: "All branches – dine-in & delivery",
-    description:
-      "Bring the family every Saturday and Sunday! Enjoy a free appetizer (Spring Roll platter) with any main course order, plus free delivery within 5km radius. Valid for tables of 2 or more.",
+    location: "All branches dine-in & delivery",
+    description: "Bring the family every Saturday and Sunday! Enjoy a free appetizer (Spring Roll platter) with any main course order, plus free delivery within 5km radius. Valid for tables of 2 or more.",
     originalPrice: 680,
     discountPct: 15,
     tag: "Free appetizer + free delivery",
-    icon: "🍽️",
+    iconId: "utensils",
     type: "purchase",
     voucherValidity: "Valid every weekend until Dec 2025",
   },
@@ -89,29 +96,39 @@ const BENEFITS = [
     title: "Unlimited Weekday Movie Pass",
     partner: "SM Cinemas",
     location: "All SM Cinema branches",
-    description:
-      "Watch any movie on any weekday before 5:00 PM for only PhP 100 flat rate. No blackout dates, valid for all regular screenings. Not valid for 3D, IMAX, or special screenings.",
+    description: "Watch any movie on any weekday before 5:00 PM for only PhP 100 flat rate. No blackout dates, valid for all regular screenings. Not valid for 3D, IMAX, or special screenings.",
     originalPrice: 350,
     discountPct: null,
     fixedPrice: 100,
-    tag: "₱100 flat rate before 5 PM",
-    icon: "🎬",
+    tag: "P100 flat rate before 5 PM",
+    iconId: "film",
     type: "purchase",
-    voucherValidity: "Valid Jan–Dec 2025, weekdays only",
+    voucherValidity: "Valid Jan to Dec 2025, weekdays only",
   },
 ];
 
 const CATEGORIES = [
-  { id: "all", label: "All Benefits", icon: "✦" },
-  { id: "health", label: "Health & Wellness", icon: "🏥" },
-  { id: "travel", label: "Travel & Hotels", icon: "✈️" },
-  { id: "dining", label: "Food & Dining", icon: "🍽️" },
-  { id: "entertainment", label: "Entertainment", icon: "🎬" },
+  { id: "all", label: "All Benefits", iconId: "ticket" },
+  { id: "health", label: "Health & Wellness", iconId: "heart" },
+  { id: "travel", label: "Travel & Hotels", iconId: "plane" },
+  { id: "dining", label: "Food & Dining", iconId: "utensils" },
+  { id: "entertainment", label: "Entertainment", iconId: "film" },
 ];
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const MOCK_USERS = [
+  { id: "U001", name: "Maria Santos", email: "maria@example.com", status: "Active" },
+  { id: "U002", name: "Jose Rizal", email: "jose@example.com", status: "Active" },
+  { id: "U003", name: "Andres Bonifacio", email: "andres@example.com", status: "Pending" }
+];
+
+const MOCK_TRANSACTIONS = [
+  { id: "TX-1001", user: "Maria Santos", item: "Staycation Package", amount: 15400, date: "2026-06-01" },
+  { id: "TX-1002", user: "Jose Rizal", item: "Executive Check-up", amount: 6800, date: "2026-05-29" },
+];
+
+// HELPERS 
 const fmt = (n) =>
-  "₱" +
+  "P" +
   Number(n).toLocaleString("en-PH", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -130,80 +147,114 @@ const genVoucher = () =>
   "-" +
   Math.random().toString(36).substring(2, 6).toUpperCase();
 
-// ─── STYLES ──────────────────────────────────────────────────────────────────
-const C = {
-  navy: "#0A2540",
-  navyLight: "#163A5F",
-  navyMid: "#1E4D7B",
-  orange: "#FF8C00",
-  orangeLight: "#FFA733",
-  orangePale: "#FFF5E6",
-  white: "#FFFFFF",
-  gray50: "#F8F9FA",
-  gray100: "#F0F2F5",
-  gray200: "#E4E8EE",
-  gray400: "#9AA5B4",
-  gray600: "#4A5568",
-  gray700: "#2D3748",
-  green: "#1A7A4A",
-  greenLight: "#E6F4EC",
-  red: "#C0392B",
-  redLight: "#FDECEA",
+const IconMap = {
+  heart: Heart,
+  pill: Pill,
+  plane: Plane,
+  utensils: Utensils,
+  film: Film,
+  ticket: Ticket,
+  sparkles: Sparkles
 };
 
+function getIcon(id, size = 24, className = "") {
+  const IconCmp = IconMap[id] || Ticket;
+  return <IconCmp size={size} className={className} />;
+}
+
+// STYLES 
 const globalStyle = `
   @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+  
+  :root {
+    --bg-main: #FFFFFF;
+    --bg-surface: #F8F9FA;
+    --bg-elevated: #FFFFFF;
+    --text-primary: #2D3748;
+    --text-secondary: #4A5568;
+    --text-muted: #9AA5B4;
+    --border: #E4E8EE;
+    --navy: #0A2540;
+    --navy-mid: #1E4D7B;
+    --navy-light: #163A5F;
+    --orange: #FF8C00;
+    --orange-light: #FFA733;
+    --orange-pale: #FFF5E6;
+    --green: #1A7A4A;
+    --green-light: #E6F4EC;
+    --red: #C0392B;
+    --red-light: #FDECEA;
+    --shadow-sm: 0 2px 12px rgba(10,37,64,0.07);
+    --shadow-md: 0 8px 24px rgba(10,37,64,0.12);
+  }
+
+  [data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-surface: #1E1E1E;
+    --bg-elevated: #2A2A2A;
+    --text-primary: #F0F2F5;
+    --text-secondary: #CBD5E1;
+    --text-muted: #94A3B8;
+    --border: #333333;
+    --navy: #1A202C;
+    --navy-mid: #2D3748;
+    --navy-light: #3A4A5A;
+    --orange: #FF9800;
+    --orange-light: #FFB74D;
+    --orange-pale: rgba(255, 140, 0, 0.1);
+    --green: #4ADE80;
+    --green-light: rgba(74, 222, 128, 0.15);
+    --red: #F87171;
+    --red-light: rgba(248, 113, 113, 0.15);
+    --shadow-sm: 0 2px 12px rgba(0,0,0,0.5);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.7);
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Source Sans 3', sans-serif; background: ${C.gray100}; color: ${C.gray700}; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--bg-main); color: var(--text-primary); transition: background 0.3s, color 0.3s; }
   input, select, textarea { font-family: inherit; }
   button { cursor: pointer; font-family: inherit; }
   
   @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-  @keyframes confetti { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(60px) rotate(720deg); opacity: 0; } }
-  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
   .fade-in { animation: fadeIn 0.45s ease both; }
-  .slide-up { animation: slideUp 0.5s ease both; }
   .spin { animation: spin 1s linear infinite; }
-  .pulse { animation: pulse 1.5s ease infinite; }
 
   .btn-primary {
-    background: ${C.orange};
+    background: var(--orange);
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    padding: 16px 32px;
-    min-height: 56px;
+    padding: 14px 28px;
+    min-height: 52px;
     transition: background 0.2s, transform 0.1s;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .btn-primary:hover { background: ${C.orangeLight}; }
+  .btn-primary:hover { background: var(--orange-light); }
   .btn-primary:active { transform: scale(0.97); }
-  .btn-primary:disabled { background: ${C.gray400}; cursor: not-allowed; }
+  .btn-primary:disabled { background: var(--text-muted); cursor: not-allowed; }
 
   .btn-secondary {
     background: transparent;
-    color: ${C.navyMid};
-    border: 2px solid ${C.navyMid};
+    color: var(--text-primary);
+    border: 2px solid var(--border);
     border-radius: 12px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
-    padding: 14px 28px;
-    min-height: 52px;
+    padding: 12px 24px;
+    min-height: 48px;
     transition: all 0.2s;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .btn-secondary:hover { background: ${C.navyMid}; color: white; }
+  .btn-secondary:hover { background: var(--bg-surface); border-color: var(--text-muted); }
 
   .btn-claim {
-    background: ${C.greenLight};
-    color: ${C.green};
-    border: 2px solid ${C.green};
+    background: var(--green-light);
+    color: var(--green);
+    border: 2px solid var(--green);
     border-radius: 12px;
     font-size: 16px;
     font-weight: 700;
@@ -212,76 +263,61 @@ const globalStyle = `
     transition: all 0.2s;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .btn-claim:hover { background: ${C.green}; color: white; }
+  .btn-claim:hover { background: var(--green); color: white; }
 
   .form-input {
     width: 100%;
     padding: 14px 18px;
-    font-size: 17px;
-    border: 2px solid ${C.gray200};
+    font-size: 16px;
+    border: 2px solid var(--border);
     border-radius: 12px;
-    background: white;
-    color: ${C.gray700};
+    background: var(--bg-elevated);
+    color: var(--text-primary);
     transition: border-color 0.2s;
     min-height: 52px;
   }
-  .form-input:focus { outline: none; border-color: ${C.orange}; box-shadow: 0 0 0 3px rgba(255,140,0,0.15); }
-  .form-input.error { border-color: ${C.red}; }
-  .form-label { font-size: 16px; font-weight: 600; color: ${C.navy}; margin-bottom: 8px; display: block; }
-  .form-error { font-size: 14px; color: ${C.red}; margin-top: 6px; font-weight: 500; }
-  .form-hint { font-size: 14px; color: ${C.gray600}; margin-top: 6px; }
+  .form-input:focus { outline: none; border-color: var(--orange); }
+  .form-input.error { border-color: var(--red); }
+  .form-label { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block; }
+  .form-error { font-size: 14px; color: var(--red); margin-top: 6px; font-weight: 500; }
+  .form-hint { font-size: 14px; color: var(--text-secondary); margin-top: 6px; }
 
   .card {
-    background: white;
+    background: var(--bg-elevated);
     border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(10,37,64,0.07);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
     overflow: hidden;
   }
 
-  .nav-link {
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 8px;
-    transition: all 0.2s;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
-  .nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.15); }
-
-  .benefit-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(10,37,64,0.12); }
-  .benefit-card { transition: transform 0.2s, box-shadow 0.2s; }
+  .benefit-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--orange-pale); }
+  .benefit-card { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
 
   .payment-option { transition: all 0.2s; cursor: pointer; }
-  .payment-option:hover { border-color: ${C.orange} !important; background: ${C.orangePale} !important; }
-  .payment-option.selected { border-color: ${C.orange} !important; background: ${C.orangePale} !important; box-shadow: 0 0 0 3px rgba(255,140,0,0.2); }
+  .payment-option:hover, .payment-option.selected { border-color: var(--orange) !important; background: var(--orange-pale) !important; }
 
-  .step-dot { transition: all 0.3s; }
-
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: ${C.gray100}; }
-  ::-webkit-scrollbar-thumb { background: ${C.gray200}; border-radius: 6px; }
-
-  @media (max-width: 640px) {
-    .btn-primary { font-size: 16px; padding: 14px 24px; }
-    .form-input { font-size: 16px; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+  
+  .carousel-container {
+    display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory;
+  }
+  .carousel-item {
+    min-width: 280px; max-width: 300px; flex-shrink: 0; scroll-snap-align: start;
   }
 `;
 
-// ─── SUBCOMPONENTS ────────────────────────────────────────────────────────────
+// SUBCOMPONENTS 
 
-function Spinner({ size = 28, color = "white" }) {
+function Spinner({ size = 24 }) {
   return (
     <div
       className="spin"
       style={{
-        width: size,
-        height: size,
-        border: `3px solid rgba(255,255,255,0.3)`,
-        borderTop: `3px solid ${color}`,
+        width: size, height: size,
+        border: `3px solid var(--border)`,
+        borderTop: `3px solid var(--orange)`,
         borderRadius: "50%",
       }}
     />
@@ -289,21 +325,10 @@ function Spinner({ size = 28, color = "white" }) {
 }
 
 function Tag({ children, color = "orange" }) {
-  const bg = color === "orange" ? C.orangePale : C.greenLight;
-  const text = color === "orange" ? C.orange : C.green;
+  const bg = color === "orange" ? "var(--orange-pale)" : "var(--green-light)";
+  const text = color === "orange" ? "var(--orange)" : "var(--green)";
   return (
-    <span
-      style={{
-        background: bg,
-        color: text,
-        fontSize: 13,
-        fontWeight: 700,
-        padding: "4px 10px",
-        borderRadius: 20,
-        display: "inline-block",
-        letterSpacing: 0.2,
-      }}
-    >
+    <span style={{ background: bg, color: text, fontSize: 13, fontWeight: 700, padding: "4px 10px", borderRadius: 20, display: "inline-block" }}>
       {children}
     </span>
   );
@@ -313,7 +338,7 @@ function ProgressBar({ step, total }) {
   return (
     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
       {Array.from({ length: total }).map((_, i) => (
-        <div key={i} style={{ flex: 1, height: 6, borderRadius: 6, background: i < step ? C.orange : C.gray200, transition: "background 0.4s" }} />
+        <div key={i} style={{ flex: 1, height: 6, borderRadius: 6, background: i < step ? "var(--orange)" : "var(--border)", transition: "background 0.4s" }} />
       ))}
     </div>
   );
@@ -323,63 +348,51 @@ function PRACard({ member }) {
   return (
     <div
       style={{
-        background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMid} 60%, ${C.navyLight} 100%)`,
+        background: `linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%)`,
         borderRadius: 20,
-        padding: "28px 28px 24px",
+        padding: "24px",
         color: "white",
         position: "relative",
         overflow: "hidden",
-        maxWidth: 380,
         width: "100%",
-        boxShadow: "0 8px 32px rgba(10,37,64,0.35)",
+        boxShadow: "var(--shadow-md)",
       }}
     >
-      {/* Decorative circles */}
       <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
-      <div style={{ position: "absolute", bottom: -40, right: 20, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,140,0,0.08)" }} />
-
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
         <div>
-          <div style={{ fontSize: 11, letterSpacing: 3, color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase" }}>Republic of the Philippines</div>
-          <div style={{ fontSize: 17, fontWeight: 700, marginTop: 2, color: C.orangeLight }}>Philippine Retirement Authority</div>
+          <div style={{ fontSize: 11, letterSpacing: 2, color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase" }}>Republic of the Philippines</div>
+          <div style={{ fontSize: 16, fontWeight: 700, marginTop: 2, color: "var(--orange-light)" }}>Philippine Retirement Authority</div>
         </div>
-        <div style={{ background: C.orange, borderRadius: 8, padding: "6px 10px", fontSize: 11, fontWeight: 800, letterSpacing: 1, color: "white" }}>PRA</div>
+        <div style={{ background: "var(--orange)", borderRadius: 8, padding: "6px 10px", fontSize: 11, fontWeight: 800, letterSpacing: 1, color: "white" }}>PRA</div>
       </div>
-
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>Senior Benefits Card</div>
-        <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", letterSpacing: 0.5 }}>
+        <div style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", letterSpacing: 0.5 }}>
           {member.firstName} {member.lastName}
         </div>
       </div>
-
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
         <div>
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 2 }}>PRA ID Number</div>
-          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: 2 }}>{member.praId}</div>
+          <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: 1 }}>{member.praId}</div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 2 }}>Valid Until</div>
           <div style={{ fontSize: 14, fontWeight: 600 }}>12/2027</div>
         </div>
       </div>
-
-      <div style={{ marginTop: 16, padding: "10px 0 0", borderTop: "1px solid rgba(255,255,255,0.1)", fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: 0.5 }}>
-        SPECIAL RESIDENT RETIREE'S VISA • SRRV HOLDER
-      </div>
     </div>
   );
 }
 
-// ─── REGISTRATION FLOW ───────────────────────────────────────────────────────
+// REGISTRATION FLOW 
 
 function RegistrationPage({ onComplete }) {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
-    firstName: "", lastName: "", dob: "", province: "", city: "", barangay: "", street: "", mobile: "",
-    praId: "", seniorId: "",
-    email: "", password: "", confirmPassword: "",
+    firstName: "", lastName: "", dob: "", province: "", city: "", mobile: "", praId: "", email: "", password: "", confirmPassword: "",
   });
 
   const set = (key, val) => {
@@ -389,36 +402,29 @@ function RegistrationPage({ onComplete }) {
 
   const validateStep1 = () => {
     const e = {};
-    if (!form.firstName.trim()) e.firstName = "First name is required.";
-    if (!form.lastName.trim()) e.lastName = "Last name is required.";
-    if (!form.dob) { e.dob = "Date of birth is required."; }
+    if (!form.firstName.trim()) e.firstName = "Required.";
+    if (!form.lastName.trim()) e.lastName = "Required.";
+    if (!form.dob) { e.dob = "Required."; }
     else {
       const age = Math.floor((Date.now() - new Date(form.dob)) / (1000 * 60 * 60 * 24 * 365.25));
-      if (age < 60) e.dob = `You must be at least 60 years old to register. Calculated age: ${age}.`;
+      if (age < 60) e.dob = `Must be at least 60 years old. Calculated age: ${age}.`;
     }
-    if (!form.province.trim()) e.province = "Province is required.";
-    if (!form.city.trim()) e.city = "City/Municipality is required.";
-    if (!form.mobile.trim()) e.mobile = "Mobile number is required.";
-    else if (!/^(09|\+639)\d{9}$/.test(form.mobile.replace(/\s/g, "")))
-      e.mobile = "Enter a valid Philippine mobile number (e.g. 09171234567).";
+    if (!form.mobile.trim()) e.mobile = "Required.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const validateStep2 = () => {
     const e = {};
-    if (!form.praId.trim()) e.praId = "PRA ID Number is required.";
-    else if (form.praId.trim().length < 6) e.praId = "PRA ID must be at least 6 characters.";
+    if (!form.praId.trim()) e.praId = "Required.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const validateStep3 = () => {
     const e = {};
-    if (!form.email.trim()) e.email = "Email is required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Enter a valid email address.";
-    if (!form.password) e.password = "Password is required.";
-    else if (form.password.length < 8) e.password = "Password must be at least 8 characters.";
+    if (!form.email.trim()) e.email = "Required.";
+    if (!form.password) e.password = "Required.";
     if (form.password !== form.confirmPassword) e.confirmPassword = "Passwords do not match.";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -439,162 +445,85 @@ function RegistrationPage({ onComplete }) {
     if (valid) setStep((s) => s + 1);
   };
 
-  const STEPS = ["Personal Details", "PRA Information", "Account Setup"];
+  const STEPS = ["Personal", "PRA Info", "Account"];
 
   return (
-    <div style={{ minHeight: "100vh", background: C.gray100, display: "flex", flexDirection: "column" }}>
-      {/* Header */}
-      <div style={{ background: C.navy, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
-        <div style={{ background: C.orange, borderRadius: 10, padding: "8px 12px", fontWeight: 800, fontSize: 16, color: "white", letterSpacing: 1 }}>PRA</div>
-        <div>
-          <div style={{ color: "white", fontWeight: 700, fontSize: 17 }}>Philippine Retirement Authority</div>
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>Senior Benefits Platform</div>
-        </div>
-      </div>
-
-      <div style={{ flex: 1, display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "32px 16px 48px" }}>
-        <div style={{ width: "100%", maxWidth: 560 }} className="fade-in">
-          {/* Progress */}
-          <div className="card" style={{ padding: "28px 28px 0", marginBottom: 24 }}>
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 24, fontWeight: 700, color: C.navy, marginBottom: 4, fontFamily: "'Libre Baskerville', serif" }}>
-                {step === 1 && "Personal Details"}
-                {step === 2 && "PRA Information"}
-                {step === 3 && "Account Setup"}
-              </div>
-              <div style={{ color: C.gray600, fontSize: 16 }}>Step {step} of 3 — {STEPS[step - 1]}</div>
-            </div>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "32px 16px", flex: 1, display: "flex", justifyContent: "center" }}>
+        <div style={{ width: "100%", maxWidth: 480 }} className="fade-in">
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h1 style={{ fontFamily: "'Libre Baskerville', serif", color: "var(--navy)", marginBottom: 8 }}>Create Account</h1>
+            <p style={{ color: "var(--text-secondary)" }}>Register for your PRA Digital Benefits</p>
+          </div>
+          
+          <div className="card" style={{ padding: 24, marginBottom: 24 }}>
             <ProgressBar step={step} total={3} />
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, paddingBottom: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, marginBottom: 24 }}>
               {STEPS.map((s, i) => (
-                <div key={i} style={{ fontSize: 13, fontWeight: i + 1 <= step ? 700 : 400, color: i + 1 <= step ? C.orange : C.gray400 }}>
-                  {s}
-                </div>
+                <span key={i} style={{ fontSize: 12, fontWeight: i + 1 <= step ? 700 : 500, color: i + 1 <= step ? "var(--orange)" : "var(--text-muted)" }}>{s}</span>
               ))}
             </div>
-          </div>
 
-          {/* Step 1 */}
-          {step === 1 && (
-            <div className="card fade-in" style={{ padding: 28 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-                <div>
+            {step === 1 && (
+              <div className="fade-in">
+                <div style={{ marginBottom: 16 }}>
                   <label className="form-label">First Name</label>
-                  <input className={`form-input${errors.firstName ? " error" : ""}`} value={form.firstName} onChange={(e) => set("firstName", e.target.value)} placeholder="e.g. Maria" />
-                  {errors.firstName && <div className="form-error">⚠ {errors.firstName}</div>}
+                  <input className={`form-input${errors.firstName ? " error" : ""}`} value={form.firstName} onChange={(e) => set("firstName", e.target.value)} />
+                  {errors.firstName && <div className="form-error">{errors.firstName}</div>}
                 </div>
-                <div>
+                <div style={{ marginBottom: 16 }}>
                   <label className="form-label">Last Name</label>
-                  <input className={`form-input${errors.lastName ? " error" : ""}`} value={form.lastName} onChange={(e) => set("lastName", e.target.value)} placeholder="e.g. Santos" />
-                  {errors.lastName && <div className="form-error">⚠ {errors.lastName}</div>}
+                  <input className={`form-input${errors.lastName ? " error" : ""}`} value={form.lastName} onChange={(e) => set("lastName", e.target.value)} />
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">Date of Birth</label>
+                  <input type="date" className={`form-input${errors.dob ? " error" : ""}`} value={form.dob} onChange={(e) => set("dob", e.target.value)} max={new Date(Date.now() - 60 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]} />
+                  {errors.dob && <div className="form-error">{errors.dob}</div>}
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">Mobile Number</label>
+                  <input className={`form-input${errors.mobile ? " error" : ""}`} value={form.mobile} onChange={(e) => set("mobile", e.target.value)} />
                 </div>
               </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label className="form-label">Date of Birth</label>
-                <input type="date" className={`form-input${errors.dob ? " error" : ""}`} value={form.dob} onChange={(e) => set("dob", e.target.value)} max={new Date(Date.now() - 60 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]} />
-                <div className="form-hint">You must be at least 60 years old to register.</div>
-                {errors.dob && <div className="form-error">⚠ {errors.dob}</div>}
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label className="form-label">Province</label>
-                <input className={`form-input${errors.province ? " error" : ""}`} value={form.province} onChange={(e) => set("province", e.target.value)} placeholder="e.g. Metro Manila" />
-                {errors.province && <div className="form-error">⚠ {errors.province}</div>}
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-                <div>
-                  <label className="form-label">City / Municipality</label>
-                  <input className={`form-input${errors.city ? " error" : ""}`} value={form.city} onChange={(e) => set("city", e.target.value)} placeholder="e.g. Makati City" />
-                  {errors.city && <div className="form-error">⚠ {errors.city}</div>}
-                </div>
-                <div>
-                  <label className="form-label">Barangay</label>
-                  <input className="form-input" value={form.barangay} onChange={(e) => set("barangay", e.target.value)} placeholder="e.g. Bel-Air" />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label className="form-label">Street Address</label>
-                <input className="form-input" value={form.street} onChange={(e) => set("street", e.target.value)} placeholder="House No., Street Name (optional)" />
-              </div>
-
-              <div style={{ marginBottom: 8 }}>
-                <label className="form-label">Mobile Number</label>
-                <input className={`form-input${errors.mobile ? " error" : ""}`} value={form.mobile} onChange={(e) => set("mobile", e.target.value)} placeholder="09171234567" maxLength={13} />
-                <div className="form-hint">Philippine mobile number format: 09XXXXXXXXX</div>
-                {errors.mobile && <div className="form-error">⚠ {errors.mobile}</div>}
-              </div>
-            </div>
-          )}
-
-          {/* Step 2 */}
-          {step === 2 && (
-            <div className="card fade-in" style={{ padding: 28 }}>
-              <div style={{ background: C.orangePale, border: `1px solid ${C.orange}`, borderRadius: 12, padding: 16, marginBottom: 24, display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 22 }}>ℹ️</span>
-                <div style={{ fontSize: 15, color: C.gray700, lineHeight: 1.6 }}>
-                  Your <strong>PRA ID</strong> or <strong>Senior Citizen ID Number</strong> can be found on your OSCA-issued identification card or PRA membership certificate.
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 20 }}>
-                <label className="form-label">PRA ID Number *</label>
-                <input className={`form-input${errors.praId ? " error" : ""}`} value={form.praId} onChange={(e) => set("praId", e.target.value)} placeholder="e.g. SRRV-2024-123456" />
-                <div className="form-hint">Enter the ID number exactly as it appears on your PRA card.</div>
-                {errors.praId && <div className="form-error">⚠ {errors.praId}</div>}
-              </div>
-
-              <div style={{ marginBottom: 8 }}>
-                <label className="form-label">Senior Citizen ID Number (Optional)</label>
-                <input className="form-input" value={form.seniorId} onChange={(e) => set("seniorId", e.target.value)} placeholder="e.g. OSCA-01-2024-456789" />
-                <div className="form-hint">If you have a separate OSCA / Senior Citizen ID, enter it here for additional discounts.</div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3 */}
-          {step === 3 && (
-            <div className="card fade-in" style={{ padding: 28 }}>
-              <div style={{ marginBottom: 20 }}>
-                <label className="form-label">Email Address</label>
-                <input type="email" className={`form-input${errors.email ? " error" : ""}`} value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="yourname@email.com" />
-                <div className="form-hint">You will use this email to log in to your PRA account.</div>
-                {errors.email && <div className="form-error">⚠ {errors.email}</div>}
-              </div>
-
-              <div style={{ marginBottom: 20 }}>
-                <label className="form-label">Password</label>
-                <input type="password" className={`form-input${errors.password ? " error" : ""}`} value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="At least 8 characters" />
-                <div className="form-hint">Choose a password you can remember. Minimum 8 characters.</div>
-                {errors.password && <div className="form-error">⚠ {errors.password}</div>}
-              </div>
-
-              <div style={{ marginBottom: 8 }}>
-                <label className="form-label">Confirm Password</label>
-                <input type="password" className={`form-input${errors.confirmPassword ? " error" : ""}`} value={form.confirmPassword} onChange={(e) => set("confirmPassword", e.target.value)} placeholder="Re-enter your password" />
-                {errors.confirmPassword && <div className="form-error">⚠ {errors.confirmPassword}</div>}
-              </div>
-
-              <div style={{ background: C.gray50, borderRadius: 12, padding: 16, marginTop: 20, fontSize: 14, color: C.gray600, lineHeight: 1.7 }}>
-                By completing registration, you agree to the <span style={{ color: C.orange, fontWeight: 700 }}>PRA Terms & Conditions</span> and confirm that all information provided is true and accurate.
-              </div>
-            </div>
-          )}
-
-          {/* Navigation */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, gap: 12 }}>
-            {step > 1 ? (
-              <button className="btn-secondary" onClick={() => setStep((s) => s - 1)} style={{ minWidth: 120 }}>
-                ← Back
-              </button>
-            ) : (
-              <div />
             )}
-            <button className="btn-primary" onClick={nextStep} style={{ minWidth: 200, flex: step === 1 ? 1 : "auto" }}>
-              {step < 3 ? "Continue →" : "✅ Complete Registration"}
-            </button>
+
+            {step === 2 && (
+              <div className="fade-in">
+                <div style={{ background: "var(--orange-pale)", borderRadius: 12, padding: 16, marginBottom: 24, display: "flex", gap: 12, alignItems: "center" }}>
+                  <Info size={24} color="var(--orange)" />
+                  <div style={{ fontSize: 14, color: "var(--text-primary)" }}>Find your PRA ID on your membership certificate.</div>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">PRA ID Number</label>
+                  <input className={`form-input${errors.praId ? " error" : ""}`} value={form.praId} onChange={(e) => set("praId", e.target.value)} placeholder="SRRV-XXXXX" />
+                  {errors.praId && <div className="form-error">{errors.praId}</div>}
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="fade-in">
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">Email Address</label>
+                  <input type="email" className={`form-input${errors.email ? " error" : ""}`} value={form.email} onChange={(e) => set("email", e.target.value)} />
+                  {errors.email && <div className="form-error">{errors.email}</div>}
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">Password</label>
+                  <input type="password" className={`form-input${errors.password ? " error" : ""}`} value={form.password} onChange={(e) => set("password", e.target.value)} />
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <label className="form-label">Confirm Password</label>
+                  <input type="password" className={`form-input${errors.confirmPassword ? " error" : ""}`} value={form.confirmPassword} onChange={(e) => set("confirmPassword", e.target.value)} />
+                  {errors.confirmPassword && <div className="form-error">{errors.confirmPassword}</div>}
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+              {step > 1 && <button className="btn-secondary" onClick={() => setStep((s) => s - 1)}>Back</button>}
+              <button className="btn-primary" onClick={nextStep} style={{ flex: 1 }}>{step < 3 ? "Continue" : "Complete Registration"}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -602,252 +531,152 @@ function RegistrationPage({ onComplete }) {
   );
 }
 
-// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+// DASHBOARD 
 
-function Dashboard({ member, onNavigate }) {
-  const quickLinks = [
-    { label: "Health & Wellness", icon: "🏥", cat: "health", color: "#E8F4F8" },
-    { label: "Travel & Hotels", icon: "✈️", cat: "travel", color: "#FFF3E0" },
-    { label: "Food & Dining", icon: "🍽️", cat: "dining", color: "#F0FFF4" },
-    { label: "Entertainment", icon: "🎬", cat: "entertainment", color: "#F3E8FF" },
-  ];
+function Dashboard({ member, benefits, onNavigate }) {
+  const featured = benefits.slice(0, 5);
 
   return (
     <div className="fade-in" style={{ padding: "24px 20px" }}>
-      {/* Welcome Banner */}
-      <div
-        style={{
-          background: `linear-gradient(135deg, ${C.navy} 0%, ${C.navyMid} 100%)`,
-          borderRadius: 20,
-          padding: "28px 28px 24px",
-          color: "white",
-          marginBottom: 28,
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", top: -40, right: -20, width: 180, height: 180, borderRadius: "50%", background: "rgba(255,140,0,0.1)" }} />
-        <div style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", marginBottom: 4 }}>Good day, 👋</div>
-        <div style={{ fontSize: 30, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", marginBottom: 4 }}>
-          {member.firstName} {member.lastName}
-        </div>
-        <div style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", marginBottom: 20 }}>
-          PRA Member · Age {member.age} · {member.city}, {member.province}
-        </div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-          <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 16px" }}>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Member Status</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: C.orangeLight }}>✅ Active SRRV Holder</div>
-          </div>
-          <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px 16px" }}>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Benefits Available</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{BENEFITS.length} Offers</div>
-          </div>
-        </div>
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 24, marginBottom: 4 }}>Welcome back, {member.firstName}</h2>
+        <p style={{ color: "var(--text-secondary)" }}>Here is what is new for you today.</p>
       </div>
 
-      {/* PRA Card */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 19, fontWeight: 700, color: C.navy, marginBottom: 16 }}>Your Digital Benefits Card</div>
-        <PRACard member={member} />
-      </div>
-
-      {/* Quick Access */}
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ fontSize: 19, fontWeight: 700, color: C.navy, marginBottom: 16 }}>Browse Benefits by Category</div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-          {quickLinks.map((q) => (
-            <button
-              key={q.cat}
-              onClick={() => onNavigate("benefits", q.cat)}
-              style={{
-                background: q.color,
-                border: `2px solid transparent`,
-                borderRadius: 16,
-                padding: "20px 16px",
-                cursor: "pointer",
-                textAlign: "left",
-                transition: "all 0.2s",
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.borderColor = C.orange; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = "transparent"; }}
-            >
-              <span style={{ fontSize: 32 }}>{q.icon}</span>
-              <span style={{ fontSize: 16, fontWeight: 700, color: C.navy, lineHeight: 1.2 }}>{q.label}</span>
-              <span style={{ fontSize: 13, color: C.gray600 }}>
-                {BENEFITS.filter((b) => b.category === q.cat).length} offers
-              </span>
-            </button>
+      <div className="card" style={{ padding: 20, marginBottom: 28, background: "var(--orange-pale)", border: "none" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+          <Info size={20} color="var(--orange)" />
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)" }}>Announcements</h3>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {ANNOUNCEMENTS.map(ann => (
+            <div key={ann.id} style={{ paddingBottom: 12, borderBottom: "1px solid var(--border)" }}>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 4 }}>{ann.date}</div>
+              <div style={{ fontWeight: 600, fontSize: 15, color: "var(--navy)", marginBottom: 4 }}>{ann.title}</div>
+              <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>{ann.text}</div>
+            </div>
           ))}
         </div>
       </div>
 
-      <div style={{ marginTop: 28 }}>
-        <button
-          className="btn-primary"
-          onClick={() => onNavigate("benefits", "all")}
-          style={{ width: "100%" }}
-        >
-          View All Benefits & Promos →
-        </button>
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 700 }}>Featured Benefits</h3>
+          <button onClick={() => onNavigate("benefits", "all")} style={{ background: "none", border: "none", color: "var(--orange)", fontWeight: 600, display: "flex", alignItems: "center" }}>
+            See All <ChevronRight size={16} />
+          </button>
+        </div>
+        <div className="carousel-container">
+          {featured.map(item => (
+            <div key={item.id} className="card carousel-item" style={{ padding: 16 }}>
+              <div style={{ width: 40, height: 40, background: "var(--bg-surface)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                {getIcon(item.iconId, 20, "var(--orange)")}
+              </div>
+              <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title}</div>
+              <div style={{ color: "var(--text-secondary)", fontSize: 14, marginBottom: 12 }}>{item.partner}</div>
+              <Tag color="orange">{item.tag}</Tag>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 28 }}>
+        <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Your Digital Card</h3>
+        <PRACard member={member} />
       </div>
     </div>
   );
 }
 
-// ─── BENEFITS HUB ────────────────────────────────────────────────────────────
+// BENEFITS HUB 
 
-function BenefitsHub({ member, initialCategory = "all", onPurchase }) {
+function BenefitsHub({ benefits, initialCategory = "all", onPurchase }) {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [claimedIds, setClaimedIds] = useState([]);
-  const [claimFeedback, setClaimFeedback] = useState(null);
 
-  const filtered = activeCategory === "all" ? BENEFITS : BENEFITS.filter((b) => b.category === activeCategory);
+  const filtered = activeCategory === "all" ? benefits : benefits.filter((b) => b.category === activeCategory);
 
   const handleClaim = (item) => {
     setClaimedIds((ids) => [...ids, item.id]);
-    setClaimFeedback(item.partner);
-    setTimeout(() => setClaimFeedback(null), 3000);
+    alert(`Benefit at ${item.partner} claimed! Check your email for details.`);
   };
 
   return (
     <div className="fade-in" style={{ padding: "24px 20px" }}>
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 26, fontWeight: 700, color: C.navy, fontFamily: "'Libre Baskerville', serif", marginBottom: 4 }}>
-          Benefits & Promos Hub
-        </div>
-        <div style={{ color: C.gray600, fontSize: 16 }}>Exclusive offers for PRA Members</div>
+        <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", marginBottom: 4 }}>Benefits & Promos</h2>
+        <p style={{ color: "var(--text-secondary)" }}>Exclusive offers for PRA Members</p>
       </div>
 
-      {/* Claim feedback toast */}
-      {claimFeedback && (
-        <div
-          style={{
-            background: C.greenLight,
-            border: `2px solid ${C.green}`,
-            borderRadius: 12,
-            padding: "14px 18px",
-            marginBottom: 20,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            animation: "fadeIn 0.3s ease",
-          }}
-        >
-          <span style={{ fontSize: 20 }}>✅</span>
-          <div>
-            <strong style={{ color: C.green, fontSize: 16 }}>Benefit Claimed!</strong>
-            <div style={{ fontSize: 14, color: C.gray700, marginTop: 2 }}>
-              Show your PRA Senior Benefits Card at <strong>{claimFeedback}</strong> to avail this discount.
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Category filter */}
-      <div style={{ display: "flex", gap: 10, overflowX: "auto", paddingBottom: 4, marginBottom: 24 }}>
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.id}
-            onClick={() => setActiveCategory(c.id)}
-            style={{
-              background: activeCategory === c.id ? C.navy : "white",
-              color: activeCategory === c.id ? "white" : C.gray600,
-              border: `2px solid ${activeCategory === c.id ? C.navy : C.gray200}`,
-              borderRadius: 10,
-              padding: "10px 18px",
-              fontSize: 15,
-              fontWeight: 600,
-              whiteSpace: "nowrap",
-              transition: "all 0.2s",
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              minHeight: 44,
-            }}
-          >
-            <span>{c.icon}</span> {c.label}
-          </button>
-        ))}
+      <div style={{ display: "flex", gap: 10, overflowX: "auto", paddingBottom: 12, marginBottom: 16 }}>
+        {CATEGORIES.map((c) => {
+          const isActive = activeCategory === c.id;
+          return (
+            <button
+              key={c.id}
+              onClick={() => setActiveCategory(c.id)}
+              style={{
+                background: isActive ? "var(--navy)" : "var(--bg-elevated)",
+                color: isActive ? "white" : "var(--text-secondary)",
+                border: `1px solid ${isActive ? "var(--navy)" : "var(--border)"}`,
+                borderRadius: 10,
+                padding: "10px 16px",
+                fontSize: 14,
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              {getIcon(c.iconId, 16)} {c.label}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Benefit Cards */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {filtered.map((item) => {
           const finalPrice = calcFinal(item);
           const claimed = claimedIds.includes(item.id);
           return (
-            <div key={item.id} className="card benefit-card" style={{ overflow: "visible" }}>
-              <div style={{ padding: "20px 22px" }}>
-                <div style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 14 }}>
-                  <div
-                    style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 14,
-                      background: C.orangePale,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 26,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {item.icon}
+            <div key={item.id} className="card benefit-card">
+              <div style={{ padding: 20 }}>
+                <div style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 16 }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 12, background: "var(--orange-pale)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--orange)" }}>
+                    {getIcon(item.iconId, 24)}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 18, fontWeight: 700, color: C.navy, lineHeight: 1.3, marginBottom: 2 }}>{item.title}</div>
-                    <div style={{ fontSize: 15, color: C.orange, fontWeight: 600 }}>{item.partner}</div>
-                    <div style={{ fontSize: 13, color: C.gray400, marginTop: 2 }}>📍 {item.location}</div>
+                    <div style={{ fontSize: 17, fontWeight: 700, color: "var(--text-primary)", marginBottom: 4 }}>{item.title}</div>
+                    <div style={{ fontSize: 14, color: "var(--orange)", fontWeight: 600 }}>{item.partner}</div>
                   </div>
                 </div>
 
                 <Tag>{item.tag}</Tag>
+                <div style={{ marginTop: 12, marginBottom: 16, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>{item.description}</div>
 
-                <div style={{ marginTop: 12, marginBottom: 16, fontSize: 15, color: C.gray700, lineHeight: 1.65 }}>{item.description}</div>
-
-                {/* Pricing */}
                 {item.originalPrice && (
-                  <div style={{ background: C.gray50, borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 15, color: C.gray600 }}>Original Price</span>
-                      <span style={{ fontSize: 15, color: C.gray600, textDecoration: "line-through" }}>{fmt(item.originalPrice)}</span>
+                  <div style={{ background: "var(--bg-surface)", borderRadius: 10, padding: 16, marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                      <span style={{ fontSize: 14, color: "var(--text-muted)" }}>Original Price</span>
+                      <span style={{ fontSize: 14, color: "var(--text-muted)", textDecoration: "line-through" }}>{fmt(item.originalPrice)}</span>
                     </div>
-                    {item.discountPct && (
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 15, color: C.green }}>PRA Discount ({item.discountPct}%)</span>
-                        <span style={{ fontSize: 15, color: C.green }}>−{fmt(item.originalPrice * item.discountPct / 100)}</span>
-                      </div>
-                    )}
-                    <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid ${C.gray200}`, paddingTop: 8, marginTop: 4 }}>
-                      <span style={{ fontSize: 16, fontWeight: 700, color: C.navy }}>Your Price</span>
-                      <span style={{ fontSize: 18, fontWeight: 800, color: C.orange }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid var(--border)`, paddingTop: 8 }}>
+                      <span style={{ fontSize: 15, fontWeight: 700 }}>Your Price</span>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: "var(--orange)" }}>
                         {item.fixedPrice ? fmt(item.fixedPrice) : fmt(finalPrice)}
                       </span>
                     </div>
                   </div>
                 )}
 
-                <div style={{ fontSize: 13, color: C.gray400, marginBottom: 14 }}>📅 {item.voucherValidity}</div>
-
                 {item.type === "purchase" ? (
-                  <button
-                    className="btn-primary"
-                    style={{ width: "100%" }}
-                    onClick={() => onPurchase(item)}
-                  >
-                    🛒 Purchase / Secure Voucher
+                  <button className="btn-primary" style={{ width: "100%" }} onClick={() => onPurchase(item)}>
+                    <ShoppingCart size={18} /> Purchase Voucher
                   </button>
                 ) : (
-                  <button
-                    className="btn-claim"
-                    style={{ width: "100%", background: claimed ? C.greenLight : undefined, opacity: claimed ? 0.8 : 1 }}
-                    onClick={() => !claimed && handleClaim(item)}
-                  >
-                    {claimed ? "✅ Benefit Claimed" : "✋ Claim This Benefit"}
+                  <button className="btn-claim" style={{ width: "100%", opacity: claimed ? 0.7 : 1 }} onClick={() => !claimed && handleClaim(item)} disabled={claimed}>
+                    {claimed ? <><CheckCircle2 size={18} /> Claimed</> : <><Hand size={18} /> Claim Benefit</>}
                   </button>
                 )}
               </div>
@@ -859,451 +688,270 @@ function BenefitsHub({ member, initialCategory = "all", onPurchase }) {
   );
 }
 
-// ─── CHECKOUT FLOW ───────────────────────────────────────────────────────────
+// CHECKOUT FLOW 
 
 function CheckoutPage({ item, member, onSuccess, onBack }) {
-  const [payMethod, setPayMethod] = useState(null);
-  const [cardNum, setCardNum] = useState("");
-  const [cardName, setCardName] = useState("");
-  const [cardExp, setCardExp] = useState("");
-  const [cardCvv, setCardCvv] = useState("");
-  const [otpInput, setOtpInput] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+  const [payMethod, setPayMethod] = useState("card");
   const [processing, setProcessing] = useState(false);
-  const [otpError, setOtpError] = useState("");
-  const [errors, setErrors] = useState({});
-
   const finalPrice = calcFinal(item) || item.originalPrice;
-  const discount = item.originalPrice ? item.originalPrice - finalPrice : 0;
-  const MOCK_OTP = "123456";
-
-  const sendOtp = () => {
-    setOtpSent(true);
-    setOtpError("");
-  };
 
   const handlePay = () => {
-    const e = {};
-    if (!payMethod) { alert("Please select a payment method."); return; }
-    if ((payMethod === "gcash" || payMethod === "maya") && !otpSent) {
-      alert("Please request and enter your OTP first."); return;
-    }
-    if ((payMethod === "gcash" || payMethod === "maya") && otpInput !== MOCK_OTP) {
-      setOtpError("Incorrect OTP. For this demo, use: 123456"); return;
-    }
-    if (payMethod === "card") {
-      if (!cardNum || cardNum.replace(/\s/g, "").length < 12) e.cardNum = "Enter a valid card number.";
-      if (!cardName.trim()) e.cardName = "Cardholder name is required.";
-      if (!cardExp) e.cardExp = "Expiry date is required.";
-      if (!cardCvv || cardCvv.length < 3) e.cardCvv = "Enter a valid CVV.";
-    }
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
-
     setProcessing(true);
     setTimeout(() => {
       setProcessing(false);
       onSuccess({ item, payMethod, voucher: genVoucher(), amount: finalPrice });
-    }, 2500);
+    }, 1500);
   };
-
-  const fmtCardNum = (val) => val.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
 
   return (
     <div className="fade-in" style={{ padding: "24px 20px" }}>
-      <button
-        onClick={onBack}
-        style={{ background: "none", border: "none", color: C.navyMid, fontSize: 16, fontWeight: 700, marginBottom: 20, display: "flex", alignItems: "center", gap: 6, padding: 0 }}
-      >
-        ← Back to Benefits
+      <button onClick={onBack} style={{ background: "none", border: "none", color: "var(--text-muted)", fontWeight: 600, marginBottom: 24, padding: 0 }}>
+        Back to Benefits
       </button>
 
-      <div style={{ fontSize: 22, fontWeight: 700, color: C.navy, fontFamily: "'Libre Baskerville', serif", marginBottom: 4 }}>Secure Your Voucher</div>
-      <div style={{ color: C.gray600, fontSize: 15, marginBottom: 24 }}>Review your order and complete payment below.</div>
+      <h2 style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", marginBottom: 24 }}>Secure Voucher</h2>
 
-      {/* Order Summary */}
-      <div className="card" style={{ padding: "20px 22px", marginBottom: 20 }}>
-        <div style={{ fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 16, paddingBottom: 12, borderBottom: `1px solid ${C.gray200}` }}>
-          Order Summary
-        </div>
+      <div className="card" style={{ padding: 20, marginBottom: 24 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, paddingBottom: 12, borderBottom: "1px solid var(--border)" }}>Order Summary</h3>
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 10, background: C.orangePale, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-            {item.icon}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 15, fontWeight: 700 }}>{item.title}</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{item.partner}</div>
           </div>
-          <div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy }}>{item.title}</div>
-            <div style={{ fontSize: 14, color: C.orange, fontWeight: 600 }}>{item.partner}</div>
-          </div>
-        </div>
-
-        <div style={{ background: C.gray50, borderRadius: 10, padding: "14px 16px" }}>
-          {item.originalPrice && (
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-              <span style={{ fontSize: 15, color: C.gray600 }}>Original Price</span>
-              <span style={{ fontSize: 15, color: C.gray600, textDecoration: "line-through" }}>{fmt(item.originalPrice)}</span>
-            </div>
-          )}
-          {discount > 0 && (
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-              <span style={{ fontSize: 15, color: C.green, fontWeight: 600 }}>
-                PRA Discount {item.discountPct ? `(${item.discountPct}%)` : ""}
-              </span>
-              <span style={{ fontSize: 15, color: C.green, fontWeight: 600 }}>−{fmt(discount)}</span>
-            </div>
-          )}
-          <div style={{ display: "flex", justifyContent: "space-between", borderTop: `1px solid ${C.gray200}`, paddingTop: 10, marginTop: 4 }}>
-            <span style={{ fontSize: 17, fontWeight: 800, color: C.navy }}>Total Amount</span>
-            <span style={{ fontSize: 20, fontWeight: 800, color: C.orange }}>{fmt(finalPrice)}</span>
-          </div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: "var(--orange)" }}>{fmt(finalPrice)}</div>
         </div>
       </div>
 
-      {/* Payment Method */}
-      <div className="card" style={{ padding: "20px 22px", marginBottom: 20 }}>
-        <div style={{ fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 16 }}>Select Payment Method</div>
-
+      <div className="card" style={{ padding: 20, marginBottom: 24 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Payment Method</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {[
-            { id: "gcash", label: "GCash", desc: "Pay via GCash wallet", emoji: "💚", color: "#E8F5E9" },
-            { id: "maya", label: "Maya", desc: "Pay via Maya e-wallet", emoji: "💜", color: "#F3E5F5" },
-            { id: "card", label: "Credit / Debit Card", desc: "Visa, Mastercard, JCB", emoji: "💳", color: "#E3F2FD" },
-          ].map((pm) => (
-            <div
-              key={pm.id}
-              className={`payment-option${payMethod === pm.id ? " selected" : ""}`}
-              onClick={() => { setPayMethod(pm.id); setOtpSent(false); setOtpInput(""); setOtpError(""); }}
-              style={{
-                border: `2px solid ${payMethod === pm.id ? C.orange : C.gray200}`,
-                borderRadius: 14,
-                padding: "16px 18px",
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                background: payMethod === pm.id ? C.orangePale : "white",
-              }}
-            >
-              <div style={{ width: 44, height: 44, borderRadius: 10, background: pm.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-                {pm.emoji}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 17, fontWeight: 700, color: C.navy }}>{pm.label}</div>
-                <div style={{ fontSize: 14, color: C.gray600 }}>{pm.desc}</div>
-              </div>
-              <div style={{ width: 22, height: 22, borderRadius: "50%", border: `2px solid ${payMethod === pm.id ? C.orange : C.gray400}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                {payMethod === pm.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: C.orange }} />}
-              </div>
+            { id: "card", label: "Credit/Debit Card", icon: CreditCard },
+            { id: "wallet", label: "E-Wallet", icon: Wallet }
+          ].map(pm => (
+            <div key={pm.id} onClick={() => setPayMethod(pm.id)} className={`payment-option ${payMethod === pm.id ? 'selected' : ''}`} style={{ border: `2px solid ${payMethod === pm.id ? 'var(--orange)' : 'var(--border)'}`, borderRadius: 12, padding: 16, display: "flex", alignItems: "center", gap: 12 }}>
+              <pm.icon size={20} color={payMethod === pm.id ? 'var(--orange)' : 'var(--text-muted)'} />
+              <div style={{ fontWeight: 600 }}>{pm.label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* GCash / Maya OTP Panel */}
-      {(payMethod === "gcash" || payMethod === "maya") && (
-        <div className="card fade-in" style={{ padding: "20px 22px", marginBottom: 20 }}>
-          <div style={{ fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 8 }}>
-            {payMethod === "gcash" ? "GCash" : "Maya"} Verification
-          </div>
-          <div style={{ fontSize: 15, color: C.gray600, marginBottom: 14 }}>
-            A 6-digit One-Time PIN will be sent to your registered mobile number{" "}
-            <strong style={{ color: C.navy }}>{member.mobile}</strong>.
-          </div>
-
-          {!otpSent ? (
-            <button
-              className="btn-primary"
-              style={{ width: "100%", background: payMethod === "gcash" ? "#00B14F" : "#6B21C6" }}
-              onClick={sendOtp}
-            >
-              Send OTP to {member.mobile}
-            </button>
-          ) : (
-            <>
-              <div style={{ background: C.greenLight, border: `1px solid ${C.green}`, borderRadius: 10, padding: 12, marginBottom: 16, fontSize: 14, color: C.green, fontWeight: 600 }}>
-                ✅ OTP sent! For this demo, the code is: <strong>123456</strong>
-              </div>
-              <div>
-                <label className="form-label">Enter 6-Digit OTP</label>
-                <input
-                  className={`form-input${otpError ? " error" : ""}`}
-                  value={otpInput}
-                  onChange={(e) => { setOtpInput(e.target.value.replace(/\D/g, "").slice(0, 6)); setOtpError(""); }}
-                  placeholder="• • • • • •"
-                  style={{ fontSize: 24, letterSpacing: 8, textAlign: "center" }}
-                  maxLength={6}
-                />
-                {otpError && <div className="form-error">⚠ {otpError}</div>}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Card form */}
-      {payMethod === "card" && (
-        <div className="card fade-in" style={{ padding: "20px 22px", marginBottom: 20 }}>
-          <div style={{ fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 16 }}>Card Details</div>
-          <div style={{ marginBottom: 16 }}>
-            <label className="form-label">Card Number</label>
-            <input className={`form-input${errors.cardNum ? " error" : ""}`} value={cardNum} onChange={(e) => setCardNum(fmtCardNum(e.target.value))} placeholder="1234 5678 9012 3456" />
-            {errors.cardNum && <div className="form-error">⚠ {errors.cardNum}</div>}
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <label className="form-label">Cardholder Name</label>
-            <input className={`form-input${errors.cardName ? " error" : ""}`} value={cardName} onChange={(e) => setCardName(e.target.value)} placeholder="As printed on card" />
-            {errors.cardName && <div className="form-error">⚠ {errors.cardName}</div>}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-            <div>
-              <label className="form-label">Expiry Date</label>
-              <input type="month" className={`form-input${errors.cardExp ? " error" : ""}`} value={cardExp} onChange={(e) => setCardExp(e.target.value)} />
-              {errors.cardExp && <div className="form-error">⚠ {errors.cardExp}</div>}
-            </div>
-            <div>
-              <label className="form-label">CVV / CVC</label>
-              <input className={`form-input${errors.cardCvv ? " error" : ""}`} value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="• • •" style={{ letterSpacing: 4 }} />
-              {errors.cardCvv && <div className="form-error">⚠ {errors.cardCvv}</div>}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Pay Button */}
-      <button
-        className="btn-primary"
-        style={{ width: "100%", fontSize: 20, padding: "18px 32px", minHeight: 64 }}
-        onClick={handlePay}
-        disabled={processing}
-      >
-        {processing ? (
-          <>
-            <Spinner /> Processing Payment…
-          </>
-        ) : (
-          `🔒 Confirm Payment — ${fmt(finalPrice)}`
-        )}
+      <button className="btn-primary" style={{ width: "100%", minHeight: 56 }} onClick={handlePay} disabled={processing}>
+        {processing ? <Spinner /> : <><Lock size={18} /> Confirm Payment</>}
       </button>
-
-      <div style={{ textAlign: "center", marginTop: 14, fontSize: 14, color: C.gray400, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-        🔐 Secured by PRA Digital Platform · SSL Encrypted
-      </div>
     </div>
   );
 }
 
-// ─── PAYMENT SUCCESS ──────────────────────────────────────────────────────────
-
-function PaymentSuccess({ result, member, onDone }) {
-  const [confetti, setConfetti] = useState(true);
-  useEffect(() => {
-    const t = setTimeout(() => setConfetti(false), 4000);
-    return () => clearTimeout(t);
-  }, []);
-
-  const methodLabel = { gcash: "GCash", maya: "Maya", card: "Credit/Debit Card" };
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
-  const timeStr = now.toLocaleTimeString("en-PH", { hour: "2-digit", minute: "2-digit" });
-
+function PaymentSuccess({ result, onDone }) {
   return (
-    <div className="slide-up" style={{ padding: "32px 20px", minHeight: "100vh", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
-      <div style={{ width: "100%", maxWidth: 520, textAlign: "center" }}>
-        {/* Success icon */}
-        <div
-          className="pulse"
-          style={{
-            width: 96,
-            height: 96,
-            borderRadius: "50%",
-            background: C.greenLight,
-            border: `4px solid ${C.green}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 46,
-            margin: "0 auto 24px",
-          }}
-        >
-          ✅
-        </div>
-
-        <div style={{ fontSize: 30, fontWeight: 700, color: C.green, fontFamily: "'Libre Baskerville', serif", marginBottom: 6 }}>
-          Payment Successful!
-        </div>
-        <div style={{ fontSize: 17, color: C.gray600, marginBottom: 28 }}>
-          Your voucher has been confirmed. Please save or print the details below.
-        </div>
-
-        {/* Voucher Card */}
-        <div
-          className="card"
-          style={{
-            padding: 0,
-            marginBottom: 28,
-            overflow: "hidden",
-            border: `2px solid ${C.orange}`,
-          }}
-        >
-          {/* Header */}
-          <div style={{ background: C.navy, padding: "16px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>PRA Digital Voucher</div>
-              <div style={{ color: "white", fontWeight: 700, fontSize: 17, marginTop: 2 }}>Philippine Retirement Authority</div>
-            </div>
-            <div style={{ background: C.orange, borderRadius: 8, padding: "4px 10px", fontSize: 12, fontWeight: 800, color: "white" }}>CONFIRMED</div>
-          </div>
-
-          <div style={{ padding: "20px 22px" }}>
-            <div style={{ fontSize: 28, fontWeight: 800, color: C.orange, fontFamily: "monospace", letterSpacing: 3, marginBottom: 4, textAlign: "center" }}>
-              {result.voucher}
-            </div>
-            <div style={{ fontSize: 13, color: C.gray400, textAlign: "center", marginBottom: 20 }}>Voucher Reference Number</div>
-
-            <div style={{ background: C.gray50, borderRadius: 10, padding: "14px 16px" }}>
-              {[
-                ["Benefit", result.item.title],
-                ["Partner", result.item.partner],
-                ["Member", `${member.firstName} ${member.lastName}`],
-                ["PRA ID", member.praId],
-                ["Amount Paid", fmt(result.amount)],
-                ["Payment Via", methodLabel[result.payMethod]],
-                ["Date & Time", `${dateStr}, ${timeStr}`],
-                ["Validity", result.item.voucherValidity],
-              ].map(([label, value]) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "6px 0", borderBottom: `1px solid ${C.gray200}` }}>
-                  <span style={{ fontSize: 14, color: C.gray600, flexShrink: 0 }}>{label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: C.navy, textAlign: "right" }}>{value}</span>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ marginTop: 14, fontSize: 13, color: C.gray400, lineHeight: 1.6, textAlign: "center" }}>
-              Present this voucher code at the partner establishment. Take a screenshot or print this page. This voucher is non-transferable.
-            </div>
-          </div>
-        </div>
-
-        <button className="btn-primary" style={{ width: "100%", marginBottom: 12 }} onClick={() => window.print()}>
-          🖨️ Print / Save Voucher
-        </button>
-        <button className="btn-secondary" style={{ width: "100%" }} onClick={onDone}>
-          ← Back to Benefits Hub
-        </button>
+    <div className="fade-in" style={{ padding: "32px 20px", textAlign: "center" }}>
+      <div style={{ width: 64, height: 64, borderRadius: "50%", background: "var(--green-light)", color: "var(--green)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
+        <CheckCircle2 size={32} />
       </div>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: "var(--green)", marginBottom: 8 }}>Payment Successful</h2>
+      <p style={{ color: "var(--text-secondary)", marginBottom: 32 }}>Your voucher has been confirmed.</p>
+
+      <div className="card" style={{ padding: 24, marginBottom: 32, border: "2px solid var(--orange)" }}>
+        <div style={{ fontSize: 12, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Voucher Code</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: "var(--orange)", fontFamily: "monospace", letterSpacing: 2, marginBottom: 24 }}>{result.voucher}</div>
+        
+        <div style={{ background: "var(--bg-surface)", borderRadius: 8, padding: 16, textAlign: "left" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+            <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Amount Paid</span>
+            <span style={{ fontSize: 13, fontWeight: 700 }}>{fmt(result.amount)}</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Item</span>
+            <span style={{ fontSize: 13, fontWeight: 700 }}>{result.item.title}</span>
+          </div>
+        </div>
+      </div>
+
+      <button className="btn-primary" style={{ width: "100%", marginBottom: 12 }} onClick={() => window.print()}><Printer size={18} /> Print Voucher</button>
+      <button className="btn-secondary" style={{ width: "100%" }} onClick={onDone}>Back to Home</button>
     </div>
   );
 }
 
-// ─── PROFILE PAGE ─────────────────────────────────────────────────────────────
+// PROFILE PAGE 
 
-function ProfilePage({ member }) {
+function ProfilePage({ member, onToggleAdmin }) {
   return (
     <div className="fade-in" style={{ padding: "24px 20px" }}>
-      <div style={{ fontSize: 24, fontWeight: 700, color: C.navy, fontFamily: "'Libre Baskerville', serif", marginBottom: 20 }}>My Profile</div>
+      <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Libre Baskerville', serif", marginBottom: 24 }}>My Profile</h2>
 
-      <div className="card" style={{ marginBottom: 20, padding: "24px 24px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20, paddingBottom: 20, borderBottom: `1px solid ${C.gray200}` }}>
-          <div style={{ width: 68, height: 68, borderRadius: "50%", background: C.orangePale, border: `3px solid ${C.orange}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: C.orange, flexShrink: 0 }}>
+      <div className="card" style={{ padding: 24, marginBottom: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24, paddingBottom: 24, borderBottom: "1px solid var(--border)" }}>
+          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "var(--orange-pale)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--orange)", fontSize: 20, fontWeight: 700 }}>
             {member.firstName[0]}{member.lastName[0]}
           </div>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: C.navy }}>{member.firstName} {member.lastName}</div>
-            <div style={{ fontSize: 15, color: C.orange, fontWeight: 600 }}>SRRV Active Member</div>
-            <div style={{ fontSize: 14, color: C.gray600 }}>{member.email}</div>
+            <div style={{ fontSize: 18, fontWeight: 700 }}>{member.firstName} {member.lastName}</div>
+            <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>{member.email}</div>
           </div>
         </div>
 
-        {[
-          ["Full Name", `${member.firstName} ${member.lastName}`],
-          ["Date of Birth", member.dob],
-          ["Age", `${member.age} years old`],
-          ["Address", [member.street, member.barangay, member.city, member.province].filter(Boolean).join(", ")],
-          ["Mobile Number", member.mobile],
-          ["Email Address", member.email],
-          ["PRA ID", member.praId],
-          ["Senior ID", member.seniorId || "Not provided"],
-        ].map(([label, value]) => (
-          <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "10px 0", borderBottom: `1px solid ${C.gray100}` }}>
-            <span style={{ fontSize: 15, color: C.gray600, flexShrink: 0, minWidth: 140 }}>{label}</span>
-            <span style={{ fontSize: 15, fontWeight: 600, color: C.navy, textAlign: "right" }}>{value}</span>
-          </div>
-        ))}
+        <button className="btn-secondary" style={{ width: "100%", color: "var(--navy)" }} onClick={onToggleAdmin}>
+          <Shield size={18} /> Switch to Admin Demo
+        </button>
       </div>
 
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Card Details</h3>
       <PRACard member={member} />
     </div>
   );
 }
 
-// ─── NAVIGATION BAR ───────────────────────────────────────────────────────────
+// ADMIN DASHBOARD
 
-function NavBar({ active, onNavigate, memberName }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+function AdminDashboard({ benefits, onToggleAdmin, onAddPromo }) {
+  const [view, setView] = useState("overview");
+
+  return (
+    <div className="fade-in" style={{ padding: "24px 20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Libre Baskerville', serif" }}>Admin Portal</h2>
+        <button onClick={onToggleAdmin} style={{ background: "var(--navy)", color: "white", border: "none", borderRadius: 8, padding: "8px 12px", fontSize: 13, fontWeight: 600 }}>
+          Switch to Member
+        </button>
+      </div>
+
+      <div style={{ display: "flex", gap: 12, marginBottom: 24, overflowX: "auto", paddingBottom: 8 }}>
+        {[
+          { id: "overview", label: "Overview", icon: Activity },
+          { id: "users", label: "Members", icon: Users },
+          { id: "promos", label: "Promos", icon: Gift },
+          { id: "transactions", label: "Transactions", icon: FileText }
+        ].map(t => (
+          <button key={t.id} onClick={() => setView(t.id)} style={{ background: view === t.id ? "var(--orange-pale)" : "transparent", color: view === t.id ? "var(--orange)" : "var(--text-secondary)", border: "none", padding: "8px 16px", borderRadius: 20, fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
+            <t.icon size={16} /> {t.label}
+          </button>
+        ))}
+      </div>
+
+      {view === "overview" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="card" style={{ padding: 20, borderLeft: "4px solid var(--orange)" }}>
+            <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>Total Members</div>
+            <div style={{ fontSize: 28, fontWeight: 700 }}>{MOCK_USERS.length}</div>
+          </div>
+          <div className="card" style={{ padding: 20, borderLeft: "4px solid var(--navy)" }}>
+            <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>Active Promos</div>
+            <div style={{ fontSize: 28, fontWeight: 700 }}>{benefits.length}</div>
+          </div>
+        </div>
+      )}
+
+      {view === "users" && (
+        <div className="card">
+          {MOCK_USERS.map(u => (
+            <div key={u.id} style={{ padding: 16, borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontWeight: 600 }}>{u.name}</div>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{u.email}</div>
+              </div>
+              <Tag color={u.status === "Active" ? "green" : "orange"}>{u.status}</Tag>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {view === "promos" && (
+        <>
+          <button className="btn-primary" style={{ marginBottom: 16, width: "100%" }} onClick={() => {
+            const title = prompt("Enter Promo Title");
+            if(title) onAddPromo(title);
+          }}><Plus size={18} /> Add New Promo</button>
+          <div className="card">
+            {benefits.map(b => (
+              <div key={b.id} style={{ padding: 16, borderBottom: "1px solid var(--border)" }}>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>{b.title}</div>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{b.partner}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {view === "transactions" && (
+        <div className="card">
+          {MOCK_TRANSACTIONS.map(tx => (
+            <div key={tx.id} style={{ padding: 16, borderBottom: "1px solid var(--border)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                <span style={{ fontWeight: 600 }}>{tx.user}</span>
+                <span style={{ fontWeight: 700, color: "var(--orange)" }}>{fmt(tx.amount)}</span>
+              </div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{tx.item} | {tx.date}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// NAVIGATION BAR 
+
+function NavBar({ active, onNavigate, theme, onToggleTheme, isAdmin }) {
   const tabs = [
-    { id: "dashboard", label: "Home", icon: "🏠" },
-    { id: "benefits", label: "Benefits", icon: "🎁" },
-    { id: "profile", label: "My Profile", icon: "👤" },
+    { id: "dashboard", label: "Home", icon: Home },
+    { id: "benefits", label: "Benefits", icon: Gift },
+    { id: "profile", label: "Account", icon: User },
   ];
 
   return (
     <>
-      {/* Top bar */}
-      <div style={{ background: C.navy, padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100 }}>
+      <div style={{ background: "var(--bg-elevated)", borderBottom: "1px solid var(--border)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ background: C.orange, borderRadius: 8, padding: "6px 10px", fontWeight: 800, fontSize: 15, color: "white", letterSpacing: 1 }}>PRA</div>
-          <div style={{ color: "rgba(255,255,255,0.9)", fontWeight: 700, fontSize: 16 }}>Senior Benefits</div>
+          <div style={{ background: "var(--orange)", borderRadius: 8, padding: "6px 10px", fontWeight: 800, fontSize: 14, color: "white", letterSpacing: 1 }}>PRA</div>
+          <div style={{ fontWeight: 700, fontSize: 16 }}>{isAdmin ? "Admin Portal" : "Senior Benefits"}</div>
         </div>
-        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 14 }}>👋 {memberName}</div>
+        <button onClick={onToggleTheme} style={{ background: "none", border: "none", color: "var(--text-primary)" }}>
+          {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+        </button>
       </div>
 
-      {/* Bottom tab bar */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          background: "white",
-          borderTop: `2px solid ${C.gray200}`,
-          display: "flex",
-          zIndex: 100,
-          boxShadow: "0 -4px 16px rgba(0,0,0,0.08)",
-        }}
-      >
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => onNavigate(t.id)}
-            style={{
-              flex: 1,
-              background: "none",
-              border: "none",
-              padding: "10px 4px 12px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 4,
-              color: active === t.id ? C.orange : C.gray400,
-              cursor: "pointer",
-              transition: "color 0.2s",
-              borderTop: active === t.id ? `3px solid ${C.orange}` : "3px solid transparent",
-            }}
-          >
-            <span style={{ fontSize: 22 }}>{t.icon}</span>
-            <span style={{ fontSize: 12, fontWeight: active === t.id ? 700 : 500 }}>{t.label}</span>
-          </button>
-        ))}
-      </div>
+      {!isAdmin && (
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "var(--bg-elevated)", borderTop: "1px solid var(--border)", display: "flex", zIndex: 100 }}>
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => onNavigate(t.id)}
+              style={{
+                flex: 1, background: "none", border: "none", padding: "12px 4px",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                color: active === t.id ? "var(--orange)" : "var(--text-muted)",
+              }}
+            >
+              <t.icon size={22} strokeWidth={active === t.id ? 2.5 : 2} />
+              <span style={{ fontSize: 11, fontWeight: active === t.id ? 700 : 500 }}>{t.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </>
   );
 }
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+// MAIN APP 
 
 export default function App() {
-  const [view, setView] = useState("register"); // register | dashboard | benefits | checkout | success | profile
+  const [theme, setTheme] = useState("light");
+  const [view, setView] = useState("register");
   const [member, setMember] = useState(null);
+  const [benefits, setBenefits] = useState(INITIAL_BENEFITS);
   const [selectedBenefit, setSelectedBenefit] = useState(null);
   const [successResult, setSuccessResult] = useState(null);
   const [benefitCategory, setBenefitCategory] = useState("all");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(t => t === "light" ? "dark" : "light");
 
   const handleRegistered = (data) => {
     setMember(data);
@@ -1313,62 +961,56 @@ export default function App() {
   const handleNavigate = (page, cat = "all") => {
     setBenefitCategory(cat);
     setView(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   };
 
   const handlePurchase = (item) => {
     setSelectedBenefit(item);
     setView("checkout");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   };
 
-  const handlePaySuccess = (result) => {
-    setSuccessResult(result);
-    setView("success");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleAddPromo = (title) => {
+    const newPromo = {
+      id: "promo-" + Date.now(),
+      category: "entertainment",
+      categoryLabel: "Custom Promo",
+      title: title,
+      partner: "New Partner",
+      location: "Nationwide",
+      description: "Added by admin.",
+      originalPrice: 1000,
+      discountPct: 10,
+      tag: "New",
+      iconId: "ticket",
+      type: "purchase",
+      voucherValidity: "Valid until end of year",
+    };
+    setBenefits([newPromo, ...benefits]);
   };
 
   return (
     <>
       <style>{globalStyle}</style>
 
-      {view === "register" && <RegistrationPage onComplete={handleRegistered} />}
+      {view === "register" && !isAdmin && <RegistrationPage onComplete={handleRegistered} />}
 
-      {view !== "register" && member && (
-        <div style={{ paddingBottom: 80 }}>
-          <NavBar
-            active={["checkout", "success"].includes(view) ? "benefits" : view}
-            onNavigate={handleNavigate}
-            memberName={member.firstName}
-          />
+      {(view !== "register" || isAdmin) && member && (
+        <div style={{ paddingBottom: isAdmin ? 20 : 80 }}>
+          <NavBar active={["checkout", "success"].includes(view) ? "benefits" : view} onNavigate={handleNavigate} theme={theme} onToggleTheme={toggleTheme} isAdmin={isAdmin} />
 
-          <div style={{ maxWidth: 680, margin: "0 auto" }}>
-            {view === "dashboard" && (
-              <Dashboard member={member} onNavigate={handleNavigate} />
+          <div style={{ maxWidth: 600, margin: "0 auto" }}>
+            {isAdmin ? (
+              <AdminDashboard benefits={benefits} onToggleAdmin={() => setIsAdmin(false)} onAddPromo={handleAddPromo} />
+            ) : (
+              <>
+                {view === "dashboard" && <Dashboard member={member} benefits={benefits} onNavigate={handleNavigate} />}
+                {view === "benefits" && <BenefitsHub benefits={benefits} initialCategory={benefitCategory} onPurchase={handlePurchase} />}
+                {view === "checkout" && selectedBenefit && <CheckoutPage item={selectedBenefit} member={member} onSuccess={(res) => { setSuccessResult(res); setView("success"); }} onBack={() => setView("benefits")} />}
+                {view === "success" && successResult && <PaymentSuccess result={successResult} onDone={() => setView("benefits")} />}
+                {view === "profile" && <ProfilePage member={member} onToggleAdmin={() => setIsAdmin(true)} />}
+              </>
             )}
-            {view === "benefits" && (
-              <BenefitsHub
-                member={member}
-                initialCategory={benefitCategory}
-                onPurchase={handlePurchase}
-              />
-            )}
-            {view === "checkout" && selectedBenefit && (
-              <CheckoutPage
-                item={selectedBenefit}
-                member={member}
-                onSuccess={handlePaySuccess}
-                onBack={() => setView("benefits")}
-              />
-            )}
-            {view === "success" && successResult && (
-              <PaymentSuccess
-                result={successResult}
-                member={member}
-                onDone={() => { setView("benefits"); window.scrollTo({ top: 0 }); }}
-              />
-            )}
-            {view === "profile" && <ProfilePage member={member} />}
           </div>
         </div>
       )}
