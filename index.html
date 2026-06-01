@@ -1,1090 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Malasakit — Senior Care Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PRA Senior Benefits Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-  :root {
-    --primary: #1a6b4a;
-    --primary-light: #2d8f63;
-    --primary-pale: #e8f5ee;
-    --accent: #f5a623;
-    --accent-light: #fef3dc;
-    --coral: #e8614d;
-    --sky: #3b82c4;
-    --lavender: #7c5cbf;
-    --teal: #0d9488;
-    --rose: #d6506a;
-    --bg: #f4f7f5;
-    --card: #ffffff;
-    --text: #1a2e22;
-    --text-muted: #6b8070;
-    --border: #d8e8de;
-    --nav-h: 64px;
-    --header-h: 56px;
-    --radius: 16px;
-    --shadow: 0 2px 16px rgba(26,107,74,0.10);
-    --shadow-lg: 0 8px 32px rgba(26,107,74,0.15);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
-  #app { display: flex; flex-direction: column; height: 100vh; max-width: 430px; margin: 0 auto; background: var(--bg); position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.18); }
-
-  /* TOP BAR */
-  .top-bar { height: var(--header-h); background: var(--primary); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; flex-shrink: 0; position: relative; z-index: 10; }
-  .top-bar .logo { font-family: 'Playfair Display', serif; color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
-  .top-bar .logo span { color: var(--accent); }
-  .top-bar .notif-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
-  .notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; border: 2px solid var(--primary); }
-
-  /* SCROLL AREA */
-  .scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
-  .scroll-area::-webkit-scrollbar { width: 0; }
-
-  /* NAV */
-  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: var(--nav-h); background: #fff; border-top: 1px solid var(--border); display: flex; z-index: 20; box-shadow: 0 -4px 20px rgba(26,107,74,0.08); }
-  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; transition: color 0.2s; color: var(--text-muted); border: none; background: none; padding: 0; }
-  .nav-item.active { color: var(--primary); }
-  .nav-item svg { width: 22px; height: 22px; }
-  .nav-item span { font-size: 10px; font-weight: 500; }
-  .nav-badge { position: relative; }
-  .nav-badge::after { content: attr(data-count); position: absolute; top: -5px; right: -8px; background: var(--coral); color: #fff; font-size: 9px; font-weight: 700; border-radius: 10px; padding: 1px 4px; min-width: 15px; text-align: center; }
-
-  /* PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ============ HOME PAGE ============ */
-  .greeting-band { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); padding: 20px 18px 24px; color: #fff; position: relative; overflow: hidden; }
-  .greeting-band::after { content: ''; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; background: rgba(255,255,255,0.07); border-radius: 50%; }
-  .greeting-band::before { content: ''; position: absolute; right: 30px; bottom: -40px; width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; }
-  .greeting-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .avatar-wrap { display: flex; align-items: center; gap: 10px; }
-  .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
-  .greeting-text h2 { font-size: 16px; font-weight: 600; }
-  .greeting-text p { font-size: 12px; opacity: 0.8; }
-  .membership-chip { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 4px; }
-  .points-row { display: flex; gap: 12px; }
-  .point-card { flex: 1; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 12px; backdrop-filter: blur(10px); }
-  .point-card .label { font-size: 10px; opacity: 0.8; margin-bottom: 2px; }
-  .point-card .value { font-size: 20px; font-weight: 700; font-family: 'Playfair Display', serif; }
-  .point-card .sub { font-size: 10px; opacity: 0.7; }
-
-  /* CAROUSEL */
-  .carousel-wrap { padding: 18px 18px 0; }
-  .carousel-track { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 8px; scroll-snap-type: x mandatory; }
-  .carousel-track::-webkit-scrollbar { display: none; }
-  .carousel-card { min-width: 280px; height: 140px; border-radius: var(--radius); position: relative; overflow: hidden; flex-shrink: 0; scroll-snap-align: start; cursor: pointer; }
-  .carousel-card img { width: 100%; height: 100%; object-fit: cover; }
-  .carousel-card .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; }
-  .carousel-card .tag { font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .carousel-card h3 { color: #fff; font-size: 16px; font-weight: 700; font-family: 'Playfair Display', serif; line-height: 1.2; }
-  .carousel-card p { color: rgba(255,255,255,0.8); font-size: 11px; margin-top: 3px; }
-  .carousel-dots { display: flex; justify-content: center; gap: 5px; margin-top: 10px; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
-  .dot.active { width: 18px; border-radius: 3px; background: var(--primary); }
-
-  /* SECTION HEADER */
-  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 18px 10px; }
-  .section-header h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text); }
-  .section-header a { font-size: 12px; color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
-
-  /* SERVICES GRID */
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0 18px; }
-  .service-icon-card { background: var(--card); border-radius: 14px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow); border: 1px solid transparent; }
-  .service-icon-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-  .service-icon-card:active { transform: scale(0.97); }
-  .service-icon-card .icon-bg { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-  .service-icon-card .name { font-size: 11px; font-weight: 600; text-align: center; color: var(--text); }
-  .service-icon-card .sub { font-size: 10px; color: var(--text-muted); text-align: center; }
-
-  /* FEATURED CARDS */
-  .featured-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 0 18px 4px; scrollbar-width: none; }
-  .featured-scroll::-webkit-scrollbar { display: none; }
-  .feat-card { min-width: 200px; background: var(--card); border-radius: var(--radius); overflow: hidden; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.2s; flex-shrink: 0; }
-  .feat-card:hover { transform: translateY(-2px); }
-  .feat-card:active { transform: scale(0.98); }
-  .feat-card .fc-img { width: 100%; height: 100px; background: linear-gradient(135deg, #e0f2e9, #b7dfc7); display: flex; align-items: center; justify-content: center; font-size: 36px; position: relative; overflow: hidden; }
-  .feat-card .fc-badge { position: absolute; top: 8px; right: 8px; background: var(--accent); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
-  .feat-card .fc-body { padding: 10px 12px; }
-  .feat-card .fc-body h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-  .feat-card .fc-body p { font-size: 11px; color: var(--text-muted); }
-  .feat-card .fc-body .price { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 5px; }
-
-  /* QUICK STATS */
-  .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 18px; }
-  .stat-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-  .stat-card .st-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
-  .stat-card .st-value { font-size: 26px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--primary); }
-  .stat-card .st-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-  .stat-card .st-trend { font-size: 11px; color: #2d8f63; font-weight: 600; }
-
-  /* ============ DETAIL PAGE ============ */
-  .detail-page { display: none; }
-  .detail-page.active { display: flex; flex-direction: column; height: 100%; }
-  .detail-scroll { flex: 1; overflow-y: auto; padding-bottom: 80px; }
-  .detail-scroll::-webkit-scrollbar { display: none; }
-  .detail-hero { height: 220px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 72px; }
-  .detail-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%); }
-  .detail-hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; }
-  .detail-hero-content h1 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
-  .detail-hero-content p { font-size: 13px; opacity: 0.9; margin-top: 3px; }
-  .back-btn { position: absolute; top: 12px; left: 12px; z-index: 5; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.3); backdrop-filter: blur(10px); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; }
-  .detail-tabs { display: flex; background: #fff; border-bottom: 1px solid var(--border); padding: 0 18px; gap: 0; overflow-x: auto; }
-  .detail-tabs::-webkit-scrollbar { display: none; }
-  .d-tab { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; }
-  .d-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-  .d-tab-content { display: none; }
-  .d-tab-content.active { display: block; }
-  .info-card { background: var(--card); border-radius: var(--radius); margin: 12px 18px; padding: 16px; box-shadow: var(--shadow); }
-  .info-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
-  .info-card p { font-size: 13px; line-height: 1.7; color: var(--text-muted); }
-  .benefit-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-  .benefit-item .check { width: 20px; height: 20px; border-radius: 50%; background: var(--primary-pale); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .benefit-item p { font-size: 13px; color: var(--text); }
-  .plan-card { background: var(--card); border-radius: var(--radius); margin: 8px 18px; padding: 16px; box-shadow: var(--shadow); border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
-  .plan-card.recommended { border-color: var(--primary); }
-  .plan-card .rec-badge { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .plan-card h4 { font-size: 16px; font-weight: 700; }
-  .plan-card .plan-price { font-size: 24px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--primary); margin: 6px 0; }
-  .plan-card .plan-price span { font-size: 13px; font-weight: 400; color: var(--text-muted); }
-  .plan-card ul { list-style: none; margin-top: 8px; }
-  .plan-card ul li { font-size: 12px; color: var(--text-muted); padding: 3px 0; padding-left: 14px; position: relative; }
-  .plan-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
-  .cta-btn { display: block; width: calc(100% - 36px); margin: 16px 18px; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'DM Sans', sans-serif; }
-  .cta-btn:hover { background: var(--primary-light); }
-  .schedule-card { background: var(--card); border-radius: var(--radius); margin: 8px 18px; padding: 14px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .schedule-card .time-badge { background: var(--primary-pale); border-radius: 10px; padding: 8px 12px; text-align: center; min-width: 60px; }
-  .schedule-card .time-badge .time { font-size: 14px; font-weight: 700; color: var(--primary); }
-  .schedule-card .time-badge .day { font-size: 10px; color: var(--text-muted); }
-  .schedule-card .sc-info h5 { font-size: 14px; font-weight: 600; }
-  .schedule-card .sc-info p { font-size: 12px; color: var(--text-muted); }
-  .trainer-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--primary-pale); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 5px; }
-
-  /* ============ MESSAGING ============ */
-  .msg-search { padding: 12px 18px; }
-  .msg-search input { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px 10px 38px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text); outline: none; }
-  .msg-search-wrap { position: relative; }
-  .msg-search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-  .msg-list { padding: 0 0 8px; }
-  .msg-item { display: flex; align-items: center; gap: 12px; padding: 12px 18px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid var(--border); }
-  .msg-item:hover { background: var(--primary-pale); }
-  .msg-item.unread .msg-name { font-weight: 700; color: var(--text); }
-  .msg-item.unread .msg-preview { color: var(--text); }
-  .msg-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; font-weight: 700; color: #fff; }
-  .msg-content { flex: 1; min-width: 0; }
-  .msg-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
-  .msg-name { font-size: 14px; font-weight: 500; }
-  .msg-time { font-size: 11px; color: var(--text-muted); }
-  .msg-preview { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
-  .msg-filter { display: flex; gap: 8px; padding: 0 18px 12px; overflow-x: auto; }
-  .msg-filter::-webkit-scrollbar { display: none; }
-  .filter-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; border: 1px solid var(--border); background: var(--card); color: var(--text-muted); transition: all 0.2s; }
-  .filter-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-  /* CHAT VIEW */
-  .chat-view { display: none; flex-direction: column; height: 100%; }
-  .chat-view.active { display: flex; }
-  .chat-header { background: var(--primary); color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-  .chat-header .ch-back { background: none; border: none; color: #fff; cursor: pointer; padding: 4px; }
-  .chat-header .ch-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  .chat-header .ch-info h4 { font-size: 15px; font-weight: 600; }
-  .chat-header .ch-info p { font-size: 11px; opacity: 0.8; }
-  .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .chat-messages::-webkit-scrollbar { display: none; }
-  .bubble { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.5; }
-  .bubble.them { background: var(--card); color: var(--text); border-bottom-left-radius: 4px; align-self: flex-start; box-shadow: var(--shadow); }
-  .bubble.me { background: var(--primary); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
-  .bubble-time { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
-  .bubble-time.me-time { text-align: right; }
-  .chat-input-wrap { padding: 12px 16px; background: #fff; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
-  .chat-input-wrap input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 22px; padding: 10px 16px; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; }
-  .send-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-  /* ============ REPORTS ============ */
-  .reports-wrap { padding: 0 0 8px; }
-  .period-select { display: flex; gap: 8px; padding: 14px 18px 10px; overflow-x: auto; }
-  .period-select::-webkit-scrollbar { display: none; }
-  .period-btn { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; border: 1px solid var(--border); background: var(--card); color: var(--text-muted); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
-  .period-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-  .report-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 18px 14px; }
-  .rs-card { background: var(--card); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); }
-  .rs-card .rs-icon { font-size: 24px; margin-bottom: 8px; }
-  .rs-card .rs-val { font-size: 22px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--primary); }
-  .rs-card .rs-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .rs-card .rs-change { font-size: 11px; font-weight: 600; color: #2d8f63; margin-top: 4px; }
-  .chart-card { background: var(--card); border-radius: var(--radius); margin: 0 18px 14px; padding: 16px; box-shadow: var(--shadow); }
-  .chart-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
-  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
-  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .bar { width: 100%; background: var(--primary-pale); border-radius: 5px 5px 0 0; transition: height 0.5s ease; position: relative; overflow: hidden; }
-  .bar::after { content: ''; position: absolute; inset: 0; background: var(--primary); opacity: 0; transition: opacity 0.3s; }
-  .bar.highlight::after { opacity: 1; }
-  .bar-label { font-size: 9px; color: var(--text-muted); }
-  .activity-list { padding: 0 18px; }
-  .activity-item { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
-  .activity-item:last-child { border-bottom: none; }
-  .act-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-  .act-info { flex: 1; }
-  .act-info h5 { font-size: 13px; font-weight: 600; }
-  .act-info p { font-size: 11px; color: var(--text-muted); }
-  .act-value { font-size: 13px; font-weight: 700; color: var(--primary); }
-  .progress-section { padding: 0 18px 14px; }
-  .prog-item { margin-bottom: 14px; }
-  .prog-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-  .prog-label span:last-child { font-weight: 600; color: var(--primary); }
-  .prog-bar { height: 8px; background: var(--primary-pale); border-radius: 4px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--primary), var(--primary-light)); transition: width 0.6s ease; }
-
-  /* ============ ACCOUNT ============ */
-  .account-hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); padding: 30px 18px 24px; text-align: center; color: #fff; }
-  .acc-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.5); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; color: #fff; }
-  .account-hero h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
-  .account-hero p { font-size: 13px; opacity: 0.85; margin-top: 3px; }
-  .acc-chips { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-  .acc-chip { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; }
-  .acc-menu { padding: 12px 18px; }
-  .acc-menu-section { margin-bottom: 18px; }
-  .acc-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; padding-left: 4px; }
-  .acc-menu-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--card); border-radius: 14px; margin-bottom: 8px; cursor: pointer; transition: background 0.15s; box-shadow: var(--shadow); }
-  .acc-menu-item:hover { background: var(--primary-pale); }
-  .acc-menu-item .ami-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .acc-menu-item .ami-text { flex: 1; }
-  .acc-menu-item .ami-text h4 { font-size: 14px; font-weight: 600; }
-  .acc-menu-item .ami-text p { font-size: 12px; color: var(--text-muted); }
-  .acc-menu-item .ami-arrow { color: var(--text-muted); }
-  .membership-card { background: linear-gradient(135deg, var(--primary), var(--teal)); border-radius: var(--radius); margin: 14px 18px; padding: 18px; color: #fff; box-shadow: 0 6px 24px rgba(26,107,74,0.3); position: relative; overflow: hidden; }
-  .membership-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.08); border-radius: 50%; }
-  .membership-card .mc-label { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
-  .membership-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin: 4px 0; }
-  .membership-card .mc-num { font-size: 14px; letter-spacing: 2px; opacity: 0.8; margin: 6px 0 12px; }
-  .membership-card .mc-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
-  .membership-card .mc-bottom .mc-pts { font-size: 11px; opacity: 0.8; }
-  .membership-card .mc-bottom .mc-pts span { display: block; font-size: 22px; font-weight: 700; font-family: 'Playfair Display', serif; opacity: 1; }
-  .membership-card .mc-bottom .mc-expire { text-align: right; font-size: 11px; opacity: 0.8; }
-
-  /* ============ TOAST ============ */
-  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s; z-index: 999; white-space: nowrap; max-width: 90vw; text-align: center; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* DISCOUNT CARDS */
-  .discount-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 18px; }
-  .disc-card { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s; }
-  .disc-card:hover { transform: translateY(-2px); }
-  .disc-card .dc-img { height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
-  .disc-card .dc-body { padding: 10px; }
-  .disc-card .dc-body h5 { font-size: 12px; font-weight: 700; }
-  .disc-card .dc-body p { font-size: 11px; color: var(--text-muted); }
-  .disc-card .dc-body .disc-pct { font-size: 16px; font-weight: 800; color: var(--coral); font-family: 'Playfair Display', serif; }
-
-  /* ANIMATIONS */
-  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .page.active .greeting-band, .page.active .carousel-wrap, .page.active .services-grid, .page.active .featured-scroll { animation: fadeSlideIn 0.35s ease both; }
-  .page.active .services-grid { animation-delay: 0.05s; }
-  .page.active .featured-scroll { animation-delay: 0.1s; }
-
-  /* BG COLORS */
-  .bg-green { background: #e8f5ee; } .bg-blue { background: #dce8f5; } .bg-amber { background: #fef3dc; } .bg-rose { background: #fde8ea; }
-  .bg-violet { background: #ede8f5; } .bg-teal { background: #dcf0ee; } .bg-coral { background: #f5e8e5; } .bg-sky { background: #dceef8; }
-  .c-green { background-color: #1a6b4a; } .c-blue { background-color: #3b82c4; } .c-amber { background-color: #d4891a; }
-  .c-rose { background-color: #d6506a; } .c-violet { background-color: #7c5cbf; } .c-teal { background-color: #0d9488; }
-  .c-coral { background-color: #e8614d; } .c-sky { background-color: #0284c7; }
-  .text-green { color: #1a6b4a; } .text-blue { color: #3b82c4; } .text-violet { color: #7c5cbf; }
-  .text-rose { color: #d6506a; } .text-teal { color: #0d9488; } .text-coral { color: #e8614d; }
-
-  .divider { height: 1px; background: var(--border); margin: 4px 18px; }
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
-  .pill-tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;background:#F0F2F5;color:#2D3748}
+input,select,textarea{font-family:inherit}
+button{cursor:pointer;font-family:inherit}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.fade-in{animation:fadeIn .45s ease both}
+.slide-up{animation:slideUp .5s ease both}
+.spin{animation:spin 1s linear infinite}
+.pulse{animation:pulse 1.5s ease infinite}
+.btn-primary{background:#FF8C00;color:white;border:none;border-radius:12px;font-size:18px;font-weight:700;padding:16px 32px;min-height:56px;transition:background .2s,transform .1s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{background:#FFA733}
+.btn-primary:active{transform:scale(.97)}
+.btn-primary:disabled{background:#9AA5B4;cursor:not-allowed}
+.btn-secondary{background:transparent;color:#1E4D7B;border:2px solid #1E4D7B;border-radius:12px;font-size:17px;font-weight:600;padding:14px 28px;min-height:52px;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-secondary:hover{background:#1E4D7B;color:white}
+.btn-claim{background:#E6F4EC;color:#1A7A4A;border:2px solid #1A7A4A;border-radius:12px;font-size:16px;font-weight:700;padding:14px 24px;min-height:52px;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-claim:hover{background:#1A7A4A;color:white}
+.form-input{width:100%;padding:14px 18px;font-size:17px;border:2px solid #E4E8EE;border-radius:12px;background:white;color:#2D3748;transition:border-color .2s;min-height:52px}
+.form-input:focus{outline:none;border-color:#FF8C00;box-shadow:0 0 0 3px rgba(255,140,0,.15)}
+.form-input.error{border-color:#C0392B}
+.form-label{font-size:16px;font-weight:600;color:#0A2540;margin-bottom:8px;display:block}
+.form-error{font-size:14px;color:#C0392B;margin-top:6px;font-weight:500}
+.form-hint{font-size:14px;color:#4A5568;margin-top:6px}
+.card{background:white;border-radius:16px;box-shadow:0 2px 12px rgba(10,37,64,.07);overflow:hidden}
+.benefit-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(10,37,64,.12)}
+.benefit-card{transition:transform .2s,box-shadow .2s}
+.payment-option{transition:all .2s;cursor:pointer}
+.payment-option:hover{border-color:#FF8C00!important;background:#FFF5E6!important}
+.payment-option.selected{border-color:#FF8C00!important;background:#FFF5E6!important;box-shadow:0 0 0 3px rgba(255,140,0,.2)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#F0F2F5}
+::-webkit-scrollbar-thumb{background:#E4E8EE;border-radius:6px}
+@media(max-width:640px){.btn-primary{font-size:16px;padding:14px 24px}.form-input{font-size:16px}}
 </style>
 </head>
 <body>
-<div id="app">
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect}=React;
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <div class="logo">Mala<span>sakit</span></div>
-    <button class="notif-btn" onclick="showToast('3 new notifications')">
-      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2"><path d="M15 17H20L18.595 15.595A1 1 0 0118 14.869V11a6 6 0 00-4-5.659V5a2 2 0 10-4 0v.341A6 6 0 006 11v3.869a1 1 0 01-.595.726L4 17h5m6 0H9m6 0a3 3 0 11-6 0"/></svg>
-      <span class="notif-dot"></span>
-    </button>
+const C={navy:"#0A2540",navyLight:"#163A5F",navyMid:"#1E4D7B",orange:"#FF8C00",orangeLight:"#FFA733",orangePale:"#FFF5E6",white:"#FFFFFF",gray50:"#F8F9FA",gray100:"#F0F2F5",gray200:"#E4E8EE",gray400:"#9AA5B4",gray600:"#4A5568",gray700:"#2D3748",green:"#1A7A4A",greenLight:"#E6F4EC",red:"#C0392B",redLight:"#FDECEA"};
+
+const BENEFITS=[
+  {id:"med-city",category:"health",categoryLabel:"Health & Wellness",title:"Executive Check-up Package",partner:"The Medical City",location:"Ortigas Center, Pasig City",description:"Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist. Book at any The Medical City branch nationwide.",originalPrice:8500,discountPct:20,tag:"20% off for PRA Members",icon:"🏥",type:"purchase",voucherValidity:"Valid until December 31, 2025"},
+  {id:"mercury",category:"health",categoryLabel:"Health & Wellness",title:"Maintenance Medication Discount",partner:"Mercury Drug",location:"All branches nationwide",description:"Extra 5% discount on top of the standard 20% senior citizen discount on all maintenance medications. Present your PRA Senior Benefits Card upon purchase.",originalPrice:null,discountPct:5,tag:"Extra 5% on senior discount",icon:"💊",type:"claim",voucherValidity:"Ongoing benefit – no expiry"},
+  {id:"henann",category:"travel",categoryLabel:"Travel & Hotels",title:"Staycation Package – 3D2N",partner:"Henann Resort Boracay",location:"White Beach, Boracay Island",description:"Exclusive retiree off-season rate: 3 days, 2 nights in a Deluxe Sea View Room, daily breakfast for 2, complimentary airport transfer, and access to all resort amenities.",originalPrice:22000,discountPct:30,tag:"Exclusive retiree off-season rate",icon:"🏝️",type:"purchase",voucherValidity:"Valid for bookings until March 31, 2026"},
+  {id:"cebupac",category:"travel",categoryLabel:"Travel & Hotels",title:"Domestic Flight – Zero Booking Fee",partner:"Cebu Pacific",location:"All domestic routes",description:"Book any Cebu Pacific domestic flight with zero booking convenience fees. Available on cebu-air.com and all Cebu Pacific ticketing offices when you present your PRA ID.",originalPrice:null,discountPct:null,tag:"Zero booking fees for retirees",icon:"✈️",type:"claim",voucherValidity:"Valid for travel dates within 2025"},
+  {id:"maxs",category:"dining",categoryLabel:"Food & Dining",title:"Grandparent's Weekend Feast",partner:"Max's Restaurant",location:"All branches – dine-in & delivery",description:"Bring the family every Saturday and Sunday! Enjoy a free appetizer (Spring Roll platter) with any main course order, plus free delivery within 5km radius. Valid for tables of 2 or more.",originalPrice:680,discountPct:15,tag:"Free appetizer + free delivery",icon:"🍽️",type:"purchase",voucherValidity:"Valid every weekend until Dec 2025"},
+  {id:"sm-cinema",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Unlimited Weekday Movie Pass",partner:"SM Cinemas",location:"All SM Cinema branches",description:"Watch any movie on any weekday before 5:00 PM for only PhP 100 flat rate. No blackout dates, valid for all regular screenings. Not valid for 3D, IMAX, or special screenings.",originalPrice:350,discountPct:null,fixedPrice:100,tag:"₱100 flat rate before 5 PM",icon:"🎬",type:"purchase",voucherValidity:"Valid Jan–Dec 2025, weekdays only"},
+];
+
+const CATEGORIES=[{id:"all",label:"All Benefits",icon:"✦"},{id:"health",label:"Health & Wellness",icon:"🏥"},{id:"travel",label:"Travel & Hotels",icon:"✈️"},{id:"dining",label:"Food & Dining",icon:"🍽️"},{id:"entertainment",label:"Entertainment",icon:"🎬"}];
+
+const fmt=(n)=>"₱"+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
+const calcFinal=(item)=>{if(item.fixedPrice)return item.fixedPrice;if(item.originalPrice&&item.discountPct)return item.originalPrice*(1-item.discountPct/100);return null;};
+const genVoucher=()=>"PRA-"+Math.random().toString(36).substring(2,6).toUpperCase()+"-"+Math.random().toString(36).substring(2,6).toUpperCase();
+
+function Spinner({size=28,color="white"}){return(<div className="spin" style={{width:size,height:size,border:"3px solid rgba(255,255,255,0.3)",borderTop:`3px solid ${color}`,borderRadius:"50%"}}/>);}
+
+function ProgressBar({step,total}){return(<div style={{display:"flex",gap:8,alignItems:"center"}}>{Array.from({length:total}).map((_,i)=>(<div key={i} style={{flex:1,height:6,borderRadius:6,background:i<step?C.orange:C.gray200,transition:"background 0.4s"}}/>))}</div>);}
+
+function PRACard({member}){return(<div style={{background:`linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 60%,${C.navyLight} 100%)`,borderRadius:20,padding:"28px 28px 24px",color:"white",position:"relative",overflow:"hidden",maxWidth:380,width:"100%",boxShadow:"0 8px 32px rgba(10,37,64,0.35)"}}>
+  <div style={{position:"absolute",top:-30,right:-30,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
+  <div style={{position:"absolute",bottom:-40,right:20,width:160,height:160,borderRadius:"50%",background:"rgba(255,140,0,0.08)"}}/>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24}}>
+    <div><div style={{fontSize:11,letterSpacing:3,color:"rgba(255,255,255,0.6)",fontWeight:600,textTransform:"uppercase"}}>Republic of the Philippines</div><div style={{fontSize:17,fontWeight:700,marginTop:2,color:C.orangeLight}}>Philippine Retirement Authority</div></div>
+    <div style={{background:C.orange,borderRadius:8,padding:"6px 10px",fontSize:11,fontWeight:800,letterSpacing:1,color:"white"}}>PRA</div>
   </div>
-
-  <!-- SCROLL WRAPPER -->
-  <div id="mainScroll" class="scroll-area">
-
-    <!-- ===== HOME PAGE ===== -->
-    <div id="page-home" class="page active">
-      <div class="greeting-band">
-        <div class="greeting-top">
-          <div class="avatar-wrap">
-            <div class="avatar">RL</div>
-            <div class="greeting-text">
-              <h2>Magandang umaga, Lolo Remy! 👋</h2>
-              <p>Wednesday, July 9 · Member since 2023</p>
-            </div>
-          </div>
-        </div>
-        <div class="points-row">
-          <div class="point-card">
-            <div class="label">Reward Points</div>
-            <div class="value">2,840</div>
-            <div class="sub">+120 this month</div>
-          </div>
-          <div class="point-card">
-            <div class="label">Active Services</div>
-            <div class="value">5</div>
-            <div class="sub">Gold Member</div>
-          </div>
-          <div class="point-card">
-            <div class="label">Savings</div>
-            <div class="value">₱3.2k</div>
-            <div class="sub">via discounts</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CAROUSEL -->
-      <div class="carousel-wrap">
-        <div class="carousel-track" id="carousel">
-          <div class="carousel-card" style="background: linear-gradient(135deg,#1a6b4a,#0d9488)" onclick="openServiceDetail('gym')">
-            <div class="overlay">
-              <div class="tag">🏋️ Gym</div>
-              <h3>Free Senior Fitness Week</h3>
-              <p>Join 500+ members — July 15–21</p>
-            </div>
-          </div>
-          <div class="carousel-card" style="background: linear-gradient(135deg,#7c5cbf,#3b82c4)" onclick="openServiceDetail('wellness')">
-            <div class="overlay">
-              <div class="tag">🧘 Wellness</div>
-              <h3>Mind & Body Program</h3>
-              <p>New: Laughter Yoga every Saturday</p>
-            </div>
-          </div>
-          <div class="carousel-card" style="background: linear-gradient(135deg,#d4891a,#e8614d)" onclick="openServiceDetail('nutrition')">
-            <div class="overlay">
-              <div class="tag">🥗 Nutrition</div>
-              <h3>Personalized Meal Plans</h3>
-              <p>Tailored for 60+ by certified dietitians</p>
-            </div>
-          </div>
-          <div class="carousel-card" style="background: linear-gradient(135deg,#d6506a,#f5a623)" onclick="openServiceDetail('discounts')">
-            <div class="overlay">
-              <div class="tag">🏷️ Discounts</div>
-              <h3>20% OFF at Mercury Drug</h3>
-              <p>Valid until July 31, 2025</p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-dots">
-          <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-      </div>
-
-      <!-- MAIN SERVICES -->
-      <div class="section-header"><h3>Our Services</h3></div>
-      <div class="services-grid">
-        <div class="service-icon-card" onclick="openServiceDetail('membership')">
-          <div class="icon-bg bg-green"><span>🪪</span></div>
-          <div class="name">Membership</div>
-          <div class="sub">Gold Plan</div>
-        </div>
-        <div class="service-icon-card" onclick="openServiceDetail('gym')">
-          <div class="icon-bg bg-blue"><span>🏋️</span></div>
-          <div class="name">Gym</div>
-          <div class="sub">6 locations</div>
-        </div>
-        <div class="service-icon-card" onclick="openServiceDetail('wellness')">
-          <div class="icon-bg bg-violet"><span>🧘</span></div>
-          <div class="name">Wellness</div>
-          <div class="sub">12 programs</div>
-        </div>
-        <div class="service-icon-card" onclick="openServiceDetail('nutrition')">
-          <div class="icon-bg bg-amber"><span>🥗</span></div>
-          <div class="name">Nutrition</div>
-          <div class="sub">Diet plans</div>
-        </div>
-        <div class="service-icon-card" onclick="openServiceDetail('platform')">
-          <div class="icon-bg bg-teal"><span>📱</span></div>
-          <div class="name">Platform</div>
-          <div class="sub">Tools & Apps</div>
-        </div>
-        <div class="service-icon-card" onclick="openServiceDetail('discounts')">
-          <div class="icon-bg bg-rose"><span>🏷️</span></div>
-          <div class="name">Discounts</div>
-          <div class="sub">50+ partners</div>
-        </div>
-      </div>
-
-      <!-- FEATURED -->
-      <div class="section-header"><h3>Featured Programs</h3><a onclick="showToast('Viewing all programs')">See all</a></div>
-      <div class="featured-scroll" id="featuredScroll"></div>
-
-      <!-- QUICK STATS -->
-      <div class="section-header"><h3>Your Wellness Summary</h3></div>
-      <div class="quick-stats">
-        <div class="stat-card">
-          <div class="st-label">Steps Today</div>
-          <div class="st-value">4,230</div>
-          <div class="st-sub">Goal: 6,000</div>
-          <div class="st-trend">↑ 12% vs yesterday</div>
-        </div>
-        <div class="stat-card">
-          <div class="st-label">Classes This Week</div>
-          <div class="st-value">3</div>
-          <div class="st-sub">Tai Chi, Yoga, Aqua</div>
-          <div class="st-trend">↑ 1 more than last week</div>
-        </div>
-        <div class="stat-card">
-          <div class="st-label">Calories (avg)</div>
-          <div class="st-value">1,840</div>
-          <div class="st-sub">Recommended: 1,800</div>
-          <div class="st-trend">✓ On target</div>
-        </div>
-        <div class="stat-card">
-          <div class="st-label">Saved This Month</div>
-          <div class="st-value">₱890</div>
-          <div class="st-sub">Via discounts</div>
-          <div class="st-trend">↑ Best month yet!</div>
-        </div>
-      </div>
-
-      <!-- MERCHANT DISCOUNTS PREVIEW -->
-      <div class="section-header"><h3>Today's Merchant Deals</h3><a onclick="openServiceDetail('discounts')">See all</a></div>
-      <div class="discount-grid" id="discountPreview"></div>
-      <div style="height: 16px;"></div>
-    </div>
-
-    <!-- ===== MESSAGING PAGE ===== -->
-    <div id="page-messages" class="page">
-      <div id="msgList">
-        <div class="msg-search">
-          <div class="msg-search-wrap">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" placeholder="Search messages…" oninput="filterMessages(this.value)">
-          </div>
-        </div>
-        <div class="msg-filter">
-          <div class="filter-pill active" onclick="setMsgFilter('all',this)">All</div>
-          <div class="filter-pill" onclick="setMsgFilter('services',this)">Services</div>
-          <div class="filter-pill" onclick="setMsgFilter('health',this)">Health Team</div>
-          <div class="filter-pill" onclick="setMsgFilter('community',this)">Community</div>
-          <div class="filter-pill" onclick="setMsgFilter('support',this)">Support</div>
-        </div>
-        <div class="msg-list" id="msgContainer"></div>
-      </div>
-      <div id="chatView" class="chat-view">
-        <div class="chat-header">
-          <button class="ch-back" onclick="closeChat()">
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <div class="ch-avatar" id="chatAvatar">👩‍⚕️</div>
-          <div class="ch-info">
-            <h4 id="chatName">Dr. Santos</h4>
-            <p id="chatStatus">Online · Senior Health Specialist</p>
-          </div>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-wrap">
-          <input type="text" id="chatInput" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()">
-          <button class="send-btn" onclick="sendMsg()">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== REPORTS PAGE ===== -->
-    <div id="page-reports" class="page">
-      <div style="padding: 16px 18px 0; font-family:'Playfair Display',serif; font-size: 22px; font-weight:700;">Health & Activity Reports</div>
-      <div class="period-select">
-        <button class="period-btn active" onclick="setPeriod(this)">This Week</button>
-        <button class="period-btn" onclick="setPeriod(this)">This Month</button>
-        <button class="period-btn" onclick="setPeriod(this)">3 Months</button>
-        <button class="period-btn" onclick="setPeriod(this)">6 Months</button>
-        <button class="period-btn" onclick="setPeriod(this)">This Year</button>
-      </div>
-      <div class="report-summary" id="reportSummary"></div>
-      <div class="chart-card">
-        <h4>📊 Weekly Activity (minutes)</h4>
-        <div class="bar-chart" id="barChart"></div>
-      </div>
-      <div class="chart-card">
-        <h4>🎯 Goal Progress</h4>
-        <div class="progress-section" id="progressSection" style="padding: 0;"></div>
-      </div>
-      <div class="section-header" style="padding-top:8px;"><h3>Recent Activities</h3></div>
-      <div class="activity-list" id="activityList"></div>
-      <div style="height: 16px;"></div>
-    </div>
-
-    <!-- ===== ACCOUNT PAGE ===== -->
-    <div id="page-account" class="page">
-      <div class="account-hero">
-        <div class="acc-avatar">RL</div>
-        <h2>Remy L. Santos</h2>
-        <p>remylsantos@gmail.com · +63 917 234 5678</p>
-        <div class="acc-chips">
-          <div class="acc-chip">🥇 Gold Member</div>
-          <div class="acc-chip">🎂 Age 68</div>
-          <div class="acc-chip">📍 Quezon City</div>
-        </div>
-      </div>
-
-      <!-- MEMBERSHIP CARD -->
-      <div class="membership-card">
-        <div class="mc-label">Malasakit Senior Card</div>
-        <h3>Gold Membership</h3>
-        <div class="mc-num">MSK · 2024 · 00847 · 3392</div>
-        <div class="mc-bottom">
-          <div class="mc-pts">Reward Points<span>2,840</span></div>
-          <div class="mc-expire">Valid Until<br><strong>Dec 2026</strong></div>
-        </div>
-      </div>
-
-      <div class="acc-menu">
-        <div class="acc-menu-section">
-          <div class="acc-section-title">My Profile</div>
-          <div class="acc-menu-item" onclick="showToast('Opening personal info')">
-            <div class="ami-icon bg-green">👤</div>
-            <div class="ami-text"><h4>Personal Information</h4><p>Name, birthday, address</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening health profile')">
-            <div class="ami-icon bg-rose">❤️</div>
-            <div class="ami-text"><h4>Health Profile</h4><p>Conditions, medications, allergies</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening emergency contacts')">
-            <div class="ami-icon bg-amber">🚨</div>
-            <div class="ami-text"><h4>Emergency Contacts</h4><p>Family & caregiver info</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-        </div>
-        <div class="acc-menu-section">
-          <div class="acc-section-title">Membership & Billing</div>
-          <div class="acc-menu-item" onclick="showToast('Opening membership details')">
-            <div class="ami-icon" style="background:#e8f5ee;">🪪</div>
-            <div class="ami-text"><h4>Membership Plan</h4><p>Gold — ₱599/month</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening payment methods')">
-            <div class="ami-icon bg-blue">💳</div>
-            <div class="ami-text"><h4>Payment Methods</h4><p>GCash, Maya, Credit Card</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening billing history')">
-            <div class="ami-icon bg-violet">📄</div>
-            <div class="ami-text"><h4>Billing History</h4><p>View all transactions</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-        </div>
-        <div class="acc-menu-section">
-          <div class="acc-section-title">Settings & Preferences</div>
-          <div class="acc-menu-item" onclick="showToast('Opening notification settings')">
-            <div class="ami-icon bg-teal">🔔</div>
-            <div class="ami-text"><h4>Notifications</h4><p>Alerts, reminders, updates</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening language settings')">
-            <div class="ami-icon bg-sky">🌐</div>
-            <div class="ami-text"><h4>Language & Accessibility</h4><p>Filipino / English · Large text</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Opening privacy settings')">
-            <div class="ami-icon bg-coral">🔒</div>
-            <div class="ami-text"><h4>Privacy & Security</h4><p>Password, biometrics, data</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-        </div>
-        <div class="acc-menu-section">
-          <div class="acc-section-title">Support</div>
-          <div class="acc-menu-item" onclick="showToast('Opening help center')">
-            <div class="ami-icon bg-amber">❓</div>
-            <div class="ami-text"><h4>Help Center</h4><p>FAQs and guides</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="setActiveTab('messages')">
-            <div class="ami-icon bg-green">💬</div>
-            <div class="ami-text"><h4>Contact Support</h4><p>Chat with our care team</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-          <div class="acc-menu-item" onclick="showToast('Logging out…')" style="color:var(--coral)">
-            <div class="ami-icon" style="background:#fde8ea;">🚪</div>
-            <div class="ami-text"><h4 style="color:var(--coral)">Log Out</h4><p>Sign out of your account</p></div>
-            <div class="ami-arrow">›</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- end mainScroll -->
-
-  <!-- DETAIL OVERLAY -->
-  <div id="detailOverlay" style="position:absolute;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column;">
-    <div class="detail-scroll" id="detailScrollArea">
-      <!-- filled by JS -->
-    </div>
+  <div style={{marginBottom:20}}>
+    <div style={{fontSize:13,color:"rgba(255,255,255,0.5)",marginBottom:4}}>Senior Benefits Card</div>
+    <div style={{fontSize:22,fontWeight:700,fontFamily:"'Libre Baskerville',serif",letterSpacing:.5}}>{member.firstName} {member.lastName}</div>
   </div>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+    <div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginBottom:2}}>PRA ID Number</div><div style={{fontSize:15,fontWeight:700,letterSpacing:2}}>{member.praId}</div></div>
+    <div style={{textAlign:"right"}}><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginBottom:2}}>Valid Until</div><div style={{fontSize:14,fontWeight:600}}>12/2027</div></div>
+  </div>
+  <div style={{marginTop:16,padding:"10px 0 0",borderTop:"1px solid rgba(255,255,255,0.1)",fontSize:11,color:"rgba(255,255,255,0.4)",letterSpacing:.5}}>SPECIAL RESIDENT RETIREE'S VISA • SRRV HOLDER</div>
+</div>);}
 
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" id="nav-home" onclick="setActiveTab('home')">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Home</span>
-    </button>
-    <button class="nav-item" id="nav-messages" onclick="setActiveTab('messages')">
-      <div class="nav-badge" data-count="5">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-      </div>
-      <span>Messages</span>
-    </button>
-    <button class="nav-item" id="nav-reports" onclick="setActiveTab('reports')">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      <span>Reports</span>
-    </button>
-    <button class="nav-item" id="nav-account" onclick="setActiveTab('account')">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Account</span>
-    </button>
-  </nav>
-
-  <div class="toast" id="toast"></div>
-</div>
-
-<script>
-// ============================================================
-//  DATA
-// ============================================================
-const featuredPrograms = [
-  { emoji:'🏊', title:'Aqua Aerobics', cat:'Gym', price:'₱350/mo', badge:'Popular', color:'#dce8f5' },
-  { emoji:'🧘', title:'Morning Yoga', cat:'Wellness', price:'₱280/mo', badge:'New', color:'#ede8f5' },
-  { emoji:'🥗', title:'Heart-Healthy Diet', cat:'Nutrition', price:'₱450/mo', badge:'Recommended', color:'#fef3dc' },
-  { emoji:'💆', title:'Swedish Massage', cat:'Wellness', price:'₱600/session', badge:'', color:'#fde8ea' },
-  { emoji:'🚶', title:'Nordic Walking', cat:'Gym', price:'Free', badge:'Free', color:'#dcf0ee' },
-  { emoji:'🎨', title:'Art Therapy', cat:'Wellness', price:'₱200/session', badge:'', color:'#e8f5ee' },
-  { emoji:'🩺', title:'Health Screening', cat:'Medical', price:'₱990/yr', badge:'Bundle', color:'#f5e8e5' },
-  { emoji:'🎵', title:'Music Therapy', cat:'Wellness', price:'₱180/session', badge:'New', color:'#dce8f5' },
-  { emoji:'🍲', title:'Cooking Classes', cat:'Nutrition', price:'₱320/mo', badge:'', color:'#fef3dc' },
-  { emoji:'🤸', title:'Flexibility & Balance', cat:'Gym', price:'₱250/mo', badge:'Popular', color:'#dcf0ee' },
-];
-
-const discountMerchants = [
-  { emoji:'💊', name:'Mercury Drug', pct:'20%', cat:'Pharmacy', color:'#fde8ea' },
-  { emoji:'🏥', name:'Medicard', pct:'15%', cat:'Health Insurance', color:'#dce8f5' },
-  { emoji:'🍽️', name:'Jollibee', pct:'10%', cat:'Restaurant', color:'#fef3dc' },
-  { emoji:'🛒', name:'SM Supermarket', pct:'5%', cat:'Grocery', color:'#e8f5ee' },
-  { emoji:'✈️', name:'PAL', pct:'20%', cat:'Airlines', color:'#ede8f5' },
-  { emoji:'🚌', name:'Beep Card', pct:'50%', cat:'Transport', color:'#dcf0ee' },
-  { emoji:'🏨', name:'RedDoorz', pct:'25%', cat:'Hotels', color:'#fde8ea' },
-  { emoji:'📚', name:'National Bookstore', pct:'10%', cat:'Books', color:'#fef3dc' },
-];
-
-const messages = [
-  { id:1, avatar:'👩‍⚕️', name:'Dr. Ana Santos', role:'Senior Health Specialist', preview:'Your blood pressure readings look great this week! Keep it up!', time:'10:32 AM', unread:true, color:'#1a6b4a', category:'health',
-    convo:[
-      { me:false, text:"Good morning Lolo Remy! I checked your latest health report. Your blood pressure is 120/80 — excellent for your age!", time:"10:25 AM" },
-      { me:true, text:"Salamat Dr. Santos! I've been taking my medications regularly and doing the morning walks.", time:"10:27 AM" },
-      { me:false, text:"That's wonderful to hear! Please continue the walking routine — 30 minutes daily is ideal. How are you sleeping?", time:"10:28 AM" },
-      { me:true, text:"Much better than before. The wellness program really helped me relax.", time:"10:30 AM" },
-      { me:false, text:"Your blood pressure readings look great this week! Keep it up!", time:"10:32 AM" },
-    ]
-  },
-  { id:2, avatar:'🏋️', name:'Coach Manny Cruz', role:'Senior Fitness Trainer', preview:'Your gym session tomorrow is confirmed at 7:00 AM. See you!', time:'9:15 AM', unread:true, color:'#3b82c4', category:'services',
-    convo:[
-      { me:false, text:"Hi Lolo Remy! Just confirming your aqua aerobics class schedule for this week.", time:"9:00 AM" },
-      { me:true, text:"Hi Coach Manny! Yes, I'll be there. Can we change Thursday's session to 7 AM?", time:"9:08 AM" },
-      { me:false, text:"Of course! I'll update the booking. Also, bring your water shoes — the pool deck can be slippery.", time:"9:12 AM" },
-      { me:false, text:"Your gym session tomorrow is confirmed at 7:00 AM. See you!", time:"9:15 AM" },
-    ]
-  },
-  { id:3, avatar:'🥗', name:'Nutri. Bea Reyes', role:'Registered Nutritionist-Dietitian', preview:'I have uploaded your personalized meal plan for July. Please check!', time:'Yesterday', unread:true, color:'#d4891a', category:'health',
-    convo:[
-      { me:false, text:"Good afternoon Lolo Remy! I've finished analyzing your dietary habits from last month.", time:"2:00 PM" },
-      { me:false, text:"I noticed you've been having more sodium than recommended. I've adjusted your meal plan accordingly.", time:"2:01 PM" },
-      { me:true, text:"Thank you Bea. I love sinigang but I understand. What changes did you make?", time:"2:10 PM" },
-      { me:false, text:"Don't worry — I kept sinigang! I just swapped regular fish sauce with low-sodium toyo. I've uploaded your personalized meal plan for July. Please check!", time:"2:15 PM" },
-    ]
-  },
-  { id:4, avatar:'🧘', name:'Wellness Center', role:'Program Coordinator', preview:'New class: Laughter Yoga starting July 15 every Saturday at 8 AM', time:'Yesterday', unread:false, color:'#7c5cbf', category:'services',
-    convo:[
-      { me:false, text:"Maligayang pagbati Lolo Remy! We have exciting news from the Wellness Center.", time:"9:00 AM" },
-      { me:false, text:"We're launching Laughter Yoga — a proven therapy to boost immunity and reduce stress for seniors.", time:"9:01 AM" },
-      { me:false, text:"New class: Laughter Yoga starting July 15 every Saturday at 8 AM. Would you like to join?", time:"9:02 AM" },
-      { me:true, text:"That sounds interesting! Please enroll me. Will it be at the main branch?", time:"10:30 AM" },
-      { me:false, text:"Yes! BGC branch, 3rd floor. We'll send a reminder the day before. See you there!", time:"10:45 AM" },
-    ]
-  },
-  { id:5, avatar:'💬', name:'Malasakit Support', role:'Customer Care', preview:'Your Gold membership has been renewed until December 2026.', time:'Monday', unread:false, color:'#0d9488', category:'support',
-    convo:[
-      { me:false, text:"Dear Lolo Remy, your Malasakit Gold Membership has been successfully renewed!", time:"8:00 AM" },
-      { me:false, text:"Your Gold membership has been renewed until December 2026. Your benefits include unlimited gym access, 5 wellness sessions/month, and priority booking.", time:"8:00 AM" },
-      { me:true, text:"Thank you! Can I also add my wife to the membership?", time:"10:00 AM" },
-      { me:false, text:"Of course! Spousal add-on is ₱299/month. Shall I process that for you?", time:"10:15 AM" },
-    ]
-  },
-  { id:6, avatar:'👥', name:'Senior Walkers Club', role:'Community Group', preview:"Bernardo: Can everyone be at Luneta by 6 AM Sunday?", time:'Monday', unread:true, color:'#e8614d', category:'community',
-    convo:[
-      { me:false, text:"Group: Can everyone confirm attendance for this Sunday's Luneta walk?", time:"7:30 AM" },
-      { me:true, text:"Kasama ako! I'll bring my wife too.", time:"7:45 AM" },
-      { me:false, text:"Bernardo: Can everyone be at Luneta by 6 AM Sunday? Weather looks perfect!", time:"8:00 AM" },
-    ]
-  },
-  { id:7, avatar:'🩺', name:'Dr. Reyes (Cardiologist)', role:'Heart Specialist', preview:'Your ECG results are normal. No follow-up needed for 6 months.', time:'Last week', unread:false, color:'#d6506a', category:'health',
-    convo:[
-      { me:false, text:"Good news Lolo Remy — I've reviewed your latest ECG and stress test results.", time:"2:30 PM" },
-      { me:false, text:"Your ECG results are normal. No follow-up needed for 6 months. Continue your current medications.", time:"2:31 PM" },
-    ]
-  },
-  { id:8, avatar:'🏥', name:'Malasakit Clinic', role:'Medical Services', preview:'Reminder: Annual health check on July 14 at 9:00 AM', time:'Last week', unread:false, color:'#0284c7', category:'services',
-    convo:[
-      { me:false, text:"Dear Mr. Santos, this is a reminder for your annual comprehensive health check.", time:"8:00 AM" },
-      { me:false, text:"Reminder: Annual health check on July 14 at 9:00 AM at Malasakit Clinic, Quezon City branch. Please fast for 8 hours before.", time:"8:01 AM" },
-    ]
-  },
-  { id:9, avatar:'🎭', name:'Arts & Culture Group', role:'Community Group', preview:"Margaret: The painting exhibit is open until July 30!", time:'Last week', unread:false, color:'#7c5cbf', category:'community',
-    convo:[
-      { me:false, text:"Margaret: The painting exhibit is open until July 30! It's at the Malasakit Community Hall.", time:"10:00 AM" },
-      { me:true, text:"Salamat Margaret! I'll visit this weekend.", time:"11:00 AM" },
-    ]
-  },
-  { id:10, avatar:'📋', name:'Malasakit Admin', role:'Platform Administration', preview:'Your discount card has been updated with 3 new merchant partners.', time:'2 weeks ago', unread:false, color:'#6b8070', category:'support',
-    convo:[
-      { me:false, text:"Dear Mr. Santos, we're excited to announce 3 new merchant partners for your Malasakit Discount Card.", time:"9:00 AM" },
-      { me:false, text:"Your discount card has been updated with 3 new merchant partners: Watsons (10%), Chowking (10%), and BRT Pharmacy (15%).", time:"9:01 AM" },
-    ]
-  },
-  // More messages
-  { id:11, avatar:'🏊', name:'Aqua Fitness Dept', role:'Swimming & Aqua Programs', preview:'Pool maintenance tomorrow. Saturday class moved to Sunday 8 AM.', time:'2 weeks ago', unread:false, color:'#3b82c4', category:'services', convo:[{me:false,text:"Pool maintenance tomorrow. Saturday class moved to Sunday 8 AM.",time:"4:00 PM"}] },
-  { id:12, avatar:'🍎', name:'Nutrition Team', role:'Diet & Wellness', preview:'Monthly newsletter: Best foods for joint health in seniors', time:'2 weeks ago', unread:false, color:'#d4891a', category:'health', convo:[{me:false,text:"Monthly newsletter: Best foods for joint health in seniors — read now in the Nutrition tab!",time:"9:00 AM"}] },
-  { id:13, avatar:'🚶', name:'Walking Group QC', role:'Community Group', preview:"Sunday: We beat our record — 8,200 steps! 🎉", time:'3 weeks ago', unread:false, color:'#0d9488', category:'community', convo:[{me:false,text:"Sunday: We beat our record — 8,200 steps! 🎉 Great job everyone!",time:"7:00 PM"}] },
-  { id:14, avatar:'💆', name:'Spa & Massage', role:'Relaxation Services', preview:"Your massage appointment on July 12 at 2 PM is confirmed.", time:'3 weeks ago', unread:false, color:'#d6506a', category:'services', convo:[{me:false,text:"Your massage appointment on July 12 at 2 PM is confirmed. Please arrive 10 minutes early.",time:"10:00 AM"}] },
-  { id:15, avatar:'📊', name:'Health Monitor Bot', role:'Automated Health Tracking', preview:"Weekly summary: You exceeded your step goal 4 out of 7 days!", time:'3 weeks ago', unread:false, color:'#1a6b4a', category:'health', convo:[{me:false,text:"Weekly summary: You exceeded your step goal 4 out of 7 days! That's a personal best this quarter.",time:"8:00 AM"}] },
-];
-
-const reportSummaryData = [
-  { icon:'🏃', val:'18', label:'Gym Sessions', change:'+3 vs last week' },
-  { icon:'🥗', val:'92%', label:'Meal Plan Adherence', change:'+5% improvement' },
-  { icon:'💤', val:'7.2h', label:'Avg Sleep', change:'Optimal range' },
-  { icon:'❤️', val:'118/76', label:'Avg Blood Pressure', change:'Normal range' },
-];
-
-const activities = [
-  { icon:'🏊', iconBg:'bg-blue', name:'Aqua Aerobics', sub:'45 min · Mon, Wed, Fri', value:'+90 pts' },
-  { icon:'🧘', iconBg:'bg-violet', name:'Morning Yoga', sub:'30 min · Daily', value:'+60 pts' },
-  { icon:'🥗', iconBg:'bg-amber', name:'Meal Plan Check-in', sub:'Completed Jul 8', value:'+20 pts' },
-  { icon:'🩺', iconBg:'bg-rose', name:'Blood Pressure Check', sub:'Normal · Jul 7', value:'✓ Done' },
-  { icon:'💊', iconBg:'bg-teal', name:'Medication Taken', sub:'All doses · 7-day streak', value:'+35 pts' },
-  { icon:'🚶', iconBg:'bg-green', name:'Walking', sub:'4,230 steps · Today', value:'+42 pts' },
-  { icon:'💆', iconBg:'bg-coral', name:'Swedish Massage', sub:'60 min · Jul 5', value:'+10 pts' },
-  { icon:'🎨', iconBg:'bg-violet', name:'Art Therapy', sub:'2 hrs · Jul 3', value:'+20 pts' },
-  { icon:'🍎', iconBg:'bg-amber', name:'Nutrition Consult', sub:'With Nutri. Bea · Jul 2', value:'+15 pts' },
-  { icon:'🏋️', iconBg:'bg-blue', name:'Strength Training', sub:'Adapted program · Jul 1', value:'+50 pts' },
-];
-
-const goals = [
-  { label:'Monthly Steps Goal', pct:72 },
-  { label:'Gym Attendance', pct:85 },
-  { label:'Meal Plan Adherence', pct:92 },
-  { label:'Wellness Sessions', pct:60 },
-];
-
-const bars = [
-  { label:'Mon', h:55, hi:false }, { label:'Tue', h:40, hi:false }, { label:'Wed', h:70, hi:false },
-  { label:'Thu', h:35, hi:false }, { label:'Fri', h:80, hi:true }, { label:'Sat', h:60, hi:false }, { label:'Sun', h:45, hi:false },
-];
-
-// SERVICE DETAIL DATA
-const serviceDetails = {
-  membership: {
-    emoji:'🪪', title:'Senior Membership', subtitle:'Your gateway to all Malasakit benefits', bgColor:'linear-gradient(135deg,#1a6b4a,#2d8f63)',
-    tabs:['Overview','Plans','Benefits','FAQ'],
-    overview:`<div class="info-card"><h4>About Membership</h4><p>Malasakit Senior Membership is a comprehensive care program designed exclusively for Filipino senior citizens aged 60 and above. As a member, you enjoy priority access to our health facilities, wellness programs, expert consultants, and an ever-growing network of partner merchants who offer exclusive discounts.</p></div>
-    <div class="info-card"><h4>Why Join?</h4>
-      ${['Priority booking for all services','Dedicated senior care hotline 24/7','Free monthly health screening','Exclusive loyalty reward points','Access to community events & clubs','Family add-on options available'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#1a6b4a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}
-    </div>`,
-    plans:`
-    <div class="plan-card"><div class="rec-badge"></div><h4>Silver</h4><div class="plan-price">₱299<span>/month</span></div><ul><li>2 gym visits/week</li><li>2 wellness sessions/month</li><li>10% merchant discounts</li><li>Basic health tracking</li></ul></div>
-    <div class="plan-card recommended"><div class="rec-badge">⭐ Most Popular</div><h4>Gold</h4><div class="plan-price">₱599<span>/month</span></div><ul><li>Unlimited gym access</li><li>5 wellness sessions/month</li><li>20% merchant discounts</li><li>Monthly health screening</li><li>Nutritionist consultation</li><li>Priority booking</li></ul></div>
-    <div class="plan-card"><div class="rec-badge"></div><h4>Platinum</h4><div class="plan-price">₱999<span>/month</span></div><ul><li>Everything in Gold</li><li>10 wellness sessions/month</li><li>30% merchant discounts</li><li>Weekly doctor check-in</li><li>Home visit option</li><li>Dedicated care manager</li></ul></div>
-    <button class="cta-btn" onclick="showToast('Membership enrollment started!')">Enroll Now — Free 1st Month</button>`,
-    benefits:`<div class="info-card"><h4>Exclusive Member Benefits</h4>${['Free first month for new members','₱500 welcome reward points','Free senior card with photo ID','Monthly wellness newsletter','Discounts at 50+ partner merchants','Birthday surprise & bonus points','Annual health assessment included','Family plan — add spouse at ₱299/mo'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#1a6b4a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>`,
-    faq:`<div class="info-card"><h4>Frequently Asked Questions</h4><p style="margin-bottom:10px;"><strong>Who can join?</strong><br>Filipino citizens aged 60 and above, or those with PWD/senior citizen ID.</p><p style="margin-bottom:10px;"><strong>How do I avail discounts?</strong><br>Simply present your Malasakit Senior Card at partner merchants or show the app QR code.</p><p style="margin-bottom:10px;"><strong>Can I cancel anytime?</strong><br>Yes, membership can be cancelled with 30 days notice. No lock-in period for monthly plans.</p><p><strong>Is there a family plan?</strong><br>Yes! Add your spouse for only ₱299/month additional.</p></div>`
-  },
-  gym: {
-    emoji:'🏋️', title:'Senior Gym', subtitle:'Fitness tailored for 60+ bodies', bgColor:'linear-gradient(135deg,#1a6b4a,#0d9488)',
-    tabs:['Overview','Schedule','Trainers','Locations'],
-    overview:`<div class="info-card"><h4>Senior-Adapted Fitness</h4><p>Our gyms are specially designed for senior citizens, featuring low-impact equipment, wide pathways for mobility aids, and trained staff on duty at all times. Every program is medically reviewed and adapted for common senior health conditions.</p></div>
-    <div class="info-card"><h4>Available Programs</h4>${['Aqua Aerobics','Tai Chi & Qi Gong','Strength & Balance Training','Chair Yoga','Nordic Walking','Cycling (Stationary)','Stretching & Flexibility','Dance Fitness (Low Impact)','Senior Pilates','Functional Fitness'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#1a6b4a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>`,
-    schedule:`
-    ${[['6:00 AM','Aqua Aerobics','Mon/Wed/Fri','Coach Manny'],['7:00 AM','Tai Chi','Daily','Master Leo'],['8:00 AM','Chair Yoga','Tue/Thu/Sat','Yogi Dana'],['9:00 AM','Strength Training','Mon/Wed','Coach Ben'],['10:00 AM','Nordic Walking','Weekends','Guide Rosa'],['3:00 PM','Dance Fitness','Fri','Instructor Tess'],['4:00 PM','Stretching','Daily','Trainer Jun'],].map(([time,name,days,trainer])=>`
-    <div class="schedule-card"><div class="time-badge"><div class="time">${time}</div><div class="day">${days}</div></div>
-    <div class="sc-info"><h5>${name}</h5><div class="trainer-chip">👤 ${trainer}</div></div></div>`).join('')}
-    <button class="cta-btn" onclick="showToast('Opening schedule booking...')">Book a Session</button>`,
-    trainers:`<div class="info-card"><h4>Our Senior Fitness Coaches</h4>${[['Coach Manny Cruz','Aqua & Pool Specialist, 15 yrs exp'],['Master Leo Tan','Certified Tai Chi & Qi Gong'],['Yogi Dana Reyes','200-hr Certified Yoga Teacher'],['Coach Ben Lim','Physical Therapist & Trainer'],['Trainer Jun Santos','Geriatric Fitness Specialist'],['Guide Rosa Flores','Certified Walking Coach']].map(([n,r])=>`<div class="benefit-item"><div class="check" style="background:#dce8f5;font-size:12px;">👤</div><div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${r}</span></p></div></div>`).join('')}</div>`,
-    locations:`<div class="info-card"><h4>6 Branches Near You</h4>${[['Quezon City (Main)','Timog Ave, Diliman · 5:30AM–9PM'],['BGC, Taguig','B2 Bonifacio High St · 6AM–8PM'],['Ortigas, Pasig','Meralco Ave · 6AM–8PM'],['Makati CBD','Gil Puyat Ave · 6AM–8PM'],['Marikina','Marikina Sports Center · 6AM–6PM'],['Mandaluyong','Shaw Blvd · 7AM–7PM'],].map(([loc,addr])=>`<div class="benefit-item"><div class="check" style="font-size:14px;">📍</div><p><strong>${loc}</strong><br><span style="font-size:11px;color:var(--text-muted)">${addr}</span></p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Opening map...')">Get Directions</button>`
-  },
-  wellness: {
-    emoji:'🧘', title:'Wellness Programs', subtitle:'Holistic care for mind, body & spirit', bgColor:'linear-gradient(135deg,#7c5cbf,#3b82c4)',
-    tabs:['Overview','Programs','Schedule','Book'],
-    overview:`<div class="info-card"><h4>Holistic Senior Wellness</h4><p>Our Wellness division offers a comprehensive suite of mind-body programs, therapeutic services, and mental health support crafted for the unique needs of Filipino seniors. From traditional hilot to modern mindfulness, we honor both heritage and science.</p></div>
-    <div class="info-card"><h4>Wellness Categories</h4>${['Mental Health & Mindfulness','Traditional Filipino Healing (Hilot)','Massage Therapy','Occupational Therapy','Music & Art Therapy','Laughter Yoga','Horticultural Therapy (Gardening)','Social Connection Programs','Memory & Cognitive Training','Spiritual Wellness (Multi-faith)'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#7c5cbf" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>`,
-    programs:`${[['🧘','Laughter Yoga','Every Saturday 8 AM','NEW – Proven immune booster'],['💆','Swedish Massage','By appointment','60-min therapeutic session'],['🎨','Art Therapy','Tuesday 2 PM','Express, create, heal'],['🎵','Music Therapy','Thursday 3 PM','Sing, move, remember'],['🌿','Hilot Session','By appointment','Traditional Filipino healing'],['🧠','Memory Training','Wednesday 10 AM','Brain games & exercises'],['🌸','Flower Arranging','Friday 2 PM','Therapeutic ikebana class'],['🙏','Meditation Circle','Daily 7 AM','20-min guided session'],].map(([e,n,t,d])=>`<div class="schedule-card"><div class="time-badge"><div class="time" style="font-size:20px">${e}</div><div class="day">${t}</div></div><div class="sc-info"><h5>${n}</h5><p style="font-size:11px;color:var(--text-muted)">${d}</p></div></div>`).join('')}
-    <button class="cta-btn" onclick="showToast('Opening wellness booking...')">Book a Wellness Session</button>`,
-    schedule:`<div class="info-card"><h4>Weekly Wellness Calendar</h4>${['Mon: Meditation 7AM, Occupational Therapy 10AM','Tue: Art Therapy 2PM, Hilot by appt','Wed: Memory Training 10AM, Music Therapy 3PM','Thu: Laughter Yoga 8AM, Massage by appt','Fri: Flower Arranging 2PM, Meditation 7AM','Sat: Laughter Yoga 8AM (NEW!), Group Yoga 4PM','Sun: Nature Walk & Mindfulness 7AM'].map(d=>`<div class="benefit-item"><div class="check" style="font-size:11px;">📅</div><p>${d}</p></div>`).join('')}</div>`,
-    book:`<div class="info-card"><h4>How to Book</h4><p style="margin-bottom:12px">Booking is easy and takes less than a minute!</p>${['Choose your preferred service above','Select your preferred date and time','Confirm your booking — get instant SMS','Arrive 10 mins early for check-in','Rate your experience after the session'].map((s,i)=>`<div class="benefit-item"><div class="check" style="background:#ede8f5;color:#7c5cbf;font-weight:700;font-size:11px">${i+1}</div><p>${s}</p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Opening wellness booking...')">Start Booking Now</button>`
-  },
-  nutrition: {
-    emoji:'🥗', title:'Nutrition & Diet', subtitle:'Personalized plans by certified dietitians', bgColor:'linear-gradient(135deg,#d4891a,#e8614d)',
-    tabs:['Overview','Meal Plans','Consultations','Recipes'],
-    overview:`<div class="info-card"><h4>Senior Nutrition Program</h4><p>Our team of Registered Nutritionist-Dietitians (RNDs) creates personalized meal plans specifically designed for the metabolic and health needs of Filipino seniors. We consider your medical conditions, food preferences, cultural traditions, and budget.</p></div>
-    <div class="info-card"><h4>Program Includes</h4>${['Personalized 30-day meal plan','Monthly 1-on-1 consultation','Grocery list & tips (local markets)','Recipes adapted for Filipino taste','Supplement guidance','Condition-specific plans (diabetes, hypertension, gout, osteoporosis)','Weight management support','Food allergy accommodation'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#d4891a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>`,
-    mealplans:`${[['🍳','Heart-Healthy Plan','For hypertension','₱450/mo'],['🩸','Diabetic-Friendly','Low glycemic index','₱450/mo'],['🦴','Bone & Joint Health','High calcium, anti-inflammatory','₱450/mo'],['⚖️','Weight Management','Calorie-controlled, satisfying','₱450/mo'],['🧠','Brain Health Diet','MIND diet protocol','₱450/mo'],['🏃','Active Senior Diet','For gym-going members','₱380/mo'],].map(([e,n,d,p])=>`<div class="feat-card" style="margin: 8px 18px; min-width:0;" onclick="showToast('Opening ${n}...')"><div class="fc-img" style="background:linear-gradient(135deg,#fef3dc,#fde8ea);height:70px;font-size:30px">${e}</div><div class="fc-body"><h4>${n}</h4><p>${d}</p><div class="price">${p}</div></div></div>`).join('')}
-    <button class="cta-btn" onclick="showToast('Starting meal plan enrollment...')">Get My Personalized Plan</button>`,
-    consultations:`<div class="info-card"><h4>Meet Our Nutritionist-Dietitians</h4>${[['Nutri. Bea Reyes','Specializes in geriatric nutrition & chronic disease management'],['RND Marco Lim','Expert in diabetes & metabolic syndrome diet'],['RND Joy Villanueva','Renal diet, weight management specialist'],].map(([n,r])=>`<div class="benefit-item"><div class="check" style="background:#fef3dc;font-size:14px">🥗</div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${r}</span></p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Booking nutrition consultation...')">Book a Consultation</button>`,
-    recipes:`<div class="info-card"><h4>Featured Senior-Friendly Recipes</h4>${[['Low-Sodium Sinigang sa Miso','30 min · Heart-healthy'],['Arroz Caldo (Low-fat)','45 min · Easy to swallow'],['Tinolang Manok (Light)','40 min · High protein'],['Pinakbet (Senior)','25 min · High fiber'],['Champorado (Oatmeal ver.)','15 min · Diabetes-friendly'],['Mongo Soup','35 min · High iron'],].map(([n,d])=>`<div class="benefit-item"><div class="check" style="font-size:14px">🍲</div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d}</span></p></div>`).join('')}</div>`
-  },
-  platform: {
-    emoji:'📱', title:'Digital Platform', subtitle:'Smart tools for your senior wellness journey', bgColor:'linear-gradient(135deg,#0d9488,#0284c7)',
-    tabs:['Overview','Tools','Telehealth','Family Portal'],
-    overview:`<div class="info-card"><h4>Your Digital Senior Hub</h4><p>The Malasakit Digital Platform brings all your health and wellness tools into one accessible place. Designed with seniors in mind — large text, simple navigation, and Filipino-language support throughout.</p></div>
-    <div class="info-card"><h4>Platform Features</h4>${['Health vitals tracker (BP, sugar, weight)','Medication reminder & tracker','Appointment booking & management','Telehealth video consultations','Digital health records & reports','Emergency SOS one-tap button','Family caregiver dashboard access','Reward points management','Service bookings & scheduling','AI-powered health insights'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#0d9488" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>`,
-    tools:`${[['📊','Health Dashboard','Track BP, blood sugar, weight daily'],['💊','Meds Reminder','Never miss a dose again'],['📅','Appointment Book','All schedules in one place'],['🆘','Emergency SOS','One tap connects to family & 911'],['📋','My Health Records','Store all your medical documents'],['🏆','Rewards Center','Earn & redeem your points'],].map(([e,n,d])=>`<div class="schedule-card" onclick="showToast('Opening ${n}...')"><div class="time-badge" style="font-size:24px;background:#dcf0ee;border-radius:12px;padding:10px">${e}</div><div class="sc-info"><h5>${n}</h5><p style="font-size:11px;color:var(--text-muted)">${d}</p></div></div>`).join('')}`,
-    telehealth:`<div class="info-card"><h4>Telehealth Services</h4><p style="margin-bottom:12px">Consult with doctors from home — no travel needed!</p>${['Video consultation with GP, internist, cardiologist','24/7 nurse hotline for non-emergency concerns','E-prescription sent directly to your pharmacy','Lab result review & interpretation','Follow-up consultations at reduced cost','Mental health counseling available'].map(b=>`<div class="benefit-item"><div class="check"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#0d9488" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Starting video consultation...')">Start Telehealth Consult</button>`,
-    familyportal:`<div class="info-card"><h4>Family Caregiver Portal</h4><p style="margin-bottom:12px">Invite family members to monitor and support your health remotely.</p>${['Real-time health vitals sharing','Activity & medication alerts','Location check-in for safety','Appointment reminders sent to family','Emergency contact escalation system','Monthly wellness report for family'].map(b=>`<div class="benefit-item"><div class="check" style="background:#dcf0ee;"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#0d9488" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p>${b}</p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Sending family invite...')">Invite Family Member</button>`
-  },
-  discounts: {
-    emoji:'🏷️', title:'Senior Discounts', subtitle:'20% government discount + exclusive partner deals', bgColor:'linear-gradient(135deg,#d6506a,#f5a623)',
-    tabs:['All Partners','Pharmacy','Food & Dining','Transport'],
-    overview:'',
-    all:`<div class="info-card" style="margin-bottom:8px"><h4>Your Discount Benefits</h4><p>As a Malasakit member, you enjoy the mandatory 20% Senior Citizens discount PLUS additional exclusive discounts from our 50+ partner merchants. Just show your Malasakit card or scan the QR code!</p></div>
-    <div class="discount-grid" style="padding:0 18px 12px">${[
-      ['💊','Mercury Drug','20%','Pharmacy','#fde8ea'],['🏥','Medicard','15%','Health Insurance','#dce8f5'],
-      ['🍽️','Jollibee','10%','Restaurant','#fef3dc'],['🛒','SM Supermarket','5%','Grocery','#e8f5ee'],
-      ['✈️','Philippine Airlines','20%','Airlines','#ede8f5'],['🚌','Beep/LRT/MRT','50%','Transport','#dcf0ee'],
-      ['🏨','RedDoorz Hotels','25%','Accommodation','#fde8ea'],['📚','National Bookstore','10%','Books','#fef3dc'],
-      ['👓','Ideal Vision','15%','Optical','#dce8f5'],['💈','David Salon','15%','Personal Care','#ede8f5'],
-      ['🍕','Greenwich Pizza','10%','Restaurant','#fef3dc'],['🧴','Watsons','10%','Health & Beauty','#e8f5ee'],
-      ['🏦','BDO Bank','Fee waiver','Banking','#dcf0ee'],['🥩','Conti's Bakeshop','10%','Bakery','#fde8ea'],
-      ['🚑','Healthway Clinic','20%','Medical','#dce8f5'],['🎭','CCP Events','50%','Culture','#ede8f5'],
-    ].map(([e,n,d,c,bg])=>`<div class="disc-card" onclick="showToast('Showing ${n} discount QR')"><div class="dc-img" style="background:${bg}">${e}</div><div class="dc-body"><h5>${n}</h5><p>${c}</p><div class="disc-pct">${d} OFF</div></div></div>`).join('')}</div>`,
-    pharmacy:`<div class="info-card"><h4>Pharmacy Partners</h4>${[['💊','Mercury Drug','20% on all items'],['🧴','Watsons','10% health products'],['💉','Rose Pharmacy','15% generics'],['🏥','BRT Pharmacy','15% all medicines'],['🌿','TGP Pharmacy','10% all items'],].map(([e,n,d])=>`<div class="benefit-item"><div class="check" style="font-size:16px">${e}</div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d}</span></p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Showing pharmacy QR code...')">Show Discount QR Code</button>`,
-    food:`<div class="info-card"><h4>Food & Dining Partners</h4>${[['🍽️','Jollibee','10% dine-in & takeout'],['🍕','Greenwich Pizza','10% all orders'],['🥩','Conti\'s Bakeshop','10% pastries & meals'],['☕','Coffee Bean','10% all beverages'],['🍱','Max\'s Restaurant','10% dine-in'],['🥡','Chowking','10% all meals'],].map(([e,n,d])=>`<div class="benefit-item"><div class="check" style="font-size:16px">${e}</div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d}</span></p></div>`).join('')}</div>`,
-    transport:`<div class="info-card"><h4>Transport Discounts</h4>${[['🚌','LRT/MRT/Beep Card','50% fare discount'],['✈️','Philippine Airlines','20% domestic flights'],['✈️','Cebu Pacific','20% seat sale eligible'],['🚗','Grab','₱50 off senior rides'],['🏨','Bus Lines (PITX)','20% intercity buses'],].map(([e,n,d])=>`<div class="benefit-item"><div class="check" style="font-size:16px">${e}</div><p><strong>${n}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d}</span></p></div>`).join('')}</div>
-    <button class="cta-btn" onclick="showToast('Showing transport QR code...')">Show Transport Pass</button>`
-  }
-};
-
-// ============================================================
-//  INIT RENDER
-// ============================================================
-function renderFeatured() {
-  const c = document.getElementById('featuredScroll');
-  c.innerHTML = featuredPrograms.map(p=>`
-    <div class="feat-card" onclick="showToast('Opening ${p.title}...')">
-      <div class="fc-img" style="background:${p.color}">${p.emoji}${p.badge?`<div class="fc-badge">${p.badge}</div>`:''}</div>
-      <div class="fc-body"><h4>${p.title}</h4><p>${p.cat}</p><div class="price">${p.price}</div></div>
-    </div>`).join('');
-}
-
-function renderDiscountPreview() {
-  const c = document.getElementById('discountPreview');
-  c.innerHTML = discountMerchants.map(d=>`
-    <div class="disc-card" onclick="showToast('Showing ${d.name} QR code')">
-      <div class="dc-img" style="background:${d.color}">${d.emoji}</div>
-      <div class="dc-body"><h5>${d.name}</h5><p>${d.cat}</p><div class="disc-pct">${d.pct} OFF</div></div>
-    </div>`).join('');
-}
-
-function renderMessages() {
-  const c = document.getElementById('msgContainer');
-  c.innerHTML = messages.map(m=>`
-    <div class="msg-item ${m.unread?'unread':''}" onclick="openChat(${m.id})" data-category="${m.category}">
-      <div class="msg-avatar c-${m.color==='#1a6b4a'?'green':m.color==='#3b82c4'?'blue':m.color==='#d4891a'?'amber':m.color==='#7c5cbf'?'violet':m.color==='#0d9488'?'teal':m.color==='#e8614d'?'coral':m.color==='#d6506a'?'rose':'green'}" style="background:${m.color}">${m.avatar}</div>
-      <div class="msg-content">
-        <div class="msg-top"><div class="msg-name">${m.name}</div><div class="msg-time">${m.time}</div></div>
-        <div class="msg-preview">${m.preview}</div>
-      </div>
-      ${m.unread?'<div class="unread-dot"></div>':''}
-    </div>`).join('');
-}
-
-function renderReports() {
-  document.getElementById('reportSummary').innerHTML = reportSummaryData.map(r=>`
-    <div class="rs-card"><div class="rs-icon">${r.icon}</div><div class="rs-val">${r.val}</div><div class="rs-label">${r.label}</div><div class="rs-change">↑ ${r.change}</div></div>`).join('');
-
-  document.getElementById('barChart').innerHTML = bars.map(b=>`
-    <div class="bar-wrap"><div class="bar ${b.hi?'highlight':''}" style="height:${b.h}%"></div><div class="bar-label">${b.label}</div></div>`).join('');
-
-  document.getElementById('progressSection').innerHTML = goals.map(g=>`
-    <div class="prog-item"><div class="prog-label"><span>${g.label}</span><span>${g.pct}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${g.pct}%"></div></div></div>`).join('');
-
-  document.getElementById('activityList').innerHTML = activities.map(a=>`
-    <div class="activity-item"><div class="act-icon ${a.iconBg}">${a.icon}</div><div class="act-info"><h5>${a.name}</h5><p>${a.sub}</p></div><div class="act-value">${a.value}</div></div>`).join('');
-}
-
-// ============================================================
-//  NAVIGATION
-// ============================================================
-function setActiveTab(tab) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+tab).classList.add('active');
-  document.getElementById('nav-'+tab).classList.add('active');
-  document.getElementById('mainScroll').scrollTop = 0;
-  // hide detail if open
-  document.getElementById('detailOverlay').style.display = 'none';
-}
-
-// ============================================================
-//  SERVICE DETAIL
-// ============================================================
-function openServiceDetail(key) {
-  const s = serviceDetails[key];
-  if (!s) return;
-  const tabKeys = Object.keys(s).filter(k=>!['emoji','title','subtitle','bgColor','tabs'].includes(k));
-  const overlay = document.getElementById('detailOverlay');
-  overlay.style.display = 'flex';
-  const firstTabKey = s.tabs[0].toLowerCase().replace(/[^a-z]/g,'');
-  document.getElementById('detailScrollArea').innerHTML = `
-    <div class="detail-hero" style="background:${s.bgColor}">
-      <div style="font-size:72px;z-index:1">${s.emoji}</div>
-      <div class="detail-hero-overlay"></div>
-      <button class="back-btn" onclick="closeDetail()">
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      </button>
-      <div class="detail-hero-content"><h1>${s.title}</h1><p>${s.subtitle}</p></div>
+function RegistrationPage({onComplete}){
+  const[step,setStep]=useState(1);
+  const[errors,setErrors]=useState({});
+  const[form,setForm]=useState({firstName:"",lastName:"",dob:"",province:"",city:"",barangay:"",street:"",mobile:"",praId:"",seniorId:"",email:"",password:"",confirmPassword:""});
+  const set=(key,val)=>{setForm(f=>({...f,[key]:val}));if(errors[key])setErrors(e=>({...e,[key]:""}));};
+  const validateStep1=()=>{const e={};if(!form.firstName.trim())e.firstName="First name is required.";if(!form.lastName.trim())e.lastName="Last name is required.";if(!form.dob){e.dob="Date of birth is required.";}else{const age=Math.floor((Date.now()-new Date(form.dob))/(1000*60*60*24*365.25));if(age<60)e.dob=`You must be at least 60 years old. Calculated age: ${age}.`;}if(!form.province.trim())e.province="Province is required.";if(!form.city.trim())e.city="City/Municipality is required.";if(!form.mobile.trim())e.mobile="Mobile number is required.";else if(!/^(09|\+639)\d{9}$/.test(form.mobile.replace(/\s/g,"")))e.mobile="Enter a valid Philippine mobile number (e.g. 09171234567).";setErrors(e);return Object.keys(e).length===0;};
+  const validateStep2=()=>{const e={};if(!form.praId.trim())e.praId="PRA ID Number is required.";else if(form.praId.trim().length<6)e.praId="PRA ID must be at least 6 characters.";setErrors(e);return Object.keys(e).length===0;};
+  const validateStep3=()=>{const e={};if(!form.email.trim())e.email="Email is required.";else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))e.email="Enter a valid email address.";if(!form.password)e.password="Password is required.";else if(form.password.length<8)e.password="Password must be at least 8 characters.";if(form.password!==form.confirmPassword)e.confirmPassword="Passwords do not match.";setErrors(e);return Object.keys(e).length===0;};
+  const nextStep=()=>{let valid=false;if(step===1)valid=validateStep1();if(step===2)valid=validateStep2();if(step===3){valid=validateStep3();if(valid){const age=Math.floor((Date.now()-new Date(form.dob))/(1000*60*60*24*365.25));onComplete({...form,age,praId:form.praId.trim().toUpperCase()});return;}}if(valid)setStep(s=>s+1);};
+  const STEPS=["Personal Details","PRA Information","Account Setup"];
+  return(<div style={{minHeight:"100vh",background:C.gray100,display:"flex",flexDirection:"column"}}>
+    <div style={{background:C.navy,padding:"20px 24px",display:"flex",alignItems:"center",gap:16}}>
+      <div style={{background:C.orange,borderRadius:10,padding:"8px 12px",fontWeight:800,fontSize:16,color:"white",letterSpacing:1}}>PRA</div>
+      <div><div style={{color:"white",fontWeight:700,fontSize:17}}>Philippine Retirement Authority</div><div style={{color:"rgba(255,255,255,0.6)",fontSize:13}}>Senior Benefits Platform</div></div>
     </div>
-    <div class="detail-tabs" id="detailTabBar">
-      ${s.tabs.map((t,i)=>`<div class="d-tab ${i===0?'active':''}" onclick="switchDetailTab(this,'dtab${i}')">${t}</div>`).join('')}
+    <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"32px 16px 48px"}}>
+      <div style={{width:"100%",maxWidth:560}} className="fade-in">
+        <div className="card" style={{padding:"28px 28px 0",marginBottom:24}}>
+          <div style={{marginBottom:20}}>
+            <div style={{fontSize:24,fontWeight:700,color:C.navy,marginBottom:4,fontFamily:"'Libre Baskerville',serif"}}>{step===1?"Personal Details":step===2?"PRA Information":"Account Setup"}</div>
+            <div style={{color:C.gray600,fontSize:16}}>Step {step} of 3 — {STEPS[step-1]}</div>
+          </div>
+          <ProgressBar step={step} total={3}/>
+          <div style={{display:"flex",justifyContent:"space-between",marginTop:10,paddingBottom:20}}>
+            {STEPS.map((s,i)=>(<div key={i} style={{fontSize:13,fontWeight:i+1<=step?700:400,color:i+1<=step?C.orange:C.gray400}}>{s}</div>))}
+          </div>
+        </div>
+        {step===1&&(<div className="card fade-in" style={{padding:28}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+            <div><label className="form-label">First Name</label><input className={`form-input${errors.firstName?" error":""}`} value={form.firstName} onChange={e=>set("firstName",e.target.value)} placeholder="e.g. Maria"/>{errors.firstName&&<div className="form-error">⚠ {errors.firstName}</div>}</div>
+            <div><label className="form-label">Last Name</label><input className={`form-input${errors.lastName?" error":""}`} value={form.lastName} onChange={e=>set("lastName",e.target.value)} placeholder="e.g. Santos"/>{errors.lastName&&<div className="form-error">⚠ {errors.lastName}</div>}</div>
+          </div>
+          <div style={{marginBottom:16}}><label className="form-label">Date of Birth</label><input type="date" className={`form-input${errors.dob?" error":""}`} value={form.dob} onChange={e=>set("dob",e.target.value)} max={new Date(Date.now()-60*365.25*24*60*60*1000).toISOString().split("T")[0]}/><div className="form-hint">You must be at least 60 years old to register.</div>{errors.dob&&<div className="form-error">⚠ {errors.dob}</div>}</div>
+          <div style={{marginBottom:16}}><label className="form-label">Province</label><input className={`form-input${errors.province?" error":""}`} value={form.province} onChange={e=>set("province",e.target.value)} placeholder="e.g. Metro Manila"/>{errors.province&&<div className="form-error">⚠ {errors.province}</div>}</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+            <div><label className="form-label">City / Municipality</label><input className={`form-input${errors.city?" error":""}`} value={form.city} onChange={e=>set("city",e.target.value)} placeholder="e.g. Makati City"/>{errors.city&&<div className="form-error">⚠ {errors.city}</div>}</div>
+            <div><label className="form-label">Barangay</label><input className="form-input" value={form.barangay} onChange={e=>set("barangay",e.target.value)} placeholder="e.g. Bel-Air"/></div>
+          </div>
+          <div style={{marginBottom:16}}><label className="form-label">Street Address</label><input className="form-input" value={form.street} onChange={e=>set("street",e.target.value)} placeholder="House No., Street Name (optional)"/></div>
+          <div style={{marginBottom:8}}><label className="form-label">Mobile Number</label><input className={`form-input${errors.mobile?" error":""}`} value={form.mobile} onChange={e=>set("mobile",e.target.value)} placeholder="09171234567" maxLength={13}/><div className="form-hint">Philippine mobile number format: 09XXXXXXXXX</div>{errors.mobile&&<div className="form-error">⚠ {errors.mobile}</div>}</div>
+        </div>)}
+        {step===2&&(<div className="card fade-in" style={{padding:28}}>
+          <div style={{background:C.orangePale,border:`1px solid ${C.orange}`,borderRadius:12,padding:16,marginBottom:24,display:"flex",gap:12,alignItems:"flex-start"}}><span style={{fontSize:22}}>ℹ️</span><div style={{fontSize:15,color:C.gray700,lineHeight:1.6}}>Your <strong>PRA ID</strong> or <strong>Senior Citizen ID Number</strong> can be found on your OSCA-issued identification card or PRA membership certificate.</div></div>
+          <div style={{marginBottom:20}}><label className="form-label">PRA ID Number *</label><input className={`form-input${errors.praId?" error":""}`} value={form.praId} onChange={e=>set("praId",e.target.value)} placeholder="e.g. SRRV-2024-123456"/><div className="form-hint">Enter the ID number exactly as it appears on your PRA card.</div>{errors.praId&&<div className="form-error">⚠ {errors.praId}</div>}</div>
+          <div style={{marginBottom:8}}><label className="form-label">Senior Citizen ID Number (Optional)</label><input className="form-input" value={form.seniorId} onChange={e=>set("seniorId",e.target.value)} placeholder="e.g. OSCA-01-2024-456789"/><div className="form-hint">If you have a separate OSCA / Senior Citizen ID, enter it here for additional discounts.</div></div>
+        </div>)}
+        {step===3&&(<div className="card fade-in" style={{padding:28}}>
+          <div style={{marginBottom:20}}><label className="form-label">Email Address</label><input type="email" className={`form-input${errors.email?" error":""}`} value={form.email} onChange={e=>set("email",e.target.value)} placeholder="yourname@email.com"/><div className="form-hint">You will use this email to log in to your PRA account.</div>{errors.email&&<div className="form-error">⚠ {errors.email}</div>}</div>
+          <div style={{marginBottom:20}}><label className="form-label">Password</label><input type="password" className={`form-input${errors.password?" error":""}`} value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 8 characters"/><div className="form-hint">Choose a password you can remember. Minimum 8 characters.</div>{errors.password&&<div className="form-error">⚠ {errors.password}</div>}</div>
+          <div style={{marginBottom:8}}><label className="form-label">Confirm Password</label><input type="password" className={`form-input${errors.confirmPassword?" error":""}`} value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)} placeholder="Re-enter your password"/>{errors.confirmPassword&&<div className="form-error">⚠ {errors.confirmPassword}</div>}</div>
+          <div style={{background:C.gray50,borderRadius:12,padding:16,marginTop:20,fontSize:14,color:C.gray600,lineHeight:1.7}}>By completing registration, you agree to the <span style={{color:C.orange,fontWeight:700}}>PRA Terms & Conditions</span> and confirm that all information provided is true and accurate.</div>
+        </div>)}
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:24,gap:12}}>
+          {step>1?(<button className="btn-secondary" onClick={()=>setStep(s=>s-1)} style={{minWidth:120}}>← Back</button>):(<div/>)}
+          <button className="btn-primary" onClick={nextStep} style={{minWidth:200,flex:step===1?1:"auto"}}>{step<3?"Continue →":"✅ Complete Registration"}</button>
+        </div>
+      </div>
     </div>
-    ${s.tabs.map((t,i)=>{
-      const tkey = t.toLowerCase().replace(/[^a-z]/g,'');
-      const content = s[tkey] || s[Object.keys(s).find(k=>!['emoji','title','subtitle','bgColor','tabs'].includes(k) && i===s.tabs.indexOf(t))] || '<div class="info-card"><p>Content coming soon.</p></div>';
-      return `<div class="d-tab-content ${i===0?'active':''}" id="dtab${i}">${content}</div>`;
-    }).join('')}
-  `;
-  document.getElementById('detailScrollArea').scrollTop = 0;
+  </div>);
 }
 
-function closeDetail() {
-  document.getElementById('detailOverlay').style.display = 'none';
+function Dashboard({member,onNavigate}){
+  const quickLinks=[{label:"Health & Wellness",icon:"🏥",cat:"health",color:"#E8F4F8"},{label:"Travel & Hotels",icon:"✈️",cat:"travel",color:"#FFF3E0"},{label:"Food & Dining",icon:"🍽️",cat:"dining",color:"#F0FFF4"},{label:"Entertainment",icon:"🎬",cat:"entertainment",color:"#F3E8FF"}];
+  return(<div className="fade-in" style={{padding:"24px 20px"}}>
+    <div style={{background:`linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%)`,borderRadius:20,padding:"28px 28px 24px",color:"white",marginBottom:28,position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:-40,right:-20,width:180,height:180,borderRadius:"50%",background:"rgba(255,140,0,0.1)"}}/>
+      <div style={{fontSize:15,color:"rgba(255,255,255,0.65)",marginBottom:4}}>Good day, 👋</div>
+      <div style={{fontSize:30,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>{member.firstName} {member.lastName}</div>
+      <div style={{fontSize:15,color:"rgba(255,255,255,0.65)",marginBottom:20}}>PRA Member · Age {member.age} · {member.city}, {member.province}</div>
+      <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
+        <div style={{background:"rgba(255,255,255,0.1)",borderRadius:10,padding:"8px 16px"}}><div style={{fontSize:12,color:"rgba(255,255,255,0.6)"}}>Member Status</div><div style={{fontSize:15,fontWeight:700,color:C.orangeLight}}>✅ Active SRRV Holder</div></div>
+        <div style={{background:"rgba(255,255,255,0.1)",borderRadius:10,padding:"8px 16px"}}><div style={{fontSize:12,color:"rgba(255,255,255,0.6)"}}>Benefits Available</div><div style={{fontSize:15,fontWeight:700,color:"white"}}>{BENEFITS.length} Offers</div></div>
+      </div>
+    </div>
+    <div style={{marginBottom:28}}><div style={{fontSize:19,fontWeight:700,color:C.navy,marginBottom:16}}>Your Digital Benefits Card</div><PRACard member={member}/></div>
+    <div style={{marginBottom:8}}>
+      <div style={{fontSize:19,fontWeight:700,color:C.navy,marginBottom:16}}>Browse Benefits by Category</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+        {quickLinks.map(q=>(<button key={q.cat} onClick={()=>onNavigate("benefits",q.cat)} style={{background:q.color,border:"2px solid transparent",borderRadius:16,padding:"20px 16px",cursor:"pointer",textAlign:"left",transition:"all .2s",display:"flex",flexDirection:"column",gap:8}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.borderColor=C.orange;}} onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor="transparent";}}>
+          <span style={{fontSize:32}}>{q.icon}</span>
+          <span style={{fontSize:16,fontWeight:700,color:C.navy,lineHeight:1.2}}>{q.label}</span>
+          <span style={{fontSize:13,color:C.gray600}}>{BENEFITS.filter(b=>b.category===q.cat).length} offers</span>
+        </button>))}
+      </div>
+    </div>
+    <div style={{marginTop:28}}><button className="btn-primary" onClick={()=>onNavigate("benefits","all")} style={{width:"100%"}}>View All Benefits & Promos →</button></div>
+  </div>);
 }
 
-function switchDetailTab(el, targetId) {
-  document.querySelectorAll('.d-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.d-tab-content').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById(targetId).classList.add('active');
+function BenefitsHub({member,initialCategory="all",onPurchase}){
+  const[activeCategory,setActiveCategory]=useState(initialCategory);
+  const[claimedIds,setClaimedIds]=useState([]);
+  const[claimFeedback,setClaimFeedback]=useState(null);
+  const filtered=activeCategory==="all"?BENEFITS:BENEFITS.filter(b=>b.category===activeCategory);
+  const handleClaim=(item)=>{setClaimedIds(ids=>[...ids,item.id]);setClaimFeedback(item.partner);setTimeout(()=>setClaimFeedback(null),3000);};
+  return(<div className="fade-in" style={{padding:"24px 20px"}}>
+    <div style={{marginBottom:24}}><div style={{fontSize:26,fontWeight:700,color:C.navy,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Benefits & Promos Hub</div><div style={{color:C.gray600,fontSize:16}}>Exclusive offers for PRA Members</div></div>
+    {claimFeedback&&(<div style={{background:C.greenLight,border:`2px solid ${C.green}`,borderRadius:12,padding:"14px 18px",marginBottom:20,display:"flex",alignItems:"center",gap:10,animation:"fadeIn .3s ease"}}><span style={{fontSize:20}}>✅</span><div><strong style={{color:C.green,fontSize:16}}>Benefit Claimed!</strong><div style={{fontSize:14,color:C.gray700,marginTop:2}}>Show your PRA Senior Benefits Card at <strong>{claimFeedback}</strong> to avail this discount.</div></div></div>)}
+    <div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:4,marginBottom:24}}>
+      {CATEGORIES.map(c=>(<button key={c.id} onClick={()=>setActiveCategory(c.id)} style={{background:activeCategory===c.id?C.navy:"white",color:activeCategory===c.id?"white":C.gray600,border:`2px solid ${activeCategory===c.id?C.navy:C.gray200}`,borderRadius:10,padding:"10px 18px",fontSize:15,fontWeight:600,whiteSpace:"nowrap",transition:"all .2s",display:"flex",alignItems:"center",gap:6,minHeight:44}}><span>{c.icon}</span> {c.label}</button>))}
+    </div>
+    <div style={{display:"flex",flexDirection:"column",gap:18}}>
+      {filtered.map(item=>{
+        const finalPrice=calcFinal(item);
+        const claimed=claimedIds.includes(item.id);
+        return(<div key={item.id} className="card benefit-card" style={{overflow:"visible"}}>
+          <div style={{padding:"20px 22px"}}>
+            <div style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:14}}>
+              <div style={{width:52,height:52,borderRadius:14,background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>{item.icon}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:18,fontWeight:700,color:C.navy,lineHeight:1.3,marginBottom:2}}>{item.title}</div>
+                <div style={{fontSize:15,color:C.orange,fontWeight:600}}>{item.partner}</div>
+                <div style={{fontSize:13,color:C.gray400,marginTop:2}}>📍 {item.location}</div>
+              </div>
+            </div>
+            <span style={{background:C.orangePale,color:C.orange,fontSize:13,fontWeight:700,padding:"4px 10px",borderRadius:20,display:"inline-block",letterSpacing:.2}}>{item.tag}</span>
+            <div style={{marginTop:12,marginBottom:16,fontSize:15,color:C.gray700,lineHeight:1.65}}>{item.description}</div>
+            {item.originalPrice&&(<div style={{background:C.gray50,borderRadius:10,padding:"12px 16px",marginBottom:16}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:15,color:C.gray600}}>Original Price</span><span style={{fontSize:15,color:C.gray600,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span></div>
+              {item.discountPct&&(<div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:15,color:C.green}}>PRA Discount ({item.discountPct}%)</span><span style={{fontSize:15,color:C.green}}>−{fmt(item.originalPrice*item.discountPct/100)}</span></div>)}
+              <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.gray200}`,paddingTop:8,marginTop:4}}><span style={{fontSize:16,fontWeight:700,color:C.navy}}>Your Price</span><span style={{fontSize:18,fontWeight:800,color:C.orange}}>{item.fixedPrice?fmt(item.fixedPrice):fmt(finalPrice)}</span></div>
+            </div>)}
+            <div style={{fontSize:13,color:C.gray400,marginBottom:14}}>📅 {item.voucherValidity}</div>
+            {item.type==="purchase"?(<button className="btn-primary" style={{width:"100%"}} onClick={()=>onPurchase(item)}>🛒 Purchase / Secure Voucher</button>):(<button className="btn-claim" style={{width:"100%",background:claimed?C.greenLight:undefined,opacity:claimed?.8:1}} onClick={()=>!claimed&&handleClaim(item)}>{claimed?"✅ Benefit Claimed":"✋ Claim This Benefit"}</button>)}
+          </div>
+        </div>);
+      })}
+    </div>
+  </div>);
 }
 
-// ============================================================
-//  MESSAGING
-// ============================================================
-let currentMsgFilter = 'all';
-
-function setMsgFilter(filter, el) {
-  currentMsgFilter = filter;
-  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  const items = document.querySelectorAll('.msg-item');
-  items.forEach(item=>{
-    if (filter === 'all') item.style.display = 'flex';
-    else item.style.display = item.dataset.category === filter ? 'flex' : 'none';
-  });
+function CheckoutPage({item,member,onSuccess,onBack}){
+  const[payMethod,setPayMethod]=useState(null);
+  const[cardNum,setCardNum]=useState("");
+  const[cardName,setCardName]=useState("");
+  const[cardExp,setCardExp]=useState("");
+  const[cardCvv,setCardCvv]=useState("");
+  const[otpInput,setOtpInput]=useState("");
+  const[otpSent,setOtpSent]=useState(false);
+  const[processing,setProcessing]=useState(false);
+  const[otpError,setOtpError]=useState("");
+  const[errors,setErrors]=useState({});
+  const finalPrice=calcFinal(item)||item.originalPrice;
+  const discount=item.originalPrice?item.originalPrice-finalPrice:0;
+  const handlePay=()=>{const e={};if(!payMethod){alert("Please select a payment method.");return;}if((payMethod==="gcash"||payMethod==="maya")&&!otpSent){alert("Please request and enter your OTP first.");return;}if((payMethod==="gcash"||payMethod==="maya")&&otpInput!=="123456"){setOtpError("Incorrect OTP. For this demo, use: 123456");return;}if(payMethod==="card"){if(!cardNum||cardNum.replace(/\s/g,"").length<12)e.cardNum="Enter a valid card number.";if(!cardName.trim())e.cardName="Cardholder name is required.";if(!cardExp)e.cardExp="Expiry date is required.";if(!cardCvv||cardCvv.length<3)e.cardCvv="Enter a valid CVV.";}if(Object.keys(e).length>0){setErrors(e);return;}setProcessing(true);setTimeout(()=>{setProcessing(false);onSuccess({item,payMethod,voucher:genVoucher(),amount:finalPrice});},2500);};
+  const fmtCardNum=val=>val.replace(/\D/g,"").slice(0,16).replace(/(.{4})/g,"$1 ").trim();
+  return(<div className="fade-in" style={{padding:"24px 20px"}}>
+    <button onClick={onBack} style={{background:"none",border:"none",color:C.navyMid,fontSize:16,fontWeight:700,marginBottom:20,display:"flex",alignItems:"center",gap:6,padding:0}}>← Back to Benefits</button>
+    <div style={{fontSize:22,fontWeight:700,color:C.navy,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Secure Your Voucher</div>
+    <div style={{color:C.gray600,fontSize:15,marginBottom:24}}>Review your order and complete payment below.</div>
+    <div className="card" style={{padding:"20px 22px",marginBottom:20}}>
+      <div style={{fontSize:17,fontWeight:700,color:C.navy,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${C.gray200}`}}>Order Summary</div>
+      <div style={{display:"flex",gap:12,marginBottom:16}}>
+        <div style={{width:44,height:44,borderRadius:10,background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{item.icon}</div>
+        <div><div style={{fontSize:16,fontWeight:700,color:C.navy}}>{item.title}</div><div style={{fontSize:14,color:C.orange,fontWeight:600}}>{item.partner}</div></div>
+      </div>
+      <div style={{background:C.gray50,borderRadius:10,padding:"14px 16px"}}>
+        {item.originalPrice&&(<div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:15,color:C.gray600}}>Original Price</span><span style={{fontSize:15,color:C.gray600,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span></div>)}
+        {discount>0&&(<div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:15,color:C.green,fontWeight:600}}>PRA Discount {item.discountPct?`(${item.discountPct}%)`:""}</span><span style={{fontSize:15,color:C.green,fontWeight:600}}>−{fmt(discount)}</span></div>)}
+        <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.gray200}`,paddingTop:10,marginTop:4}}><span style={{fontSize:17,fontWeight:800,color:C.navy}}>Total Amount</span><span style={{fontSize:20,fontWeight:800,color:C.orange}}>{fmt(finalPrice)}</span></div>
+      </div>
+    </div>
+    <div className="card" style={{padding:"20px 22px",marginBottom:20}}>
+      <div style={{fontSize:17,fontWeight:700,color:C.navy,marginBottom:16}}>Select Payment Method</div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {[{id:"gcash",label:"GCash",desc:"Pay via GCash wallet",emoji:"💚",color:"#E8F5E9"},{id:"maya",label:"Maya",desc:"Pay via Maya e-wallet",emoji:"💜",color:"#F3E5F5"},{id:"card",label:"Credit / Debit Card",desc:"Visa, Mastercard, JCB",emoji:"💳",color:"#E3F2FD"}].map(pm=>(<div key={pm.id} className={`payment-option${payMethod===pm.id?" selected":""}`} onClick={()=>{setPayMethod(pm.id);setOtpSent(false);setOtpInput("");setOtpError("");}} style={{border:`2px solid ${payMethod===pm.id?C.orange:C.gray200}`,borderRadius:14,padding:"16px 18px",display:"flex",alignItems:"center",gap:14,background:payMethod===pm.id?C.orangePale:"white"}}>
+          <div style={{width:44,height:44,borderRadius:10,background:pm.color,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{pm.emoji}</div>
+          <div style={{flex:1}}><div style={{fontSize:17,fontWeight:700,color:C.navy}}>{pm.label}</div><div style={{fontSize:14,color:C.gray600}}>{pm.desc}</div></div>
+          <div style={{width:22,height:22,borderRadius:"50%",border:`2px solid ${payMethod===pm.id?C.orange:C.gray400}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{payMethod===pm.id&&<div style={{width:10,height:10,borderRadius:"50%",background:C.orange}}/>}</div>
+        </div>))}
+      </div>
+    </div>
+    {(payMethod==="gcash"||payMethod==="maya")&&(<div className="card fade-in" style={{padding:"20px 22px",marginBottom:20}}>
+      <div style={{fontSize:17,fontWeight:700,color:C.navy,marginBottom:8}}>{payMethod==="gcash"?"GCash":"Maya"} Verification</div>
+      <div style={{fontSize:15,color:C.gray600,marginBottom:14}}>A 6-digit One-Time PIN will be sent to your registered mobile number <strong style={{color:C.navy}}>{member.mobile}</strong>.</div>
+      {!otpSent?(<button className="btn-primary" style={{width:"100%",background:payMethod==="gcash"?"#00B14F":"#6B21C6"}} onClick={()=>{setOtpSent(true);setOtpError("");}}>Send OTP to {member.mobile}</button>):(<>
+        <div style={{background:C.greenLight,border:`1px solid ${C.green}`,borderRadius:10,padding:12,marginBottom:16,fontSize:14,color:C.green,fontWeight:600}}>✅ OTP sent! For this demo, the code is: <strong>123456</strong></div>
+        <div><label className="form-label">Enter 6-Digit OTP</label><input className={`form-input${otpError?" error":""}`} value={otpInput} onChange={e=>{setOtpInput(e.target.value.replace(/\D/g,"").slice(0,6));setOtpError("");}} placeholder="• • • • • •" style={{fontSize:24,letterSpacing:8,textAlign:"center"}} maxLength={6}/>{otpError&&<div className="form-error">⚠ {otpError}</div>}</div>
+      </>)}
+    </div>)}
+    {payMethod==="card"&&(<div className="card fade-in" style={{padding:"20px 22px",marginBottom:20}}>
+      <div style={{fontSize:17,fontWeight:700,color:C.navy,marginBottom:16}}>Card Details</div>
+      <div style={{marginBottom:16}}><label className="form-label">Card Number</label><input className={`form-input${errors.cardNum?" error":""}`} value={cardNum} onChange={e=>setCardNum(fmtCardNum(e.target.value))} placeholder="1234 5678 9012 3456"/>{errors.cardNum&&<div className="form-error">⚠ {errors.cardNum}</div>}</div>
+      <div style={{marginBottom:16}}><label className="form-label">Cardholder Name</label><input className={`form-input${errors.cardName?" error":""}`} value={cardName} onChange={e=>setCardName(e.target.value)} placeholder="As printed on card"/>{errors.cardName&&<div className="form-error">⚠ {errors.cardName}</div>}</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+        <div><label className="form-label">Expiry Date</label><input type="month" className={`form-input${errors.cardExp?" error":""}`} value={cardExp} onChange={e=>setCardExp(e.target.value)}/>{errors.cardExp&&<div className="form-error">⚠ {errors.cardExp}</div>}</div>
+        <div><label className="form-label">CVV / CVC</label><input className={`form-input${errors.cardCvv?" error":""}`} value={cardCvv} onChange={e=>setCardCvv(e.target.value.replace(/\D/g,"").slice(0,4))} placeholder="• • •" style={{letterSpacing:4}}/>{errors.cardCvv&&<div className="form-error">⚠ {errors.cardCvv}</div>}</div>
+      </div>
+    </div>)}
+    <button className="btn-primary" style={{width:"100%",fontSize:20,padding:"18px 32px",minHeight:64}} onClick={handlePay} disabled={processing}>
+      {processing?(<><Spinner/> Processing Payment…</>):`🔒 Confirm Payment — ${fmt(finalPrice)}`}
+    </button>
+    <div style={{textAlign:"center",marginTop:14,fontSize:14,color:C.gray400,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>🔐 Secured by PRA Digital Platform · SSL Encrypted</div>
+  </div>);
 }
 
-function filterMessages(q) {
-  const items = document.querySelectorAll('.msg-item');
-  items.forEach(item => {
-    const text = item.textContent.toLowerCase();
-    item.style.display = text.includes(q.toLowerCase()) ? 'flex' : 'none';
-  });
+function PaymentSuccess({result,member,onDone}){
+  const methodLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
+  const now=new Date();
+  const dateStr=now.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
+  const timeStr=now.toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
+  return(<div className="slide-up" style={{padding:"32px 20px",minHeight:"100vh",display:"flex",alignItems:"flex-start",justifyContent:"center"}}>
+    <div style={{width:"100%",maxWidth:520,textAlign:"center"}}>
+      <div className="pulse" style={{width:96,height:96,borderRadius:"50%",background:C.greenLight,border:`4px solid ${C.green}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:46,margin:"0 auto 24px"}}>✅</div>
+      <div style={{fontSize:30,fontWeight:700,color:C.green,fontFamily:"'Libre Baskerville',serif",marginBottom:6}}>Payment Successful!</div>
+      <div style={{fontSize:17,color:C.gray600,marginBottom:28}}>Your voucher has been confirmed. Please save or print the details below.</div>
+      <div className="card" style={{padding:0,marginBottom:28,overflow:"hidden",border:`2px solid ${C.orange}`}}>
+        <div style={{background:C.navy,padding:"16px 22px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{color:"rgba(255,255,255,0.6)",fontSize:12,letterSpacing:2,textTransform:"uppercase"}}>PRA Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:17,marginTop:2}}>Philippine Retirement Authority</div></div>
+          <div style={{background:C.orange,borderRadius:8,padding:"4px 10px",fontSize:12,fontWeight:800,color:"white"}}>CONFIRMED</div>
+        </div>
+        <div style={{padding:"20px 22px"}}>
+          <div style={{fontSize:28,fontWeight:800,color:C.orange,fontFamily:"monospace",letterSpacing:3,marginBottom:4,textAlign:"center"}}>{result.voucher}</div>
+          <div style={{fontSize:13,color:C.gray400,textAlign:"center",marginBottom:20}}>Voucher Reference Number</div>
+          <div style={{background:C.gray50,borderRadius:10,padding:"14px 16px"}}>
+            {[["Benefit",result.item.title],["Partner",result.item.partner],["Member",`${member.firstName} ${member.lastName}`],["PRA ID",member.praId],["Amount Paid",fmt(result.amount)],["Payment Via",methodLabel[result.payMethod]],["Date & Time",`${dateStr}, ${timeStr}`],["Validity",result.item.voucherValidity]].map(([label,value])=>(<div key={label} style={{display:"flex",justifyContent:"space-between",gap:12,padding:"6px 0",borderBottom:`1px solid ${C.gray200}`}}><span style={{fontSize:14,color:C.gray600,flexShrink:0}}>{label}</span><span style={{fontSize:14,fontWeight:600,color:C.navy,textAlign:"right"}}>{value}</span></div>))}
+          </div>
+          <div style={{marginTop:14,fontSize:13,color:C.gray400,lineHeight:1.6,textAlign:"center"}}>Present this voucher code at the partner establishment. Take a screenshot or print this page. This voucher is non-transferable.</div>
+        </div>
+      </div>
+      <button className="btn-primary" style={{width:"100%",marginBottom:12}} onClick={()=>window.print()}>🖨️ Print / Save Voucher</button>
+      <button className="btn-secondary" style={{width:"100%"}} onClick={onDone}>← Back to Benefits Hub</button>
+    </div>
+  </div>);
 }
 
-function openChat(id) {
-  const msg = messages.find(m=>m.id===id);
-  if (!msg) return;
-  document.getElementById('msgList').style.display = 'none';
-  const cv = document.getElementById('chatView');
-  cv.classList.add('active');
-  document.getElementById('chatAvatar').textContent = msg.avatar;
-  document.getElementById('chatName').textContent = msg.name;
-  document.getElementById('chatStatus').textContent = msg.role;
-  const messagesEl = document.getElementById('chatMessages');
-  messagesEl.innerHTML = msg.convo.map(c=>`
-    <div>
-      <div class="bubble ${c.me?'me':'them'}">${c.text}</div>
-      <div class="bubble-time ${c.me?'me-time':''}">${c.time}</div>
-    </div>`).join('');
-  setTimeout(()=>{ messagesEl.scrollTop = messagesEl.scrollHeight; }, 50);
+function ProfilePage({member}){
+  return(<div className="fade-in" style={{padding:"24px 20px"}}>
+    <div style={{fontSize:24,fontWeight:700,color:C.navy,fontFamily:"'Libre Baskerville',serif",marginBottom:20}}>My Profile</div>
+    <div className="card" style={{marginBottom:20,padding:"24px 24px"}}>
+      <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:20,paddingBottom:20,borderBottom:`1px solid ${C.gray200}`}}>
+        <div style={{width:68,height:68,borderRadius:"50%",background:C.orangePale,border:`3px solid ${C.orange}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:700,color:C.orange,flexShrink:0}}>{member.firstName[0]}{member.lastName[0]}</div>
+        <div><div style={{fontSize:22,fontWeight:700,color:C.navy}}>{member.firstName} {member.lastName}</div><div style={{fontSize:15,color:C.orange,fontWeight:600}}>SRRV Active Member</div><div style={{fontSize:14,color:C.gray600}}>{member.email}</div></div>
+      </div>
+      {[["Full Name",`${member.firstName} ${member.lastName}`],["Date of Birth",member.dob],["Age",`${member.age} years old`],["Address",[member.street,member.barangay,member.city,member.province].filter(Boolean).join(", ")],["Mobile Number",member.mobile],["Email Address",member.email],["PRA ID",member.praId],["Senior ID",member.seniorId||"Not provided"]].map(([label,value])=>(<div key={label} style={{display:"flex",justifyContent:"space-between",gap:12,padding:"10px 0",borderBottom:`1px solid ${C.gray100}`}}><span style={{fontSize:15,color:C.gray600,flexShrink:0,minWidth:140}}>{label}</span><span style={{fontSize:15,fontWeight:600,color:C.navy,textAlign:"right"}}>{value}</span></div>))}
+    </div>
+    <PRACard member={member}/>
+  </div>);
 }
 
-function closeChat() {
-  document.getElementById('chatView').classList.remove('active');
-  document.getElementById('msgList').style.display = 'block';
+function NavBar({active,onNavigate,memberName}){
+  const tabs=[{id:"dashboard",label:"Home",icon:"🏠"},{id:"benefits",label:"Benefits",icon:"🎁"},{id:"profile",label:"My Profile",icon:"👤"}];
+  return(<>
+    <div style={{background:C.navy,padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+      <div style={{display:"flex",alignItems:"center",gap:12}}>
+        <div style={{background:C.orange,borderRadius:8,padding:"6px 10px",fontWeight:800,fontSize:15,color:"white",letterSpacing:1}}>PRA</div>
+        <div style={{color:"rgba(255,255,255,0.9)",fontWeight:700,fontSize:16}}>Senior Benefits</div>
+      </div>
+      <div style={{color:"rgba(255,255,255,0.7)",fontSize:14}}>👋 {memberName}</div>
+    </div>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,background:"white",borderTop:`2px solid ${C.gray200}`,display:"flex",zIndex:100,boxShadow:"0 -4px 16px rgba(0,0,0,0.08)"}}>
+      {tabs.map(t=>(<button key={t.id} onClick={()=>onNavigate(t.id)} style={{flex:1,background:"none",border:"none",padding:"10px 4px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:4,color:active===t.id?C.orange:C.gray400,cursor:"pointer",transition:"color .2s",borderTop:active===t.id?`3px solid ${C.orange}`:"3px solid transparent"}}>
+        <span style={{fontSize:22}}>{t.icon}</span>
+        <span style={{fontSize:12,fontWeight:active===t.id?700:500}}>{t.label}</span>
+      </button>))}
+    </div>
+  </>);
 }
 
-function sendMsg() {
-  const inp = document.getElementById('chatInput');
-  const text = inp.value.trim();
-  if (!text) return;
-  const messagesEl = document.getElementById('chatMessages');
-  const now = new Date(); const t = now.getHours()+':'+(now.getMinutes()+'').padStart(2,'0')+' '+( now.getHours()>=12?'PM':'AM');
-  messagesEl.innerHTML += `<div><div class="bubble me">${text}</div><div class="bubble-time me-time">${t}</div></div>`;
-  inp.value = '';
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-  setTimeout(()=>{
-    messagesEl.innerHTML += `<div><div class="bubble them">Thank you for your message! A member of our team will get back to you shortly. 😊</div><div class="bubble-time">${t}</div></div>`;
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }, 1200);
+function App(){
+  const[view,setView]=useState("register");
+  const[member,setMember]=useState(null);
+  const[selectedBenefit,setSelectedBenefit]=useState(null);
+  const[successResult,setSuccessResult]=useState(null);
+  const[benefitCategory,setBenefitCategory]=useState("all");
+  const handleNavigate=(page,cat="all")=>{setBenefitCategory(cat);setView(page);window.scrollTo({top:0,behavior:"smooth"});};
+  const handlePurchase=(item)=>{setSelectedBenefit(item);setView("checkout");window.scrollTo({top:0,behavior:"smooth"});};
+  const handlePaySuccess=(result)=>{setSuccessResult(result);setView("success");window.scrollTo({top:0,behavior:"smooth"});};
+  return(<>
+    {view==="register"&&<RegistrationPage onComplete={data=>{setMember({...data,age:Math.floor((Date.now()-new Date(data.dob))/(1000*60*60*24*365.25)),praId:data.praId.trim().toUpperCase()});setView("dashboard");}}/>}
+    {view!=="register"&&member&&(<div style={{paddingBottom:80}}>
+      <NavBar active={["checkout","success"].includes(view)?"benefits":view} onNavigate={handleNavigate} memberName={member.firstName}/>
+      <div style={{maxWidth:680,margin:"0 auto"}}>
+        {view==="dashboard"&&<Dashboard member={member} onNavigate={handleNavigate}/>}
+        {view==="benefits"&&<BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={handlePurchase}/>}
+        {view==="checkout"&&selectedBenefit&&<CheckoutPage item={selectedBenefit} member={member} onSuccess={handlePaySuccess} onBack={()=>setView("benefits")}/>}
+        {view==="success"&&successResult&&<PaymentSuccess result={successResult} member={member} onDone={()=>{setView("benefits");window.scrollTo({top:0});}}/>}
+        {view==="profile"&&<ProfilePage member={member}/>}
+      </div>
+    </div>)}
+  </>);
 }
 
-// ============================================================
-//  REPORTS
-// ============================================================
-function setPeriod(el) {
-  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  showToast('Loading '+el.textContent+' report…');
-}
-
-// ============================================================
-//  TOAST
-// ============================================================
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
-}
-
-// ============================================================
-//  INIT
-// ============================================================
-renderFeatured();
-renderDiscountPreview();
-renderMessages();
-renderReports();
-
-// Carousel dot sync
-const ct = document.getElementById('carousel');
-if (ct) {
-  ct.addEventListener('scroll', ()=>{
-    const idx = Math.round(ct.scrollLeft / (ct.scrollWidth / ct.children.length));
-    document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===idx));
-  });
-}
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
 </script>
 </body>
 </html>
