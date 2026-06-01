@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import {
   Heart, Plane, UtensilsCrossed, Film, Star, MapPin, Calendar,
-  ChevronRight, ChevronLeft, Search, Filter, X, Check, ShoppingCart,
+  ChevronRight, ChevronLeft, Search, X, Check, ShoppingCart,
   CreditCard, Smartphone, ArrowLeft, Printer, Bell, Users, Tag as TagIcon,
   LayoutDashboard, Settings, LogOut, ShieldCheck, TrendingUp, Package,
   Plus, Pencil, Trash2, Eye, ReceiptText, UserCircle, Sun, Moon,
   CheckCircle, Lock, Info, ChevronDown, Megaphone, Clock, BarChart2,
-  ToggleLeft, ToggleRight, AlertCircle, BadgeCheck, Ticket
+  AlertCircle, BadgeCheck, Ticket, Newspaper
 } from "lucide-react";
 
-// ─── MOCK DATA ────────────────────────────────────────────────────────────────
+// ── MOCK DATA ──────────────────────────────────────────────────────────────────
 
 const BENEFITS = [
   {
@@ -86,7 +86,7 @@ const BENEFITS = [
     categoryLabel: "Food & Dining",
     title: "Grandparent's Weekend Feast",
     partner: "Max's Restaurant",
-    location: "All branches - dine-in & delivery",
+    location: "All branches - dine-in and delivery",
     description: "Bring the family every Saturday and Sunday! Enjoy a free appetizer (Spring Roll platter) with any main course order, plus free delivery within 5km radius.",
     originalPrice: 680,
     discountPct: 15,
@@ -166,7 +166,7 @@ const CATEGORIES = [
   { id: "entertainment", label: "Entertainment", Icon: Film },
 ];
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
+// ── HELPERS ────────────────────────────────────────────────────────────────────
 
 const fmt = (n) => "PhP " + Number(n).toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const calcFinal = (item) => {
@@ -176,7 +176,7 @@ const calcFinal = (item) => {
 };
 const genVoucher = () => "PRA-" + Math.random().toString(36).substring(2, 6).toUpperCase() + "-" + Math.random().toString(36).substring(2, 6).toUpperCase();
 
-// ─── THEME ────────────────────────────────────────────────────────────────────
+// ── THEME ──────────────────────────────────────────────────────────────────────
 
 const getTheme = (dark) => ({
   navy: "#0A2540",
@@ -200,13 +200,13 @@ const getTheme = (dark) => ({
   greenText: "#1A7A4A",
   red: "#C0392B",
   redLight: dark ? "rgba(192,57,43,0.2)" : "#FDECEA",
-  bg: dark ? "#141824" : "#F0F2F5",
+  bg: dark ? "#141824" : "#FFFFFF",
   text: dark ? "rgba(255,255,255,0.87)" : "#2D3748",
   textSub: dark ? "rgba(255,255,255,0.55)" : "#4A5568",
   isDark: dark,
 });
 
-// ─── GLOBAL STYLE ─────────────────────────────────────────────────────────────
+// ── GLOBAL STYLE ───────────────────────────────────────────────────────────────
 
 const makeGlobalStyle = (C) => `
   @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
@@ -311,8 +311,6 @@ const makeGlobalStyle = (C) => `
     overflow: hidden;
   }
 
-  .nav-tab { transition: color 0.2s; }
-
   .benefit-card { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
   .benefit-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,37,64,0.1); border-color: ${C.orange}; }
 
@@ -320,13 +318,13 @@ const makeGlobalStyle = (C) => `
     background: ${C.surface};
     border: 1.5px solid ${C.border};
     border-radius: 50%;
-    width: 38px; height: 38px;
+    width: 36px; height: 36px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;
   }
-  .carousel-btn:hover { border-color: ${C.orange}; color: ${C.orange}; }
+  .carousel-btn:hover { border-color: ${C.orange}; color: ${C.orange}; background: ${C.orangePale}; }
   .carousel-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
   ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -339,7 +337,7 @@ const makeGlobalStyle = (C) => `
   }
 `;
 
-// ─── SHARED SUBCOMPONENTS ─────────────────────────────────────────────────────
+// ── SHARED SUBCOMPONENTS ───────────────────────────────────────────────────────
 
 function Spinner({ size = 22, color = "white" }) {
   return (
@@ -406,7 +404,7 @@ function PRACard({ member, C }) {
   );
 }
 
-// ─── BENEFIT CARD (reusable) ──────────────────────────────────────────────────
+// ── BENEFIT CARD ───────────────────────────────────────────────────────────────
 
 function BenefitCard({ item, onPurchase, onClaim, claimed, compact = false, C }) {
   const IconComp = item.icon;
@@ -474,7 +472,7 @@ function BenefitCard({ item, onPurchase, onClaim, claimed, compact = false, C })
   );
 }
 
-// ─── REGISTRATION PAGE ────────────────────────────────────────────────────────
+// ── REGISTRATION PAGE ──────────────────────────────────────────────────────────
 
 function RegistrationPage({ onComplete, C }) {
   const [step, setStep] = useState(1);
@@ -578,7 +576,7 @@ function RegistrationPage({ onComplete, C }) {
               <div style={{ marginBottom: 18 }}><label className="form-label">Email Address</label><input type="email" className={`form-input${errors.email ? " error" : ""}`} value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="yourname@email.com" /><div className="form-hint">You will use this email to log in to your PRA account.</div><Err field="email" /></div>
               <div style={{ marginBottom: 18 }}><label className="form-label">Password</label><input type="password" className={`form-input${errors.password ? " error" : ""}`} value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="At least 8 characters" /><div className="form-hint">Minimum 8 characters.</div><Err field="password" /></div>
               <div style={{ marginBottom: 18 }}><label className="form-label">Confirm Password</label><input type="password" className={`form-input${errors.confirmPassword ? " error" : ""}`} value={form.confirmPassword} onChange={(e) => set("confirmPassword", e.target.value)} placeholder="Re-enter your password" /><Err field="confirmPassword" /></div>
-              <div style={{ background: C.gray50, borderRadius: 10, padding: 14, fontSize: 13, color: C.textSub, lineHeight: 1.7, border: `1px solid ${C.border}` }}>By completing registration, you agree to the <span style={{ color: C.orange, fontWeight: 700 }}>PRA Terms & Conditions</span> and confirm that all information provided is true and accurate.</div>
+              <div style={{ background: C.gray50, borderRadius: 10, padding: 14, fontSize: 13, color: C.textSub, lineHeight: 1.7, border: `1px solid ${C.border}` }}>By completing registration, you agree to the <span style={{ color: C.orange, fontWeight: 700 }}>PRA Terms and Conditions</span> and confirm that all information provided is true and accurate.</div>
             </div>
           )}
 
@@ -598,7 +596,7 @@ function RegistrationPage({ onComplete, C }) {
   );
 }
 
-// ─── ANNOUNCEMENT BADGE ───────────────────────────────────────────────────────
+// ── ANNOUNCEMENT BADGE ─────────────────────────────────────────────────────────
 
 function AnnBadge({ type }) {
   const map = { new: { label: "New", color: "green" }, reminder: { label: "Reminder", color: "orange" }, info: { label: "Info", color: "blue" } };
@@ -606,12 +604,12 @@ function AnnBadge({ type }) {
   return <StatusBadge type={color}>{label}</StatusBadge>;
 }
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+// ── DASHBOARD ──────────────────────────────────────────────────────────────────
 
 function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefits, announcements, C }) {
   const [carouselIdx, setCarouselIdx] = useState(0);
-  const visibleCount = 1;
-  const maxIdx = Math.max(0, benefits.length - visibleCount);
+  const featured = benefits.slice(0, 5);
+  const maxIdx = Math.max(0, featured.length - 1);
 
   return (
     <div className="fade-in" style={{ padding: "24px 18px" }}>
@@ -633,11 +631,13 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
         </div>
       </div>
 
-      {/* Announcements */}
+      {/* Announcements / News Section */}
       {announcements.length > 0 && (
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <div style={{ fontSize: 17, fontWeight: 700, color: C.text, display: "flex", alignItems: "center", gap: 8 }}><Megaphone size={18} color={C.orange} /> Announcements</div>
+            <div style={{ fontSize: 17, fontWeight: 700, color: C.text, display: "flex", alignItems: "center", gap: 8 }}>
+              <Newspaper size={18} color={C.orange} /> News &amp; Announcements
+            </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {announcements.slice(0, 3).map((ann) => (
@@ -654,13 +654,7 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
         </div>
       )}
 
-      {/* PRA Card */}
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 17, fontWeight: 700, color: C.text, marginBottom: 14 }}>Your Digital Benefits Card</div>
-        <PRACard member={member} C={C} />
-      </div>
-
-      {/* Benefits Carousel */}
+      {/* Benefits Carousel - 5 items */}
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
           <div style={{ fontSize: 17, fontWeight: 700, color: C.text }}>Featured Benefits</div>
@@ -668,7 +662,7 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
             <button className="carousel-btn" onClick={() => setCarouselIdx(Math.max(0, carouselIdx - 1))} disabled={carouselIdx === 0}>
               <ChevronLeft size={16} />
             </button>
-            <span style={{ fontSize: 12, color: C.textSub, minWidth: 36, textAlign: "center" }}>{carouselIdx + 1} / {benefits.length}</span>
+            <span style={{ fontSize: 12, color: C.textSub, minWidth: 36, textAlign: "center" }}>{carouselIdx + 1} / {featured.length}</span>
             <button className="carousel-btn" onClick={() => setCarouselIdx(Math.min(maxIdx, carouselIdx + 1))} disabled={carouselIdx >= maxIdx}>
               <ChevronRight size={16} />
             </button>
@@ -677,7 +671,7 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
 
         <div style={{ overflow: "hidden" }}>
           <div style={{ display: "flex", gap: 14, transition: "transform 0.35s ease", transform: `translateX(calc(-${carouselIdx * 100}% - ${carouselIdx * 14}px))` }}>
-            {benefits.map((item) => (
+            {featured.map((item) => (
               <div key={item.id} style={{ minWidth: "100%", maxWidth: "100%" }}>
                 <BenefitCard item={item} onPurchase={onPurchase} onClaim={onClaim} claimed={claimedIds.includes(item.id)} compact={false} C={C} />
               </div>
@@ -685,11 +679,16 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
           </div>
         </div>
 
-        {/* Dot indicators */}
         <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 14 }}>
-          {benefits.map((_, i) => (
+          {featured.map((_, i) => (
             <button key={i} onClick={() => setCarouselIdx(i)} style={{ width: i === carouselIdx ? 20 : 7, height: 7, borderRadius: 4, background: i === carouselIdx ? C.orange : C.gray200, border: "none", transition: "all 0.25s", padding: 0 }} />
           ))}
+        </div>
+
+        <div style={{ marginTop: 14 }}>
+          <button className="btn-ghost" style={{ width: "100%", fontSize: 14 }} onClick={() => onNavigate("benefits", "all")}>
+            View All Benefits <ChevronRight size={15} />
+          </button>
         </div>
       </div>
 
@@ -714,16 +713,16 @@ function Dashboard({ member, onNavigate, onPurchase, onClaim, claimedIds, benefi
         </div>
       </div>
 
-      <div style={{ marginTop: 20 }}>
-        <button className="btn-primary" onClick={() => onNavigate("benefits", "all")} style={{ width: "100%" }}>
-          View All Benefits <ChevronRight size={16} />
-        </button>
+      {/* PRA Card */}
+      <div style={{ marginTop: 24, marginBottom: 8 }}>
+        <div style={{ fontSize: 17, fontWeight: 700, color: C.text, marginBottom: 14 }}>Your Digital Benefits Card</div>
+        <PRACard member={member} C={C} />
       </div>
     </div>
   );
 }
 
-// ─── BENEFITS HUB ─────────────────────────────────────────────────────────────
+// ── BENEFITS HUB ───────────────────────────────────────────────────────────────
 
 function BenefitsHub({ member, initialCategory = "all", onPurchase, C }) {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -742,11 +741,10 @@ function BenefitsHub({ member, initialCategory = "all", onPurchase, C }) {
   return (
     <div className="fade-in" style={{ padding: "24px 18px" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 24, fontWeight: 700, color: C.text, fontFamily: "'Libre Baskerville', serif", marginBottom: 2 }}>Benefits & Promos</div>
+        <div style={{ fontSize: 24, fontWeight: 700, color: C.text, fontFamily: "'Libre Baskerville', serif", marginBottom: 2 }}>Benefits &amp; Promos</div>
         <div style={{ color: C.textSub, fontSize: 14 }}>Exclusive offers for PRA Members</div>
       </div>
 
-      {/* Search bar */}
       <div style={{ position: "relative", marginBottom: 18 }}>
         <Search size={16} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: C.textSub }} />
         <input
@@ -763,9 +761,8 @@ function BenefitsHub({ member, initialCategory = "all", onPurchase, C }) {
         )}
       </div>
 
-      {/* Claim toast */}
       {claimFeedback && (
-        <div style={{ background: C.greenLight, border: `1.5px solid ${C.greenText}`, borderRadius: 10, padding: "12px 16px", marginBottom: 16, display: "flex", alignItems: "center", gap: 10, animation: "fadeIn 0.3s ease" }}>
+        <div style={{ background: C.greenLight, border: `1.5px solid ${C.greenText}`, borderRadius: 10, padding: "12px 16px", marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>
           <CheckCircle size={18} color={C.greenText} />
           <div>
             <strong style={{ color: C.greenText, fontSize: 14 }}>Benefit Claimed!</strong>
@@ -774,7 +771,6 @@ function BenefitsHub({ member, initialCategory = "all", onPurchase, C }) {
         </div>
       )}
 
-      {/* Category filter */}
       <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4, marginBottom: 20 }}>
         {CATEGORIES.map((c) => (
           <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ background: activeCategory === c.id ? C.navy : C.surface, color: activeCategory === c.id ? "white" : C.textSub, border: `1.5px solid ${activeCategory === c.id ? C.navy : C.border}`, borderRadius: 8, padding: "8px 14px", fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 6, minHeight: 40 }}>
@@ -800,7 +796,7 @@ function BenefitsHub({ member, initialCategory = "all", onPurchase, C }) {
   );
 }
 
-// ─── CHECKOUT ─────────────────────────────────────────────────────────────────
+// ── CHECKOUT ───────────────────────────────────────────────────────────────────
 
 function CheckoutPage({ item, member, onSuccess, onBack, C }) {
   const [payMethod, setPayMethod] = useState(null);
@@ -900,7 +896,7 @@ function CheckoutPage({ item, member, onSuccess, onBack, C }) {
           <div style={{ marginBottom: 14 }}><label className="form-label">Cardholder Name</label><input className={`form-input${errors.cardName ? " error" : ""}`} value={cardName} onChange={(e) => setCardName(e.target.value)} placeholder="As printed on card" /><Err field="cardName" /></div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             <div><label className="form-label">Expiry Date</label><input type="month" className={`form-input${errors.cardExp ? " error" : ""}`} value={cardExp} onChange={(e) => setCardExp(e.target.value)} /><Err field="cardExp" /></div>
-            <div><label className="form-label">CVV / CVC</label><input className={`form-input${errors.cardCvv ? " error" : ""}`} value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="• • •" style={{ letterSpacing: 4 }} /><Err field="cardCvv" /></div>
+            <div><label className="form-label">CVV / CVC</label><input className={`form-input${errors.cardCvv ? " error" : ""}`} value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="..." style={{ letterSpacing: 4 }} /><Err field="cardCvv" /></div>
           </div>
         </div>
       )}
@@ -915,7 +911,7 @@ function CheckoutPage({ item, member, onSuccess, onBack, C }) {
   );
 }
 
-// ─── PAYMENT SUCCESS ──────────────────────────────────────────────────────────
+// ── PAYMENT SUCCESS ────────────────────────────────────────────────────────────
 
 function PaymentSuccess({ result, member, onDone, C }) {
   const methodLabel = { gcash: "GCash", maya: "Maya", card: "Credit/Debit Card" };
@@ -941,7 +937,7 @@ function PaymentSuccess({ result, member, onDone, C }) {
           <div style={{ fontSize: 26, fontWeight: 800, color: C.orange, fontFamily: "monospace", letterSpacing: 3, marginBottom: 2, textAlign: "center" }}>{result.voucher}</div>
           <div style={{ fontSize: 12, color: C.textSub, textAlign: "center", marginBottom: 18 }}>Voucher Reference Number</div>
           <div style={{ background: C.gray50, borderRadius: 10, padding: "12px 14px", border: `1px solid ${C.border}` }}>
-            {[["Benefit", result.item.title], ["Partner", result.item.partner], ["Member", `${member.firstName} ${member.lastName}`], ["PRA ID", member.praId], ["Amount Paid", fmt(result.amount)], ["Payment Via", methodLabel[result.payMethod]], ["Date & Time", `${dateStr}, ${timeStr}`], ["Validity", result.item.voucherValidity]].map(([label, value]) => (
+            {[["Benefit", result.item.title], ["Partner", result.item.partner], ["Member", `${member.firstName} ${member.lastName}`], ["PRA ID", member.praId], ["Amount Paid", fmt(result.amount)], ["Payment Via", methodLabel[result.payMethod]], ["Date and Time", `${dateStr}, ${timeStr}`], ["Validity", result.item.voucherValidity]].map(([label, value]) => (
               <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
                 <span style={{ fontSize: 13, color: C.textSub, flexShrink: 0 }}>{label}</span>
                 <span style={{ fontSize: 13, fontWeight: 600, color: C.text, textAlign: "right" }}>{value}</span>
@@ -962,7 +958,7 @@ function PaymentSuccess({ result, member, onDone, C }) {
   );
 }
 
-// ─── PROFILE PAGE ─────────────────────────────────────────────────────────────
+// ── PROFILE PAGE ───────────────────────────────────────────────────────────────
 
 function ProfilePage({ member, onSwitchToAdmin, darkMode, toggleDark, C }) {
   return (
@@ -988,7 +984,7 @@ function ProfilePage({ member, onSwitchToAdmin, darkMode, toggleDark, C }) {
 
       <div style={{ marginBottom: 18 }}><PRACard member={member} C={C} /></div>
 
-      {/* Settings */}
+      {/* Preferences */}
       <div className="card" style={{ marginBottom: 18, overflow: "visible" }}>
         <div style={{ padding: "16px 20px", borderBottom: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: C.textSub, textTransform: "uppercase", letterSpacing: 0.5 }}>Preferences</div>
@@ -1018,7 +1014,7 @@ function ProfilePage({ member, onSwitchToAdmin, darkMode, toggleDark, C }) {
   );
 }
 
-// ─── NAVBAR ───────────────────────────────────────────────────────────────────
+// ── NAVBAR ─────────────────────────────────────────────────────────────────────
 
 function NavBar({ active, onNavigate, memberName, C }) {
   const tabs = [
@@ -1049,7 +1045,7 @@ function NavBar({ active, onNavigate, memberName, C }) {
   );
 }
 
-// ─── ADMIN PANEL ──────────────────────────────────────────────────────────────
+// ── ADMIN PANEL ────────────────────────────────────────────────────────────────
 
 function AdminPanel({ onSwitchToMember, darkMode, toggleDark, C }) {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -1223,10 +1219,10 @@ function AdminPanel({ onSwitchToMember, darkMode, toggleDark, C }) {
                       </div>
                     </div>
                     <div style={{ fontSize: 12, color: C.textSub, display: "flex", flexWrap: "wrap", gap: 12 }}>
-                      <span><Users size={11} style={{ marginRight: 4 }} />{tx.member}</span>
-                      <span><CreditCard size={11} style={{ marginRight: 4 }} />{tx.method}</span>
-                      <span><Calendar size={11} style={{ marginRight: 4 }} />{tx.date}</span>
-                      <span><Ticket size={11} style={{ marginRight: 4 }} />{tx.voucher}</span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}><Users size={11} />{tx.member}</span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}><CreditCard size={11} />{tx.method}</span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}><Calendar size={11} />{tx.date}</span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}><Ticket size={11} />{tx.voucher}</span>
                     </div>
                   </div>
                 ))}
@@ -1367,11 +1363,11 @@ function AdminPanel({ onSwitchToMember, darkMode, toggleDark, C }) {
   );
 }
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+// ── MAIN APP ───────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [view, setView] = useState("register");
-  const [mode, setMode] = useState("member"); // member | admin
+  const [mode, setMode] = useState("member");
   const [member, setMember] = useState(null);
   const [selectedBenefit, setSelectedBenefit] = useState(null);
   const [successResult, setSuccessResult] = useState(null);
@@ -1398,7 +1394,7 @@ export default function App() {
         <div style={{ paddingBottom: 80 }}>
           <NavBar active={["checkout", "success"].includes(view) ? "benefits" : view} onNavigate={handleNavigate} memberName={member.firstName} C={C} />
           <div style={{ maxWidth: 640, margin: "0 auto" }}>
-            {view === "dashboard" && <Dashboard member={member} onNavigate={handleNavigate} onPurchase={handlePurchase} onClaim={handleClaim} claimedIds={claimedIds} benefits={BENEFITS.slice(0, 5)} announcements={ANNOUNCEMENTS} C={C} />}
+            {view === "dashboard" && <Dashboard member={member} onNavigate={handleNavigate} onPurchase={handlePurchase} onClaim={handleClaim} claimedIds={claimedIds} benefits={BENEFITS} announcements={ANNOUNCEMENTS} C={C} />}
             {view === "benefits" && <BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={handlePurchase} C={C} />}
             {view === "checkout" && selectedBenefit && <CheckoutPage item={selectedBenefit} member={member} onSuccess={handlePaySuccess} onBack={() => setView("benefits")} C={C} />}
             {view === "success" && successResult && <PaymentSuccess result={successResult} member={member} onDone={() => { setView("benefits"); window.scrollTo({ top: 0 }); }} C={C} />}
