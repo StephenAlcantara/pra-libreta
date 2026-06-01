@@ -25,7 +25,6 @@ button{cursor:pointer;font-family:inherit}
 .slide-up{animation:slideUp .45s ease both}
 .spin{animation:spin 1s linear infinite}
 .pulse{animation:pulse 1.5s ease infinite}
-/* Light mode defaults */
 .btn-primary{background:#E8730A;color:white;border:none;border-radius:10px;font-size:16px;font-weight:700;padding:14px 28px;min-height:52px;transition:background .2s,transform .1s,box-shadow .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(232,115,10,.25)}
 .btn-primary:hover{background:#F08030;box-shadow:0 4px 14px rgba(232,115,10,.35)}
 .btn-primary:active{transform:scale(.97)}
@@ -46,7 +45,6 @@ button{cursor:pointer;font-family:inherit}
 .carousel-btn{background:white;border:1.5px solid #E4E8EE;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
 .carousel-btn:hover{border-color:#E8730A;color:#E8730A;background:#FFF5E6}
 .carousel-btn:disabled{opacity:.3;cursor:not-allowed}
-/* Dark mode overrides */
 body.dark .form-input{background:#242938;color:rgba(255,255,255,.87);border-color:rgba(255,255,255,.1)}
 body.dark .form-label{color:rgba(255,255,255,.87)}
 body.dark .form-hint{color:rgba(255,255,255,.55)}
@@ -59,7 +57,6 @@ body.dark .carousel-btn:hover{border-color:#E8730A;color:#E8730A;background:rgba
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#E4E8EE;border-radius:6px}
 body.dark ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)}
-@media(max-width:640px){.btn-primary{font-size:15px;padding:13px 20px}.form-input{font-size:15px}}
 </style>
 </head>
 <body class="light">
@@ -67,45 +64,45 @@ body.dark ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)}
 <script type="text/babel">
 const {useState,useEffect,useRef}=React;
 
-// ── LUCIDE ICONS ──────────────────────────────────────────────────────────────
-// Wrap lucide UMD icons as React components
-function Icon({name,size=16,color="currentColor",style={}}){
+// Lucide icon wrapper - renders SVG from lucide UMD bundle
+function Icon({name,size=16,color="currentColor"}){
   const ref=useRef(null);
   useEffect(()=>{
-    if(ref.current&&window.lucide){
-      ref.current.innerHTML="";
-      const iconFn=window.lucide[name.replace(/-([a-z])/g,(m,c)=>c.toUpperCase())];
-      if(!iconFn)return;
-      const [tag,attrs,children]=iconFn;
-      const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
-      Object.entries({...attrs,width:size,height:size,color:color}).forEach(([k,v])=>svg.setAttribute(k,v));
-      svg.style.flexShrink="0";
-      Object.assign(svg.style,style);
-      if(children)children.forEach(([ct,ca])=>{const el=document.createElementNS("http://www.w3.org/2000/svg",ct);Object.entries(ca).forEach(([k,v])=>el.setAttribute(k,v));svg.appendChild(el);});
-      ref.current.appendChild(svg);
-    }
+    if(!ref.current||!window.lucide)return;
+    const key=name.charAt(0).toLowerCase()+name.slice(1).replace(/([A-Z])/g,'-$1').toLowerCase().replace(/^./,c=>c.toUpperCase()).replace(/-([a-z])/g,(m,c)=>c.toUpperCase());
+    const fn=window.lucide[name]||window.lucide[key];
+    if(!fn)return;
+    ref.current.innerHTML="";
+    const [tag,attrs,children]=fn;
+    const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+    const merged={...attrs,width:size,height:size};
+    if(color!=="currentColor")merged.stroke=color;
+    Object.entries(merged).forEach(([k,v])=>svg.setAttribute(k,v));
+    svg.style.flexShrink="0";svg.style.display="inline-block";svg.style.verticalAlign="middle";
+    (children||[]).forEach(([ct,ca])=>{
+      const el=document.createElementNS("http://www.w3.org/2000/svg",ct);
+      Object.entries(ca).forEach(([k,v])=>el.setAttribute(k,v));
+      svg.appendChild(el);
+    });
+    ref.current.appendChild(svg);
   },[name,size,color]);
-  return <span ref={ref} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0}}></span>;
+  return <span ref={ref} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,width:size,height:size}}/>;
 }
 
-// ── THEME ─────────────────────────────────────────────────────────────────────
 const getC=(dark)=>({
   navy:"#0A2540",navyLight:"#163A5F",navyMid:"#1E4D7B",
   orange:"#E8730A",orangeLight:"#F08030",orangePale:dark?"rgba(232,115,10,0.15)":"#FFF5E6",
-  surface:dark?"#242938":"#FFFFFF",surfaceAlt:dark?"#1E2433":"#F8F9FA",
+  surface:dark?"#242938":"#FFFFFF",
   border:dark?"rgba(255,255,255,0.1)":"#E4E8EE",
   gray50:dark?"#2A3040":"#F8F9FA",gray200:dark?"rgba(255,255,255,0.12)":"#E4E8EE",
   gray400:dark?"rgba(255,255,255,0.4)":"#9AA5B4",gray600:dark?"rgba(255,255,255,0.6)":"#4A5568",
   gray700:dark?"rgba(255,255,255,0.87)":"#2D3748",
-  green:"#1A7A4A",greenLight:dark?"rgba(26,122,74,0.2)":"#E6F4EC",greenText:"#1A7A4A",
-  red:"#C0392B",
-  bg:dark?"#141824":"#FFFFFF",
+  greenLight:dark?"rgba(26,122,74,0.2)":"#E6F4EC",greenText:"#1A7A4A",
+  red:"#C0392B",bg:dark?"#141824":"#FFFFFF",
   text:dark?"rgba(255,255,255,0.87)":"#2D3748",
-  textSub:dark?"rgba(255,255,255,0.55)":"#4A5568",
-  isDark:dark
+  textSub:dark?"rgba(255,255,255,0.55)":"#4A5568",isDark:dark
 });
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
 const BENEFITS=[
   {id:"med-city",category:"health",categoryLabel:"Health & Wellness",title:"Executive Check-up Package",partner:"The Medical City",location:"Ortigas Center, Pasig City",description:"Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist. Book at any The Medical City branch nationwide.",originalPrice:8500,discountPct:20,tag:"20% off for PRA Members",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true},
   {id:"mercury",category:"health",categoryLabel:"Health & Wellness",title:"Maintenance Medication Discount",partner:"Mercury Drug",location:"All branches nationwide",description:"Extra 5% discount on top of the standard 20% senior citizen discount on all maintenance medications. Present your PRA Senior Benefits Card upon purchase.",originalPrice:null,discountPct:5,tag:"Extra 5% on senior discount",iconName:"Heart",iconColor:"#e74c3c",type:"claim",voucherValidity:"Ongoing benefit - no expiry",active:true},
@@ -143,12 +140,10 @@ const CATEGORIES=[
   {id:"entertainment",label:"Entertainment",iconName:"Film"},
 ];
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
 const fmt=(n)=>"PhP "+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
 const calcFinal=(item)=>{if(item.fixedPrice)return item.fixedPrice;if(item.originalPrice&&item.discountPct)return item.originalPrice*(1-item.discountPct/100);return null;};
 const genVoucher=()=>"PRA-"+Math.random().toString(36).substring(2,6).toUpperCase()+"-"+Math.random().toString(36).substring(2,6).toUpperCase();
 
-// ── SUBCOMPONENTS ─────────────────────────────────────────────────────────────
 function Spinner({size=22,color="white"}){
   return <div className="spin" style={{width:size,height:size,border:"2.5px solid rgba(255,255,255,0.25)",borderTop:`2.5px solid ${color}`,borderRadius:"50%",flexShrink:0}}/>;
 }
@@ -161,6 +156,12 @@ function StatusBadge({children,type="orange"}){
 
 function ProgressBar({step,total}){
   return <div style={{display:"flex",gap:6}}>{Array.from({length:total}).map((_,i)=><div key={i} style={{flex:1,height:4,borderRadius:4,background:i<step?"#E8730A":"rgba(0,0,0,0.1)",transition:"background .4s"}}/>)}</div>;
+}
+
+function AnnBadge({type}){
+  const map={new:{label:"New",color:"green"},reminder:{label:"Reminder",color:"orange"},info:{label:"Info",color:"blue"}};
+  const {label,color}=map[type]||map.info;
+  return <StatusBadge type={color}>{label}</StatusBadge>;
 }
 
 function PRACard({member,C}){
@@ -177,7 +178,7 @@ function PRACard({member,C}){
       </div>
       <div style={{marginBottom:18}}>
         <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",marginBottom:3}}>Senior Benefits Card</div>
-        <div style={{fontSize:20,fontWeight:700,fontFamily:"'Libre Baskerville',serif",letterSpacing:.3}}>{member.firstName} {member.lastName}</div>
+        <div style={{fontSize:20,fontWeight:700,fontFamily:"'Libre Baskerville',serif"}}>{member.firstName} {member.lastName}</div>
       </div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
         <div><div style={{fontSize:11,color:"rgba(255,255,255,0.45)",marginBottom:2}}>PRA ID Number</div><div style={{fontSize:14,fontWeight:700,letterSpacing:2}}>{member.praId}</div></div>
@@ -188,13 +189,6 @@ function PRACard({member,C}){
   );
 }
 
-function AnnBadge({type}){
-  const map={new:{label:"New",color:"green"},reminder:{label:"Reminder",color:"orange"},info:{label:"Info",color:"blue"}};
-  const {label,color}=map[type]||map.info;
-  return <StatusBadge type={color}>{label}</StatusBadge>;
-}
-
-// ── BENEFIT CARD ──────────────────────────────────────────────────────────────
 function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C}){
   const finalPrice=calcFinal(item);
   return(
@@ -216,8 +210,14 @@ function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C}){
         {!compact&&<div style={{marginTop:10,marginBottom:14,fontSize:14,color:C.textSub,lineHeight:1.65}}>{item.description}</div>}
         {!compact&&item.originalPrice&&(
           <div style={{background:C.gray50,borderRadius:10,padding:"12px 14px",marginBottom:14,border:`1px solid ${C.border}`}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{fontSize:13,color:C.textSub}}>Original Price</span><span style={{fontSize:13,color:C.textSub,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span></div>
-            {item.discountPct&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{fontSize:13,color:C.greenText,fontWeight:600}}>PRA Discount ({item.discountPct}%)</span><span style={{fontSize:13,color:C.greenText,fontWeight:600}}>-{fmt(item.originalPrice*item.discountPct/100)}</span></div>}
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+              <span style={{fontSize:13,color:C.textSub}}>Original Price</span>
+              <span style={{fontSize:13,color:C.textSub,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span>
+            </div>
+            {item.discountPct&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+              <span style={{fontSize:13,color:C.greenText,fontWeight:600}}>PRA Discount ({item.discountPct}%)</span>
+              <span style={{fontSize:13,color:C.greenText,fontWeight:600}}>-{fmt(item.originalPrice*item.discountPct/100)}</span>
+            </div>}
             <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.border}`,paddingTop:8,marginTop:4}}>
               <span style={{fontSize:15,fontWeight:700,color:C.text}}>Your Price</span>
               <span style={{fontSize:17,fontWeight:800,color:C.orange}}>{item.fixedPrice?fmt(item.fixedPrice):fmt(finalPrice)}</span>
@@ -236,22 +236,21 @@ function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C}){
   );
 }
 
-// ── REGISTRATION ──────────────────────────────────────────────────────────────
 function RegistrationPage({onComplete,C}){
   const[step,setStep]=useState(1);
   const[errors,setErrors]=useState({});
   const[form,setForm]=useState({firstName:"",lastName:"",dob:"",province:"",city:"",barangay:"",street:"",mobile:"",praId:"",seniorId:"",email:"",password:"",confirmPassword:""});
   const set=(k,v)=>{setForm(f=>({...f,[k]:v}));if(errors[k])setErrors(e=>({...e,[k]:""}));};
-  const v1=()=>{const e={};if(!form.firstName.trim())e.firstName="First name is required.";if(!form.lastName.trim())e.lastName="Last name is required.";if(!form.dob)e.dob="Date of birth is required.";else{const age=Math.floor((Date.now()-new Date(form.dob))/(1000*60*60*24*365.25));if(age<60)e.dob=`You must be at least 60 years old. Calculated age: ${age}.`;}if(!form.province.trim())e.province="Province is required.";if(!form.city.trim())e.city="City/Municipality is required.";if(!form.mobile.trim())e.mobile="Mobile number is required.";else if(!/^(09|\+639)\d{9}$/.test(form.mobile.replace(/\s/g,"")))e.mobile="Enter a valid Philippine mobile number (e.g. 09171234567).";setErrors(e);return Object.keys(e).length===0;};
+  const v1=()=>{const e={};if(!form.firstName.trim())e.firstName="First name is required.";if(!form.lastName.trim())e.lastName="Last name is required.";if(!form.dob)e.dob="Date of birth is required.";else{const age=Math.floor((Date.now()-new Date(form.dob))/(1000*60*60*24*365.25));if(age<60)e.dob=`You must be at least 60 years old. Calculated age: ${age}.`;}if(!form.province.trim())e.province="Province is required.";if(!form.city.trim())e.city="City/Municipality is required.";if(!form.mobile.trim())e.mobile="Mobile number is required.";else if(!/^(09|\+639)\d{9}$/.test(form.mobile.replace(/\s/g,"")))e.mobile="Enter a valid PH mobile number (e.g. 09171234567).";setErrors(e);return Object.keys(e).length===0;};
   const v2=()=>{const e={};if(!form.praId.trim())e.praId="PRA ID Number is required.";else if(form.praId.trim().length<6)e.praId="PRA ID must be at least 6 characters.";setErrors(e);return Object.keys(e).length===0;};
   const v3=()=>{const e={};if(!form.email.trim())e.email="Email is required.";else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))e.email="Enter a valid email address.";if(!form.password)e.password="Password is required.";else if(form.password.length<8)e.password="Password must be at least 8 characters.";if(form.password!==form.confirmPassword)e.confirmPassword="Passwords do not match.";setErrors(e);return Object.keys(e).length===0;};
   const next=()=>{let ok=false;if(step===1)ok=v1();if(step===2)ok=v2();if(step===3){ok=v3();if(ok){const age=Math.floor((Date.now()-new Date(form.dob))/(1000*60*60*24*365.25));onComplete({...form,age,praId:form.praId.trim().toUpperCase()});return;}}if(ok)setStep(s=>s+1);};
-  const Err=({field})=>errors[field]?<div className="form-error"><Icon name="AlertCircle" size={12} color="#C0392B"/> {errors[field]}</div>:null;
   const STEPS=["Personal Details","PRA Information","Account Setup"];
+  const Err=({field})=>errors[field]?<div className="form-error"><Icon name="AlertCircle" size={12} color="#C0392B"/> {errors[field]}</div>:null;
   return(
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",flexDirection:"column"}}>
       <div style={{background:C.navy,padding:"18px 24px",display:"flex",alignItems:"center",gap:14}}>
-        <div style={{background:C.orange,borderRadius:8,padding:"6px 10px",fontWeight:800,fontSize:14,color:"white",letterSpacing:1}}>PRA</div>
+        <div style={{background:"#E8730A",borderRadius:8,padding:"6px 10px",fontWeight:800,fontSize:14,color:"white",letterSpacing:1}}>PRA</div>
         <div><div style={{color:"white",fontWeight:700,fontSize:16}}>Philippine Retirement Authority</div><div style={{color:"rgba(255,255,255,0.55)",fontSize:12}}>Senior Benefits Platform</div></div>
       </div>
       <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"28px 16px 48px"}}>
@@ -263,7 +262,7 @@ function RegistrationPage({onComplete,C}){
             </div>
             <ProgressBar step={step} total={3}/>
             <div style={{display:"flex",justifyContent:"space-between",marginTop:8}}>
-              {STEPS.map((s,i)=><div key={i} style={{fontSize:12,fontWeight:i+1<=step?700:400,color:i+1<=step?C.orange:C.textSub}}>{s}</div>)}
+              {STEPS.map((s,i)=><div key={i} style={{fontSize:12,fontWeight:i+1<=step?700:400,color:i+1<=step?"#E8730A":C.textSub}}>{s}</div>)}
             </div>
           </div>
           {step===1&&(
@@ -279,24 +278,25 @@ function RegistrationPage({onComplete,C}){
                 <div><label className="form-label">Barangay</label><input className="form-input" value={form.barangay} onChange={e=>set("barangay",e.target.value)} placeholder="e.g. Bel-Air"/></div>
               </div>
               <div style={{marginBottom:14}}><label className="form-label">Street Address</label><input className="form-input" value={form.street} onChange={e=>set("street",e.target.value)} placeholder="House No., Street Name (optional)"/></div>
-              <div><label className="form-label">Mobile Number</label><input className={`form-input${errors.mobile?" error":""}`} value={form.mobile} onChange={e=>set("mobile",e.target.value)} placeholder="09171234567" maxLength={13}/><div className="form-hint">Philippine mobile number format: 09XXXXXXXXX</div><Err field="mobile"/></div>
+              <div><label className="form-label">Mobile Number</label><input className={`form-input${errors.mobile?" error":""}`} value={form.mobile} onChange={e=>set("mobile",e.target.value)} placeholder="09171234567" maxLength={13}/><div className="form-hint">Format: 09XXXXXXXXX</div><Err field="mobile"/></div>
             </div>
           )}
           {step===2&&(
             <div className="card fade-in" style={{padding:"24px 28px"}}>
               <div style={{background:C.orangePale,border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:14,marginBottom:22,display:"flex",gap:10,alignItems:"flex-start"}}>
-                <Icon name="Info" size={18} color={C.orange}/><div style={{fontSize:14,color:C.gray700,lineHeight:1.6}}>Your <strong>PRA ID</strong> or <strong>Senior Citizen ID Number</strong> can be found on your OSCA-issued identification card or PRA membership certificate.</div>
+                <Icon name="Info" size={18} color="#E8730A"/>
+                <div style={{fontSize:14,color:C.gray700,lineHeight:1.6}}>Your <strong>PRA ID</strong> can be found on your OSCA-issued identification card or PRA membership certificate.</div>
               </div>
-              <div style={{marginBottom:18}}><label className="form-label">PRA ID Number *</label><input className={`form-input${errors.praId?" error":""}`} value={form.praId} onChange={e=>set("praId",e.target.value)} placeholder="e.g. SRRV-2024-123456"/><div className="form-hint">Enter the ID number exactly as it appears on your PRA card.</div><Err field="praId"/></div>
-              <div><label className="form-label">Senior Citizen ID Number (Optional)</label><input className="form-input" value={form.seniorId} onChange={e=>set("seniorId",e.target.value)} placeholder="e.g. OSCA-01-2024-456789"/><div className="form-hint">If you have a separate OSCA / Senior Citizen ID, enter it here for additional discounts.</div></div>
+              <div style={{marginBottom:18}}><label className="form-label">PRA ID Number *</label><input className={`form-input${errors.praId?" error":""}`} value={form.praId} onChange={e=>set("praId",e.target.value)} placeholder="e.g. SRRV-2024-123456"/><div className="form-hint">Enter exactly as it appears on your PRA card.</div><Err field="praId"/></div>
+              <div><label className="form-label">Senior Citizen ID Number (Optional)</label><input className="form-input" value={form.seniorId} onChange={e=>set("seniorId",e.target.value)} placeholder="e.g. OSCA-01-2024-456789"/></div>
             </div>
           )}
           {step===3&&(
             <div className="card fade-in" style={{padding:"24px 28px"}}>
-              <div style={{marginBottom:18}}><label className="form-label">Email Address</label><input type="email" className={`form-input${errors.email?" error":""}`} value={form.email} onChange={e=>set("email",e.target.value)} placeholder="yourname@email.com"/><div className="form-hint">You will use this email to log in.</div><Err field="email"/></div>
-              <div style={{marginBottom:18}}><label className="form-label">Password</label><input type="password" className={`form-input${errors.password?" error":""}`} value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 8 characters"/><div className="form-hint">Minimum 8 characters.</div><Err field="password"/></div>
+              <div style={{marginBottom:18}}><label className="form-label">Email Address</label><input type="email" className={`form-input${errors.email?" error":""}`} value={form.email} onChange={e=>set("email",e.target.value)} placeholder="yourname@email.com"/><Err field="email"/></div>
+              <div style={{marginBottom:18}}><label className="form-label">Password</label><input type="password" className={`form-input${errors.password?" error":""}`} value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 8 characters"/><Err field="password"/></div>
               <div style={{marginBottom:18}}><label className="form-label">Confirm Password</label><input type="password" className={`form-input${errors.confirmPassword?" error":""}`} value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)} placeholder="Re-enter your password"/><Err field="confirmPassword"/></div>
-              <div style={{background:C.gray50,borderRadius:10,padding:14,fontSize:13,color:C.textSub,lineHeight:1.7,border:`1px solid ${C.border}`}}>By completing registration, you agree to the <span style={{color:C.orange,fontWeight:700}}>PRA Terms and Conditions</span> and confirm that all information provided is true and accurate.</div>
+              <div style={{background:C.gray50,borderRadius:10,padding:14,fontSize:13,color:C.textSub,lineHeight:1.7,border:`1px solid ${C.border}`}}>By completing registration, you agree to the <span style={{color:"#E8730A",fontWeight:700}}>PRA Terms and Conditions</span>.</div>
             </div>
           )}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20,gap:12}}>
@@ -311,19 +311,17 @@ function RegistrationPage({onComplete,C}){
   );
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,announcements,C}){
   const[idx,setIdx]=useState(0);
   const featured=benefits.slice(0,5);
   const maxIdx=Math.max(0,featured.length-1);
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
-      {/* Welcome banner */}
       <div style={{background:`linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%)`,borderRadius:18,padding:"26px 26px 22px",color:"white",marginBottom:24,position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:-36,right:-16,width:160,height:160,borderRadius:"50%",background:"rgba(232,115,10,0.1)"}}/>
         <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",marginBottom:2}}>Good day</div>
         <div style={{fontSize:26,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>{member.firstName} {member.lastName}</div>
-        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:18}}>PRA Member · Age {member.age} · {member.city}, {member.province}</div>
+        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:18}}>PRA Member - Age {member.age} - {member.city}, {member.province}</div>
         <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
           <div style={{background:"rgba(255,255,255,0.1)",borderRadius:8,padding:"7px 14px"}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Member Status</div>
@@ -336,11 +334,10 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         </div>
       </div>
 
-      {/* News and Announcements */}
       {announcements.length>0&&(
         <div style={{marginBottom:28}}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
-            <Icon name="Newspaper" size={18} color={C.orange}/>
+            <Icon name="Newspaper" size={18} color="#E8730A"/>
             <div style={{fontSize:17,fontWeight:700,color:C.text}}>News &amp; Announcements</div>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -358,7 +355,6 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         </div>
       )}
 
-      {/* Featured Benefits Carousel */}
       <div style={{marginBottom:24}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
           <div style={{fontSize:17,fontWeight:700,color:C.text}}>Featured Benefits</div>
@@ -372,13 +368,13 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
           <div style={{display:"flex",gap:14,transition:"transform .35s ease",transform:`translateX(calc(-${idx*100}% - ${idx*14}px))`}}>
             {featured.map(item=>(
               <div key={item.id} style={{minWidth:"100%",maxWidth:"100%"}}>
-                <BenefitCard item={item} onPurchase={onPurchase} onClaim={onClaim} claimed={claimedIds.includes(item.id)} compact={false} C={C}/>
+                <BenefitCard item={item} onPurchase={onPurchase} onClaim={onClaim} claimed={claimedIds.includes(item.id)} C={C}/>
               </div>
             ))}
           </div>
         </div>
         <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:14}}>
-          {featured.map((_,i)=><button key={i} onClick={()=>setIdx(i)} style={{width:i===idx?20:7,height:7,borderRadius:4,background:i===idx?C.orange:C.gray200,border:"none",transition:"all .25s",padding:0}}/>)}
+          {featured.map((_,i)=><button key={i} onClick={()=>setIdx(i)} style={{width:i===idx?20:7,height:7,borderRadius:4,background:i===idx?"#E8730A":C.gray200,border:"none",transition:"all .25s",padding:0,cursor:"pointer"}}/>)}
         </div>
         <div style={{marginTop:14}}>
           <button className="btn-ghost" style={{width:"100%",fontSize:14}} onClick={()=>onNavigate("benefits","all")}>
@@ -387,21 +383,20 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         </div>
       </div>
 
-      {/* Category grid */}
       <div style={{marginBottom:8}}>
         <div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}>Browse by Category</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
           {[
-            {label:"Health & Wellness",iconName:"Heart",cat:"health",color:C.isDark?"rgba(231,76,60,0.12)":"#FEF2F2"},
-            {label:"Travel & Hotels",iconName:"Plane",cat:"travel",color:C.isDark?"rgba(52,152,219,0.12)":"#EFF6FF"},
-            {label:"Food & Dining",iconName:"UtensilsCrossed",cat:"dining",color:C.isDark?"rgba(39,174,96,0.12)":"#F0FDF4"},
-            {label:"Entertainment",iconName:"Film",cat:"entertainment",color:C.isDark?"rgba(155,89,182,0.12)":"#FAF5FF"},
+            {label:"Health & Wellness",iconName:"Heart",cat:"health",lightBg:"#FEF2F2",darkBg:"rgba(231,76,60,0.12)"},
+            {label:"Travel & Hotels",iconName:"Plane",cat:"travel",lightBg:"#EFF6FF",darkBg:"rgba(52,152,219,0.12)"},
+            {label:"Food & Dining",iconName:"UtensilsCrossed",cat:"dining",lightBg:"#F0FDF4",darkBg:"rgba(39,174,96,0.12)"},
+            {label:"Entertainment",iconName:"Film",cat:"entertainment",lightBg:"#FAF5FF",darkBg:"rgba(155,89,182,0.12)"},
           ].map(q=>(
             <button key={q.cat} onClick={()=>onNavigate("benefits",q.cat)}
-              style={{background:q.color,border:`1.5px solid ${C.border}`,borderRadius:14,padding:"18px 14px",cursor:"pointer",textAlign:"left",transition:"all .2s",display:"flex",flexDirection:"column",gap:8}}
-              onMouseEnter={e=>{e.currentTarget.style.borderColor=C.orange;e.currentTarget.style.transform="translateY(-2px)";}}
+              style={{background:C.isDark?q.darkBg:q.lightBg,border:`1.5px solid ${C.border}`,borderRadius:14,padding:"18px 14px",cursor:"pointer",textAlign:"left",transition:"all .2s",display:"flex",flexDirection:"column",gap:8}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor="#E8730A";e.currentTarget.style.transform="translateY(-2px)";}}
               onMouseLeave={e=>{e.currentTarget.style.borderColor=C.border;e.currentTarget.style.transform="translateY(0)";}}>
-              <Icon name={q.iconName} size={26} color={C.orange}/>
+              <Icon name={q.iconName} size={26} color="#E8730A"/>
               <span style={{fontSize:14,fontWeight:700,color:C.text,lineHeight:1.2}}>{q.label}</span>
               <span style={{fontSize:12,color:C.textSub}}>{benefits.filter(b=>b.category===q.cat).length} offers</span>
             </button>
@@ -409,7 +404,6 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         </div>
       </div>
 
-      {/* PRA Card */}
       <div style={{marginTop:24,marginBottom:8}}>
         <div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}>Your Digital Benefits Card</div>
         <PRACard member={member} C={C}/>
@@ -418,7 +412,6 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
   );
 }
 
-// ── BENEFITS HUB ──────────────────────────────────────────────────────────────
 function BenefitsHub({member,initialCategory="all",onPurchase,C}){
   const[activeCategory,setActiveCategory]=useState(initialCategory);
   const[claimedIds,setClaimedIds]=useState([]);
@@ -437,19 +430,19 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C}){
         <div style={{color:C.textSub,fontSize:14}}>Exclusive offers for PRA Members</div>
       </div>
       <div style={{position:"relative",marginBottom:18}}>
-        <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",display:"flex"}}><Icon name="Search" size={16} color={C.textSub}/></span>
+        <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",display:"flex",pointerEvents:"none"}}><Icon name="Search" size={16} color={C.textSub}/></span>
         <input className="form-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search benefits, partners..." style={{paddingLeft:40,paddingRight:search?40:14}}/>
-        {search&&<button onClick={()=>setSearch("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",display:"flex",padding:4}}><Icon name="X" size={15} color={C.textSub}/></button>}
+        {search&&<button onClick={()=>setSearch("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",display:"flex",padding:4,cursor:"pointer"}}><Icon name="X" size={15} color={C.textSub}/></button>}
       </div>
       {claimFeedback&&(
-        <div style={{background:C.greenLight,border:`1.5px solid ${C.greenText}`,borderRadius:10,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:10}}>
-          <Icon name="CheckCircle" size={18} color={C.greenText}/>
-          <div><strong style={{color:C.greenText,fontSize:14}}>Benefit Claimed!</strong><div style={{fontSize:13,color:C.gray700,marginTop:1}}>Show your PRA Card at <strong>{claimFeedback}</strong> to avail this discount.</div></div>
+        <div style={{background:C.greenLight,border:"1.5px solid #1A7A4A",borderRadius:10,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:10}}>
+          <Icon name="CheckCircle" size={18} color="#1A7A4A"/>
+          <div><strong style={{color:"#1A7A4A",fontSize:14}}>Benefit Claimed!</strong><div style={{fontSize:13,color:C.gray700,marginTop:1}}>Show your PRA Card at <strong>{claimFeedback}</strong> to avail this discount.</div></div>
         </div>
       )}
       <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:20}}>
         {CATEGORIES.map(c=>(
-          <button key={c.id} onClick={()=>setActiveCategory(c.id)} style={{background:activeCategory===c.id?C.navy:C.surface,color:activeCategory===c.id?"white":C.textSub,border:`1.5px solid ${activeCategory===c.id?C.navy:C.border}`,borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,whiteSpace:"nowrap",transition:"all .2s",display:"flex",alignItems:"center",gap:6,minHeight:40}}>
+          <button key={c.id} onClick={()=>setActiveCategory(c.id)} style={{background:activeCategory===c.id?C.navy:C.surface,color:activeCategory===c.id?"white":C.textSub,border:`1.5px solid ${activeCategory===c.id?C.navy:C.border}`,borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,whiteSpace:"nowrap",transition:"all .2s",display:"flex",alignItems:"center",gap:6,minHeight:40,cursor:"pointer"}}>
             <Icon name={c.iconName} size={14} color={activeCategory===c.id?"white":C.textSub}/> {c.label}
           </button>
         ))}
@@ -462,11 +455,10 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C}){
   );
 }
 
-// ── CHECKOUT ──────────────────────────────────────────────────────────────────
 function CheckoutPage({item,member,onSuccess,onBack,C}){
   const[payMethod,setPayMethod]=useState(null);
-  const[cardNum,setCardNum]=useState(""); const[cardName,setCardName]=useState(""); const[cardExp,setCardExp]=useState(""); const[cardCvv,setCardCvv]=useState("");
-  const[otpInput,setOtpInput]=useState(""); const[otpSent,setOtpSent]=useState(false); const[processing,setProcessing]=useState(false); const[otpError,setOtpError]=useState(""); const[errors,setErrors]=useState({});
+  const[cardNum,setCardNum]=useState("");const[cardName,setCardName]=useState("");const[cardExp,setCardExp]=useState("");const[cardCvv,setCardCvv]=useState("");
+  const[otpInput,setOtpInput]=useState("");const[otpSent,setOtpSent]=useState(false);const[processing,setProcessing]=useState(false);const[otpError,setOtpError]=useState("");const[errors,setErrors]=useState({});
   const finalPrice=calcFinal(item)||item.originalPrice;
   const discount=item.originalPrice?item.originalPrice-finalPrice:0;
   const handlePay=()=>{const e={};if(!payMethod){alert("Please select a payment method.");return;}if((payMethod==="gcash"||payMethod==="maya")&&!otpSent){alert("Please request and enter your OTP first.");return;}if((payMethod==="gcash"||payMethod==="maya")&&otpInput!=="123456"){setOtpError("Incorrect OTP. For this demo, use: 123456");return;}if(payMethod==="card"){if(!cardNum||cardNum.replace(/\s/g,"").length<12)e.cardNum="Enter a valid card number.";if(!cardName.trim())e.cardName="Cardholder name is required.";if(!cardExp)e.cardExp="Expiry date is required.";if(!cardCvv||cardCvv.length<3)e.cardCvv="Enter a valid CVV.";}if(Object.keys(e).length>0){setErrors(e);return;}setProcessing(true);setTimeout(()=>{setProcessing(false);onSuccess({item,payMethod,voucher:genVoucher(),amount:finalPrice});},2500);};
@@ -474,29 +466,29 @@ function CheckoutPage({item,member,onSuccess,onBack,C}){
   const Err=({field})=>errors[field]?<div className="form-error"><Icon name="AlertCircle" size={12} color="#C0392B"/> {errors[field]}</div>:null;
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
-      <button onClick={onBack} style={{background:"none",border:"none",color:C.orange,fontSize:14,fontWeight:700,marginBottom:18,display:"flex",alignItems:"center",gap:6,padding:0}}><Icon name="ArrowLeft" size={16} color={C.orange}/> Back to Benefits</button>
+      <button onClick={onBack} style={{background:"none",border:"none",color:"#E8730A",fontSize:14,fontWeight:700,marginBottom:18,display:"flex",alignItems:"center",gap:6,padding:0,cursor:"pointer"}}><Icon name="ArrowLeft" size={16} color="#E8730A"/> Back to Benefits</button>
       <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:2}}>Secure Your Voucher</div>
       <div style={{color:C.textSub,fontSize:14,marginBottom:22}}>Review your order and complete payment below.</div>
       <div className="card" style={{padding:"18px 20px",marginBottom:16}}>
         <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:14,paddingBottom:12,borderBottom:`1px solid ${C.border}`}}>Order Summary</div>
         <div style={{display:"flex",gap:12,marginBottom:14}}>
           <div style={{width:42,height:42,borderRadius:10,background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={item.iconName} size={20} color={item.iconColor}/></div>
-          <div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{item.title}</div><div style={{fontSize:13,color:C.orange,fontWeight:600}}>{item.partner}</div></div>
+          <div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{item.title}</div><div style={{fontSize:13,color:"#E8730A",fontWeight:600}}>{item.partner}</div></div>
         </div>
         <div style={{background:C.gray50,borderRadius:10,padding:"12px 14px",border:`1px solid ${C.border}`}}>
           {item.originalPrice&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:C.textSub}}>Original Price</span><span style={{fontSize:13,color:C.textSub,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span></div>}
-          {discount>0&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:C.greenText,fontWeight:600}}>PRA Discount {item.discountPct?`(${item.discountPct}%)`:""}</span><span style={{fontSize:13,color:C.greenText,fontWeight:600}}>-{fmt(discount)}</span></div>}
-          <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.border}`,paddingTop:8,marginTop:4}}><span style={{fontSize:15,fontWeight:700,color:C.text}}>Total Amount</span><span style={{fontSize:18,fontWeight:800,color:C.orange}}>{fmt(finalPrice)}</span></div>
+          {discount>0&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:"#1A7A4A",fontWeight:600}}>PRA Discount {item.discountPct?`(${item.discountPct}%)`:""}</span><span style={{fontSize:13,color:"#1A7A4A",fontWeight:600}}>-{fmt(discount)}</span></div>}
+          <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.border}`,paddingTop:8,marginTop:4}}><span style={{fontSize:15,fontWeight:700,color:C.text}}>Total Amount</span><span style={{fontSize:18,fontWeight:800,color:"#E8730A"}}>{fmt(finalPrice)}</span></div>
         </div>
       </div>
       <div className="card" style={{padding:"18px 20px",marginBottom:16}}>
         <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:14}}>Select Payment Method</div>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {[{id:"gcash",label:"GCash",desc:"Pay via GCash wallet",iconName:"Smartphone",color:"#00B14F"},{id:"maya",label:"Maya",desc:"Pay via Maya e-wallet",iconName:"Smartphone",color:"#6B21C6"},{id:"card",label:"Credit / Debit Card",desc:"Visa, Mastercard, JCB",iconName:"CreditCard",color:C.navyMid}].map(pm=>(
-            <div key={pm.id} onClick={()=>{setPayMethod(pm.id);setOtpSent(false);setOtpInput("");setOtpError("");}} style={{border:`1.5px solid ${payMethod===pm.id?C.orange:C.border}`,borderRadius:12,padding:"14px 16px",display:"flex",alignItems:"center",gap:12,background:payMethod===pm.id?C.orangePale:C.surface,cursor:"pointer",transition:"all .2s"}}>
+          {[{id:"gcash",label:"GCash",desc:"Pay via GCash wallet",iconName:"Smartphone",color:"#00B14F"},{id:"maya",label:"Maya",desc:"Pay via Maya e-wallet",iconName:"Smartphone",color:"#6B21C6"},{id:"card",label:"Credit / Debit Card",desc:"Visa, Mastercard, JCB",iconName:"CreditCard",color:"#1E4D7B"}].map(pm=>(
+            <div key={pm.id} onClick={()=>{setPayMethod(pm.id);setOtpSent(false);setOtpInput("");setOtpError("");}} style={{border:`1.5px solid ${payMethod===pm.id?"#E8730A":C.border}`,borderRadius:12,padding:"14px 16px",display:"flex",alignItems:"center",gap:12,background:payMethod===pm.id?C.orangePale:C.surface,cursor:"pointer",transition:"all .2s"}}>
               <div style={{width:40,height:40,borderRadius:10,background:pm.color+"18",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={pm.iconName} size={20} color={pm.color}/></div>
               <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{pm.label}</div><div style={{fontSize:13,color:C.textSub}}>{pm.desc}</div></div>
-              <div style={{width:20,height:20,borderRadius:"50%",border:`2px solid ${payMethod===pm.id?C.orange:C.gray400}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{payMethod===pm.id&&<div style={{width:9,height:9,borderRadius:"50%",background:C.orange}}/>}</div>
+              <div style={{width:20,height:20,borderRadius:"50%",border:`2px solid ${payMethod===pm.id?"#E8730A":C.gray400}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{payMethod===pm.id&&<div style={{width:9,height:9,borderRadius:"50%",background:"#E8730A"}}/>}</div>
             </div>
           ))}
         </div>
@@ -507,10 +499,7 @@ function CheckoutPage({item,member,onSuccess,onBack,C}){
           <div style={{fontSize:14,color:C.textSub,marginBottom:14}}>A 6-digit OTP will be sent to <strong style={{color:C.text}}>{member.mobile}</strong>.</div>
           {!otpSent
             ?<button className="btn-primary" style={{width:"100%",background:payMethod==="gcash"?"#00B14F":"#6B21C6"}} onClick={()=>setOtpSent(true)}><Icon name="Smartphone" size={16} color="white"/> Send OTP to {member.mobile}</button>
-            :<>
-              <div style={{background:C.greenLight,border:`1px solid ${C.greenText}`,borderRadius:8,padding:10,marginBottom:14,fontSize:13,color:C.greenText,fontWeight:600}}>OTP sent! For this demo, the code is: <strong>123456</strong></div>
-              <div><label className="form-label">Enter 6-Digit OTP</label><input className={`form-input${otpError?" error":""}`} value={otpInput} onChange={e=>{setOtpInput(e.target.value.replace(/\D/g,"").slice(0,6));setOtpError("");}} placeholder="- - - - - -" style={{fontSize:22,letterSpacing:10,textAlign:"center"}} maxLength={6}/>{otpError&&<div className="form-error"><Icon name="AlertCircle" size={12} color="#C0392B"/> {otpError}</div>}</div>
-            </>
+            :<><div style={{background:C.greenLight,border:"1px solid #1A7A4A",borderRadius:8,padding:10,marginBottom:14,fontSize:13,color:"#1A7A4A",fontWeight:600}}>OTP sent! For this demo, the code is: <strong>123456</strong></div><div><label className="form-label">Enter 6-Digit OTP</label><input className={`form-input${otpError?" error":""}`} value={otpInput} onChange={e=>{setOtpInput(e.target.value.replace(/\D/g,"").slice(0,6));setOtpError("");}} placeholder="- - - - - -" style={{fontSize:22,letterSpacing:10,textAlign:"center"}} maxLength={6}/>{otpError&&<div className="form-error"><Icon name="AlertCircle" size={12} color="#C0392B"/> {otpError}</div>}</div></>
           }
         </div>
       )}
@@ -528,12 +517,11 @@ function CheckoutPage({item,member,onSuccess,onBack,C}){
       <button className="btn-primary" style={{width:"100%",fontSize:17,padding:"16px 28px",minHeight:58}} onClick={handlePay} disabled={processing}>
         {processing?<><Spinner/> Processing Payment...</>:<><Icon name="Lock" size={16} color="white"/> Confirm Payment - {fmt(finalPrice)}</>}
       </button>
-      <div style={{textAlign:"center",marginTop:12,fontSize:12,color:C.textSub,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="Lock" size={12} color={C.textSub}/> Secured by PRA Digital Platform - SSL Encrypted</div>
+      <div style={{textAlign:"center",marginTop:12,fontSize:12,color:C.textSub,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="Lock" size={12} color={C.textSub}/> Secured by PRA Digital Platform</div>
     </div>
   );
 }
 
-// ── PAYMENT SUCCESS ───────────────────────────────────────────────────────────
 function PaymentSuccess({result,member,onDone,C}){
   const methodLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
   const now=new Date();
@@ -541,18 +529,18 @@ function PaymentSuccess({result,member,onDone,C}){
   const timeStr=now.toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
   return(
     <div className="slide-up" style={{padding:"32px 18px",textAlign:"center"}}>
-      <div className="pulse" style={{width:88,height:88,borderRadius:"50%",background:C.greenLight,border:`3px solid ${C.greenText}`,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
-        <Icon name="CheckCircle" size={42} color={C.greenText}/>
+      <div className="pulse" style={{width:88,height:88,borderRadius:"50%",background:C.greenLight,border:"3px solid #1A7A4A",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
+        <Icon name="CheckCircle" size={42} color="#1A7A4A"/>
       </div>
-      <div style={{fontSize:26,fontWeight:700,color:C.greenText,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Payment Successful!</div>
+      <div style={{fontSize:26,fontWeight:700,color:"#1A7A4A",fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Payment Successful!</div>
       <div style={{fontSize:15,color:C.textSub,marginBottom:26}}>Your voucher has been confirmed. Save or print the details below.</div>
-      <div className="card" style={{padding:0,marginBottom:24,overflow:"hidden",border:`2px solid ${C.orange}`}}>
+      <div className="card" style={{padding:0,marginBottom:24,overflow:"hidden",border:"2px solid #E8730A"}}>
         <div style={{background:C.navy,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>PRA Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div>
           <StatusBadge type="green">CONFIRMED</StatusBadge>
         </div>
         <div style={{padding:"18px 20px"}}>
-          <div style={{fontSize:26,fontWeight:800,color:C.orange,fontFamily:"monospace",letterSpacing:3,marginBottom:2,textAlign:"center"}}>{result.voucher}</div>
+          <div style={{fontSize:26,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:3,marginBottom:2,textAlign:"center"}}>{result.voucher}</div>
           <div style={{fontSize:12,color:C.textSub,textAlign:"center",marginBottom:18}}>Voucher Reference Number</div>
           <div style={{background:C.gray50,borderRadius:10,padding:"12px 14px",border:`1px solid ${C.border}`}}>
             {[["Benefit",result.item.title],["Partner",result.item.partner],["Member",`${member.firstName} ${member.lastName}`],["PRA ID",member.praId],["Amount Paid",fmt(result.amount)],["Payment Via",methodLabel[result.payMethod]],["Date and Time",`${dateStr}, ${timeStr}`],["Validity",result.item.voucherValidity]].map(([label,value])=>(
@@ -562,7 +550,7 @@ function PaymentSuccess({result,member,onDone,C}){
               </div>
             ))}
           </div>
-          <div style={{marginTop:12,fontSize:12,color:C.textSub,lineHeight:1.6}}>Present this voucher code at the partner establishment. Take a screenshot or print this page. This voucher is non-transferable.</div>
+          <div style={{marginTop:12,fontSize:12,color:C.textSub,lineHeight:1.6}}>Present this voucher code at the partner establishment. This voucher is non-transferable.</div>
         </div>
       </div>
       <button className="btn-primary" style={{width:"100%",marginBottom:10}} onClick={()=>window.print()}><Icon name="Printer" size={16} color="white"/> Print / Save Voucher</button>
@@ -571,19 +559,14 @@ function PaymentSuccess({result,member,onDone,C}){
   );
 }
 
-// ── PROFILE ───────────────────────────────────────────────────────────────────
 function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C}){
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
       <div style={{fontSize:22,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:18}}>My Profile</div>
-      <div className="card" style={{marginBottom:18,padding:"22px 22px"}}>
+      <div className="card" style={{marginBottom:18,padding:"22px"}}>
         <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:18,paddingBottom:18,borderBottom:`1px solid ${C.border}`}}>
-          <div style={{width:62,height:62,borderRadius:"50%",background:C.orangePale,border:`2.5px solid ${C.orange}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:700,color:C.orange,flexShrink:0}}>{member.firstName[0]}{member.lastName[0]}</div>
-          <div>
-            <div style={{fontSize:20,fontWeight:700,color:C.text}}>{member.firstName} {member.lastName}</div>
-            <StatusBadge type="green">SRRV Active Member</StatusBadge>
-            <div style={{fontSize:13,color:C.textSub,marginTop:4}}>{member.email}</div>
-          </div>
+          <div style={{width:62,height:62,borderRadius:"50%",background:C.orangePale,border:"2.5px solid #E8730A",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:700,color:"#E8730A",flexShrink:0}}>{member.firstName[0]}{member.lastName[0]}</div>
+          <div><div style={{fontSize:20,fontWeight:700,color:C.text}}>{member.firstName} {member.lastName}</div><StatusBadge type="green">SRRV Active Member</StatusBadge><div style={{fontSize:13,color:C.textSub,marginTop:4}}>{member.email}</div></div>
         </div>
         {[["Full Name",`${member.firstName} ${member.lastName}`],["Date of Birth",member.dob],["Age",`${member.age} years old`],["Address",[member.street,member.barangay,member.city,member.province].filter(Boolean).join(", ")],["Mobile Number",member.mobile],["Email Address",member.email],["PRA ID",member.praId],["Senior ID",member.seniorId||"Not provided"]].map(([label,value])=>(
           <div key={label} style={{display:"flex",justifyContent:"space-between",gap:12,padding:"9px 0",borderBottom:`1px solid ${C.border}`}}>
@@ -593,24 +576,18 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C}){
         ))}
       </div>
       <div style={{marginBottom:18}}><PRACard member={member} C={C}/></div>
-
-      {/* Preferences */}
       <div className="card" style={{marginBottom:18}}>
-        <div style={{padding:"16px 20px",borderBottom:`1px solid ${C.border}`}}>
-          <div style={{fontSize:14,fontWeight:700,color:C.textSub,textTransform:"uppercase",letterSpacing:.5}}>Preferences</div>
-        </div>
+        <div style={{padding:"16px 20px",borderBottom:`1px solid ${C.border}`}}><div style={{fontSize:14,fontWeight:700,color:C.textSub,textTransform:"uppercase",letterSpacing:.5}}>Preferences</div></div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 20px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <Icon name={darkMode?"Moon":"Sun"} size={18} color={C.orange}/>
+            <Icon name={darkMode?"Moon":"Sun"} size={18} color="#E8730A"/>
             <div><div style={{fontSize:14,fontWeight:600,color:C.text}}>Appearance</div><div style={{fontSize:12,color:C.textSub}}>{darkMode?"Dark mode is on":"Light mode is on"}</div></div>
           </div>
-          <button onClick={toggleDark} style={{background:darkMode?C.orange:C.gray200,border:"none",borderRadius:12,width:44,height:24,position:"relative",transition:"background .3s",cursor:"pointer"}}>
+          <button onClick={toggleDark} style={{background:darkMode?"#E8730A":C.gray200,border:"none",borderRadius:12,width:44,height:24,position:"relative",transition:"background .3s",cursor:"pointer"}}>
             <div style={{width:18,height:18,borderRadius:"50%",background:"white",position:"absolute",top:3,left:darkMode?23:3,transition:"left .3s",boxShadow:"0 1px 3px rgba(0,0,0,0.2)"}}/>
           </button>
         </div>
       </div>
-
-      {/* Switch to Admin */}
       <button onClick={onSwitchToAdmin} style={{width:"100%",background:C.navy,color:"white",border:"none",borderRadius:12,padding:"16px 20px",fontSize:15,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:10,cursor:"pointer",transition:"opacity .2s"}}
         onMouseEnter={e=>e.currentTarget.style.opacity=".88"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
         <Icon name="ShieldCheck" size={18} color="white"/> Switch to Admin Demo
@@ -619,22 +596,21 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C}){
   );
 }
 
-// ── NAV BAR ───────────────────────────────────────────────────────────────────
 function NavBar({active,onNavigate,memberName,C}){
   const tabs=[{id:"dashboard",label:"Home",iconName:"LayoutDashboard"},{id:"benefits",label:"Benefits",iconName:"Ticket"},{id:"profile",label:"Profile",iconName:"UserCircle"}];
   return(
     <>
       <div style={{background:C.navy,padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{background:C.orange,borderRadius:7,padding:"5px 9px",fontWeight:800,fontSize:13,color:"white",letterSpacing:1}}>PRA</div>
+          <div style={{background:"#E8730A",borderRadius:7,padding:"5px 9px",fontWeight:800,fontSize:13,color:"white",letterSpacing:1}}>PRA</div>
           <div style={{color:"rgba(255,255,255,0.9)",fontWeight:700,fontSize:15}}>Senior Benefits</div>
         </div>
         <div style={{color:"rgba(255,255,255,0.65)",fontSize:13,display:"flex",alignItems:"center",gap:6}}><Icon name="UserCircle" size={14} color="rgba(255,255,255,0.65)"/> {memberName}</div>
       </div>
       <div style={{position:"fixed",bottom:0,left:0,right:0,background:C.surface,borderTop:`1.5px solid ${C.border}`,display:"flex",zIndex:100,boxShadow:"0 -3px 12px rgba(0,0,0,0.06)"}}>
         {tabs.map(t=>(
-          <button key={t.id} onClick={()=>onNavigate(t.id)} style={{flex:1,background:"none",border:"none",padding:"10px 4px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,color:active===t.id?C.orange:C.gray400,cursor:"pointer",transition:"color .2s",borderTop:active===t.id?`2.5px solid ${C.orange}`:"2.5px solid transparent"}}>
-            <Icon name={t.iconName} size={21} color={active===t.id?C.orange:C.gray400}/>
+          <button key={t.id} onClick={()=>onNavigate(t.id)} style={{flex:1,background:"none",border:"none",padding:"10px 4px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,color:active===t.id?"#E8730A":C.gray400,cursor:"pointer",transition:"color .2s",borderTop:active===t.id?"2.5px solid #E8730A":"2.5px solid transparent"}}>
+            <Icon name={t.iconName} size={21} color={active===t.id?"#E8730A":C.gray400}/>
             <span style={{fontSize:11,fontWeight:active===t.id?700:500}}>{t.label}</span>
           </button>
         ))}
@@ -643,7 +619,6 @@ function NavBar({active,onNavigate,memberName,C}){
   );
 }
 
-// ── ADMIN PANEL ───────────────────────────────────────────────────────────────
 function AdminPanel({onSwitchToMember,darkMode,toggleDark,C}){
   const[activeTab,setActiveTab]=useState("dashboard");
   const[benefits,setBenefits]=useState(BENEFITS);
@@ -658,41 +633,225 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C}){
   const iconMap={health:"Heart",travel:"Plane",dining:"UtensilsCrossed",entertainment:"Film"};
   const colorMap={health:"#e74c3c",travel:"#3498db",dining:"#27ae60",entertainment:"#9b59b6"};
   const catLabelMap={health:"Health & Wellness",travel:"Travel & Hotels",dining:"Food & Dining",entertainment:"Entertainment & Leisure"};
-
-  const saveBenefit=()=>{
-    if(!nb.title||!nb.partner)return;
-    const obj={...nb,iconName:iconMap[nb.category],iconColor:colorMap[nb.category],categoryLabel:catLabelMap[nb.category],originalPrice:nb.originalPrice?Number(nb.originalPrice):null,discountPct:nb.discountPct?Number(nb.discountPct):null};
-    if(editingId){setBenefits(bs=>bs.map(b=>b.id===editingId?{...b,...obj}:b));setEditingId(null);}
-    else setBenefits(bs=>[...bs,{...obj,id:"b"+Date.now(),active:true}]);
-    setNb({title:"",partner:"",category:"health",location:"",description:"",originalPrice:"",discountPct:"",tag:"",type:"purchase",voucherValidity:""});
-    setShowAddBenefit(false);
-  };
-  const saveAnn=()=>{
-    if(!na.title||!na.body)return;
-    setAnnouncements(as=>[...as,{...na,id:"a"+Date.now(),date:new Date().toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}),active:true}]);
-    setNa({title:"",body:"",type:"info"});setShowAddAnn(false);
-  };
+  const saveBenefit=()=>{if(!nb.title||!nb.partner)return;const obj={...nb,iconName:iconMap[nb.category],iconColor:colorMap[nb.category],categoryLabel:catLabelMap[nb.category],originalPrice:nb.originalPrice?Number(nb.originalPrice):null,discountPct:nb.discountPct?Number(nb.discountPct):null};if(editingId){setBenefits(bs=>bs.map(b=>b.id===editingId?{...b,...obj}:b));setEditingId(null);}else setBenefits(bs=>[...bs,{...obj,id:"b"+Date.now(),active:true}]);setNb({title:"",partner:"",category:"health",location:"",description:"",originalPrice:"",discountPct:"",tag:"",type:"purchase",voucherValidity:""});setShowAddBenefit(false);};
+  const saveAnn=()=>{if(!na.title||!na.body)return;setAnnouncements(as=>[...as,{...na,id:"a"+Date.now(),date:new Date().toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}),active:true}]);setNa({title:"",body:"",type:"info"});setShowAddAnn(false);};
   const IR=({label,value,onChange,placeholder,type="text"})=>(<div style={{marginBottom:12}}><label className="form-label">{label}</label><input type={type} className="form-input" value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder}/></div>);
-
   return(
     <div style={{minHeight:"100vh",background:C.bg}}>
       <div style={{background:C.navy,padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{background:C.orange,borderRadius:7,padding:"5px 9px",fontWeight:800,fontSize:13,color:"white",letterSpacing:1}}>PRA</div>
+          <div style={{background:"#E8730A",borderRadius:7,padding:"5px 9px",fontWeight:800,fontSize:13,color:"white",letterSpacing:1}}>PRA</div>
           <div style={{color:"rgba(255,255,255,0.9)",fontWeight:700,fontSize:15}}>Admin Console</div>
           <StatusBadge type="orange">Demo</StatusBadge>
         </div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={toggleDark} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,padding:"6px 10px",color:"white",display:"flex",alignItems:"center",gap:6,cursor:"pointer",fontSize:13}}>
-            <Icon name={darkMode?"Sun":"Moon"} size={14} color="white"/>
-          </button>
-          <button onClick={onSwitchToMember} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:8,padding:"7px 12px",color:"white",fontWeight:600,fontSize:13,display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}>
-            <Icon name="UserCircle" size={14} color="white"/> Switch to Member Demo
-          </button>
+          <button onClick={toggleDark} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,padding:"6px 10px",color:"white",display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}><Icon name={darkMode?"Sun":"Moon"} size={14} color="white"/></button>
+          <button onClick={onSwitchToMember} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:8,padding:"7px 12px",color:"white",fontWeight:600,fontSize:13,display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}><Icon name="UserCircle" size={14} color="white"/> Switch to Member Demo</button>
         </div>
       </div>
       <div style={{display:"flex",maxWidth:960,margin:"0 auto",minHeight:"calc(100vh - 56px)"}}>
-        {/* Sidebar */}
         <div style={{width:200,flexShrink:0,background:C.surface,borderRight:`1px solid ${C.border}`,padding:"20px 0",position:"sticky",top:56,height:"calc(100vh - 56px)",overflowY:"auto"}}>
           {adminTabs.map(t=>(
-            <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{width:"100%",background:activeTab===t.id?C.orangePale:"none",color:activeTab===t.id?C.orange:C.textSub,border:"none",borderLeft:activeTab===t.id?`3px solid ${C.oran
+            <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{width:"100%",background:activeTab===t.id?C.orangePale:"none",color:activeTab===t.id?"#E8730A":C.textSub,border:"none",borderLeft:activeTab===t.id?"3px solid #E8730A":"3px solid transparent",padding:"12px 20px",fontSize:14,fontWeight:activeTab===t.id?700:500,display:"flex",alignItems:"center",gap:10,cursor:"pointer",transition:"all .2s",textAlign:"left"}}>
+              <Icon name={t.iconName} size={17} color={activeTab===t.id?"#E8730A":C.textSub}/> {t.label}
+            </button>
+          ))}
+        </div>
+        <div style={{flex:1,padding:"24px",overflowY:"auto"}}>
+          {activeTab==="dashboard"&&(
+            <div className="fade-in">
+              <div style={{fontSize:20,fontWeight:700,color:C.text,marginBottom:20,fontFamily:"'Libre Baskerville',serif"}}>Admin Dashboard</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,marginBottom:24}}>
+                {[{label:"Total Members",value:MOCK_MEMBERS.length,sub:`${MOCK_MEMBERS.filter(m=>m.status==="Active").length} active`,iconName:"Users",color:"#3498db"},{label:"Transactions",value:MOCK_TRANSACTIONS.length,sub:"This month",iconName:"ReceiptText",color:"#27ae60"},{label:"Total Revenue",value:"PhP "+totalRevenue.toLocaleString(),sub:"All time",iconName:"TrendingUp",color:"#E8730A"},{label:"Active Benefits",value:benefits.filter(b=>b.active).length,sub:`${CATEGORIES.length-1} categories`,iconName:"Ticket",color:"#9b59b6"}].map(stat=>(
+                  <div key={stat.label} className="card" style={{padding:"16px 18px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                      <div style={{fontSize:12,color:C.textSub,fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>{stat.label}</div>
+                      <div style={{width:32,height:32,borderRadius:8,background:stat.color+"18",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={stat.iconName} size={16} color={stat.color}/></div>
+                    </div>
+                    <div style={{fontSize:22,fontWeight:800,color:C.text}}>{stat.value}</div>
+                    <div style={{fontSize:12,color:C.textSub,marginTop:2}}>{stat.sub}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:12}}>Recent Transactions</div>
+              <div className="card" style={{overflow:"hidden"}}>
+                {MOCK_TRANSACTIONS.slice(0,3).map((tx,i)=>(
+                  <div key={tx.id} style={{padding:"13px 18px",borderBottom:i<2?`1px solid ${C.border}`:"none",display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
+                    <div><div style={{fontSize:14,fontWeight:600,color:C.text}}>{tx.member}</div><div style={{fontSize:12,color:C.textSub}}>{tx.benefit}</div></div>
+                    <div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:14,fontWeight:700,color:"#E8730A"}}>PhP {tx.amount.toLocaleString()}</div><div style={{fontSize:11,color:C.textSub}}>{tx.date}</div></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeTab==="members"&&(
+            <div className="fade-in">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
+                <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif"}}>Members</div>
+                <StatusBadge type="blue">{MOCK_MEMBERS.length} Total</StatusBadge>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:12}}>
+                {MOCK_MEMBERS.map(m=>(
+                  <div key={m.id} className="card" style={{padding:"16px 18px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                      <div style={{display:"flex",gap:12,alignItems:"center"}}>
+                        <div style={{width:42,height:42,borderRadius:"50%",background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:16,color:"#E8730A",flexShrink:0}}>{m.firstName[0]}{m.lastName[0]}</div>
+                        <div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{m.firstName} {m.lastName}</div><div style={{fontSize:13,color:C.textSub}}>{m.email}</div><div style={{fontSize:12,color:C.textSub,marginTop:2}}>{m.praId} - Age {m.age} - {m.city}</div></div>
+                      </div>
+                      <StatusBadge type={m.status==="Active"?"green":"gray"}>{m.status}</StatusBadge>
+                    </div>
+                    <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,fontSize:12,color:C.textSub}}>Member since: {m.joinDate} - {m.province}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeTab==="transactions"&&(
+            <div className="fade-in">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
+                <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif"}}>Transactions</div>
+                <StatusBadge type="green">PhP {totalRevenue.toLocaleString()} total</StatusBadge>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:12}}>
+                {MOCK_TRANSACTIONS.map(tx=>(
+                  <div key={tx.id} className="card" style={{padding:"16px 18px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                      <div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{tx.benefit}</div><div style={{fontSize:13,color:"#E8730A",fontWeight:600}}>{tx.partner}</div></div>
+                      <div style={{textAlign:"right"}}><div style={{fontSize:16,fontWeight:800,color:C.text}}>PhP {tx.amount.toLocaleString()}</div><StatusBadge type="green">{tx.status}</StatusBadge></div>
+                    </div>
+                    <div style={{fontSize:12,color:C.textSub,display:"flex",flexWrap:"wrap",gap:12}}>
+                      <span style={{display:"flex",alignItems:"center",gap:4}}><Icon name="Users" size={11} color={C.textSub}/>{tx.member}</span>
+                      <span style={{display:"flex",alignItems:"center",gap:4}}><Icon name="CreditCard" size={11} color={C.textSub}/>{tx.method}</span>
+                      <span style={{display:"flex",alignItems:"center",gap:4}}><Icon name="Calendar" size={11} color={C.textSub}/>{tx.date}</span>
+                      <span style={{display:"flex",alignItems:"center",gap:4}}><Icon name="Ticket" size={11} color={C.textSub}/>{tx.voucher}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeTab==="benefits"&&(
+            <div className="fade-in">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
+                <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif"}}>Benefits / Promos</div>
+                <button className="btn-primary" style={{fontSize:13,padding:"9px 16px",minHeight:38}} onClick={()=>{setShowAddBenefit(true);setEditingId(null);setNb({title:"",partner:"",category:"health",location:"",description:"",originalPrice:"",discountPct:"",tag:"",type:"purchase",voucherValidity:""});}}>
+                  <Icon name="Plus" size={15} color="white"/> Add Benefit
+                </button>
+              </div>
+              {showAddBenefit&&(
+                <div className="card fade-in" style={{padding:"20px 22px",marginBottom:18,border:"2px solid #E8730A"}}>
+                  <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:16}}>{editingId?"Edit Benefit":"Add New Benefit"}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+                    <IR label="Title *" value={nb.title} onChange={v=>setNb(b=>({...b,title:v}))} placeholder="Benefit title"/>
+                    <IR label="Partner *" value={nb.partner} onChange={v=>setNb(b=>({...b,partner:v}))} placeholder="Partner name"/>
+                    <div><label className="form-label">Category</label><select className="form-input" value={nb.category} onChange={e=>setNb(b=>({...b,category:e.target.value}))}><option value="health">Health & Wellness</option><option value="travel">Travel & Hotels</option><option value="dining">Food & Dining</option><option value="entertainment">Entertainment</option></select></div>
+                    <div><label className="form-label">Type</label><select className="form-input" value={nb.type} onChange={e=>setNb(b=>({...b,type:e.target.value}))}><option value="purchase">Purchase</option><option value="claim">Claim (Free)</option></select></div>
+                    <IR label="Location" value={nb.location} onChange={v=>setNb(b=>({...b,location:v}))} placeholder="e.g. All branches nationwide"/>
+                    <IR label="Tag" value={nb.tag} onChange={v=>setNb(b=>({...b,tag:v}))} placeholder="e.g. 20% off for PRA Members"/>
+                    <IR label="Original Price" value={nb.originalPrice} onChange={v=>setNb(b=>({...b,originalPrice:v}))} placeholder="e.g. 8500" type="number"/>
+                    <IR label="Discount %" value={nb.discountPct} onChange={v=>setNb(b=>({...b,discountPct:v}))} placeholder="e.g. 20" type="number"/>
+                  </div>
+                  <div style={{marginBottom:14}}><label className="form-label">Description</label><textarea className="form-input" value={nb.description} onChange={e=>setNb(b=>({...b,description:e.target.value}))} placeholder="Full benefit description..." rows={3} style={{resize:"vertical"}}/></div>
+                  <IR label="Voucher Validity" value={nb.voucherValidity} onChange={v=>setNb(b=>({...b,voucherValidity:v}))} placeholder="e.g. Valid until December 31, 2026"/>
+                  <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+                    <button className="btn-ghost" onClick={()=>{setShowAddBenefit(false);setEditingId(null);}}>Cancel</button>
+                    <button className="btn-primary" onClick={saveBenefit}><Icon name="Check" size={15} color="white"/> {editingId?"Save Changes":"Add Benefit"}</button>
+                  </div>
+                </div>
+              )}
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {benefits.map(b=>(
+                  <div key={b.id} className="card" style={{padding:"14px 18px"}}>
+                    <div style={{display:"flex",gap:12,alignItems:"center"}}>
+                      <div style={{width:40,height:40,borderRadius:10,background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={b.iconName} size={18} color={b.iconColor}/></div>
+                      <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{b.title}</div><div style={{fontSize:13,color:"#E8730A"}}>{b.partner}</div><div style={{fontSize:12,color:C.textSub}}>{b.categoryLabel}</div></div>
+                      <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                        <StatusBadge type={b.type==="purchase"?"orange":"green"}>{b.type}</StatusBadge>
+                        <button onClick={()=>{setEditingId(b.id);setNb({title:b.title,partner:b.partner,category:b.category,location:b.location||"",description:b.description||"",originalPrice:b.originalPrice||"",discountPct:b.discountPct||"",tag:b.tag||"",type:b.type,voucherValidity:b.voucherValidity||""});setShowAddBenefit(true);}} style={{background:"none",border:"none",color:C.textSub,cursor:"pointer",padding:6}}><Icon name="Pencil" size={15} color={C.textSub}/></button>
+                        <button onClick={()=>setBenefits(bs=>bs.filter(x=>x.id!==b.id))} style={{background:"none",border:"none",color:"#C0392B",cursor:"pointer",padding:6}}><Icon name="Trash2" size={15} color="#C0392B"/></button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeTab==="announcements"&&(
+            <div className="fade-in">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
+                <div style={{fontSize:20,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif"}}>Announcements</div>
+                <button className="btn-primary" style={{fontSize:13,padding:"9px 16px",minHeight:38}} onClick={()=>setShowAddAnn(true)}><Icon name="Plus" size={15} color="white"/> Add Announcement</button>
+              </div>
+              {showAddAnn&&(
+                <div className="card fade-in" style={{padding:"20px 22px",marginBottom:18,border:"2px solid #E8730A"}}>
+                  <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:14}}>New Announcement</div>
+                  <IR label="Title *" value={na.title} onChange={v=>setNa(a=>({...a,title:v}))} placeholder="Announcement title"/>
+                  <div style={{marginBottom:14}}><label className="form-label">Body *</label><textarea className="form-input" value={na.body} onChange={e=>setNa(a=>({...a,body:e.target.value}))} placeholder="Announcement content..." rows={3} style={{resize:"vertical"}}/></div>
+                  <div style={{marginBottom:16}}><label className="form-label">Type</label><select className="form-input" value={na.type} onChange={e=>setNa(a=>({...a,type:e.target.value}))}><option value="info">Info</option><option value="new">New</option><option value="reminder">Reminder</option></select></div>
+                  <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+                    <button className="btn-ghost" onClick={()=>setShowAddAnn(false)}>Cancel</button>
+                    <button className="btn-primary" onClick={saveAnn}><Icon name="Check" size={15} color="white"/> Post Announcement</button>
+                  </div>
+                </div>
+              )}
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {announcements.map(ann=>(
+                  <div key={ann.id} className="card" style={{padding:"14px 18px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:10,marginBottom:6}}>
+                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{ann.title}</div>
+                      <div style={{display:"flex",gap:8,alignItems:"center",flexShrink:0}}><AnnBadge type={ann.type}/><button onClick={()=>setAnnouncements(as=>as.filter(a=>a.id!==ann.id))} style={{background:"none",border:"none",color:"#C0392B",cursor:"pointer",padding:4}}><Icon name="Trash2" size={14} color="#C0392B"/></button></div>
+                    </div>
+                    <div style={{fontSize:13,color:C.textSub,lineHeight:1.6,marginBottom:4}}>{ann.body}</div>
+                    <div style={{fontSize:11,color:C.textSub,display:"flex",alignItems:"center",gap:4}}><Icon name="Clock" size={11} color={C.textSub}/> {ann.date}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App(){
+  const[view,setView]=useState("register");
+  const[mode,setMode]=useState("member");
+  const[member,setMember]=useState(null);
+  const[selectedBenefit,setSelectedBenefit]=useState(null);
+  const[successResult,setSuccessResult]=useState(null);
+  const[benefitCategory,setBenefitCategory]=useState("all");
+  const[claimedIds,setClaimedIds]=useState([]);
+  const[darkMode,setDarkMode]=useState(false);
+  const C=getC(darkMode);
+  useEffect(()=>{document.body.className=darkMode?"dark":"light";},[darkMode]);
+  const nav=(page,cat="all")=>{setBenefitCategory(cat);setView(page);window.scrollTo({top:0,behavior:"smooth"});};
+  const purchase=(item)=>{setSelectedBenefit(item);setView("checkout");window.scrollTo({top:0,behavior:"smooth"});};
+  const paySuccess=(result)=>{setSuccessResult(result);setView("success");window.scrollTo({top:0,behavior:"smooth"});};
+  const claim=(item)=>setClaimedIds(ids=>[...ids,item.id]);
+  const toggleDark=()=>setDarkMode(d=>!d);
+  return(
+    <>
+      {view==="register"&&<RegistrationPage onComplete={data=>{setMember(data);setView("dashboard");}} C={C}/>}
+      {view!=="register"&&member&&mode==="member"&&(
+        <div style={{paddingBottom:80,background:C.bg,minHeight:"100vh"}}>
+          <NavBar active={["checkout","success"].includes(view)?"benefits":view} onNavigate={nav} memberName={member.firstName} C={C}/>
+          <div style={{maxWidth:640,margin:"0 auto"}}>
+            {view==="dashboard"&&<Dashboard member={member} onNavigate={nav} onPurchase={purchase} onClaim={claim} claimedIds={claimedIds} benefits={BENEFITS} announcements={ANNOUNCEMENTS} C={C}/>}
+            {view==="benefits"&&<BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={purchase} C={C}/>}
+            {view==="checkout"&&selectedBenefit&&<CheckoutPage item={selectedBenefit} member={member} onSuccess={paySuccess} onBack={()=>setView("benefits")} C={C}/>}
+            {view==="success"&&successResult&&<PaymentSuccess result={successResult} member={member} onDone={()=>{setView("benefits");window.scrollTo({top:0});}} C={C}/>}
+            {view==="profile"&&<ProfilePage member={member} onSwitchToAdmin={()=>setMode("admin")} darkMode={darkMode} toggleDark={toggleDark} C={C}/>}
+          </div>
+        </div>
+      )}
+      {mode==="admin"&&member&&<AdminPanel onSwitchToMember={()=>setMode("member")} darkMode={darkMode} toggleDark={toggleDark} C={C}/>}
+    </>
+  );
+}
+
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
+</script>
+</body>
+</html>
