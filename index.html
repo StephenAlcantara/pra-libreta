@@ -86,6 +86,8 @@ const IMG_HEADER = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
 
 
 
+
+
 const {useState,useEffect,useRef}=React;
 
 const ICON_PATHS={
@@ -212,7 +214,7 @@ function PRACard({member,C}){
       <div style={{position:"absolute",bottom:-30,left:-20,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,0.03)"}}/>
       {/* Header with real PRA logo */}
       <div style={{marginBottom:16,paddingBottom:14,borderBottom:"1px solid rgba(255,255,255,0.12)"}}>
-        <img src={IMG_HEADER} alt="PRA Libreta" style={{height:44,objectFit:"contain",objectPosition:"left",filter:"brightness(0) invert(1)",maxWidth:"100%"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><img src={IMG_HEADER} alt="PRA" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.4)",flexShrink:0}}/><div style={{color:"white",fontWeight:800,fontSize:15,lineHeight:1.2}}>PRA <span style={{color:"#F08030"}}>Libreta</span><div style={{fontSize:10,color:"rgba(255,255,255,0.5)",fontWeight:400,marginTop:1}}>Philippine Retirement Authority</div></div></div>
       </div>
       <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Senior Benefits Card — Libreta</div>
       <div style={{fontSize:21,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:18}}>{member.firstName} {member.lastName}</div>
@@ -372,7 +374,7 @@ function RegistrationPage({onComplete,C,onBack}){
         <img src={IMG_HEADER} alt="PRA" style={{width:44,height:44,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/><div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div>
         <div style={{color:"rgba(255,255,255,0.55)",fontSize:12,marginLeft:4}}>Libreta — Senior Benefits Platform</div>
       </div>
-      <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"28px 16px 48px",flexDirection:"column"}}>
+      <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"28px 16px 48px"}}>
         <div style={{width:"100%",maxWidth:540}} className="fade-in">
           <div className="card" style={{padding:"24px 28px",marginBottom:20}}>
             <div style={{marginBottom:16}}><div style={{fontSize:22,fontWeight:700,color:"#0A2540",marginBottom:2,fontFamily:"'Libre Baskerville',serif"}}>{STEPS[step-1]}</div><div style={{color:C.textSub,fontSize:14}}>Step {step} of 3</div></div>
@@ -1239,6 +1241,29 @@ Be concise, warm, and helpful. Answer in the language the user writes in (Englis
     setLoading(true);
     try{
       const history=messages.map(m=>({role:m.role==="assistant"?"assistant":"user",content:m.text}));
+      // Check if running from file:// (local) vs hosted
+      const isLocal=window.location.protocol==="file:";
+      if(isLocal){
+        // Simulate a helpful response in local/demo mode
+        const demoReplies={
+          "renew":"To renew your SRRV, start your application from the dashboard — tap the 'Start Renewal Application' button on the SRRV Visa Status card. You'll need your passport, ACR I-Card, annual fee receipt, and a medical certificate.",
+          "expire":"You can check your visa expiry on the Home dashboard — the SRRV Visa Status card shows your exact expiry date and days remaining.",
+          "benefit":"Browse all your PRA Libreta benefits in the Benefits tab. Tap 'Details' on any benefit to see partner info, location, and full terms before purchasing.",
+          "voucher":"After purchasing, your vouchers are in the My Vouchers tab. Tap any voucher to expand it and show the QR code to the partner establishment.",
+          "fee":"The annual SRRV membership fee is USD 360, payable directly to PRA. Contact PRA at (02) 8526-3048 or info@pra.gov.ph.",
+          "points":"You earn 1 PRA Libreta Point for every PhP 100 spent on vouchers. Redeem 50 points for PhP 100 off your next purchase.",
+          "contact":"PRA Head Office: (02) 8526-3048 | Email: info@pra.gov.ph | Address: Legazpi Towers 300, Roxas Blvd, Pasay City. Office hours: Mon–Fri 8AM–5PM.",
+        };
+        const lower=userMsg.toLowerCase();
+        let reply="I'm running in demo mode (local file). For a live AI response, host this app on a web server. In the meantime — ";
+        for(const [key,resp] of Object.entries(demoReplies)){
+          if(lower.includes(key)){reply=resp;break;}
+        }
+        if(reply.startsWith("I'm running")){reply+="you can browse the FAQ tab for answers to common questions, or contact PRA directly at (02) 8526-3048.";}
+        setMessages(m=>[...m,{role:"assistant",text:reply}]);
+        setLoading(false);
+        return;
+      }
       const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
@@ -1424,7 +1449,7 @@ function IDCardModal({member,C,onClose,memberPhoto}){
         <div ref={cardRef} style={{background:"white",borderRadius:16,overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,0.15)",marginBottom:16}}>
           {/* Card header */}
           <div style={{background:"linear-gradient(135deg,#0A2540 0%,#1a3a5c 100%)",padding:"18px 20px 14px"}}>
-            <img src={IMG_HEADER} alt="PRA Libreta" style={{height:36,objectFit:"contain",objectPosition:"left",filter:"brightness(0) invert(1)",maxWidth:"100%",display:"block",marginBottom:10}}/>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><img src={IMG_HEADER} alt="PRA" style={{width:36,height:36,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.35)",flexShrink:0}}/><div style={{color:"white",fontWeight:800,fontSize:15,lineHeight:1}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div></div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",letterSpacing:2,textTransform:"uppercase"}}>Official Member Identification Card</div>
           </div>
           {/* Photo + info strip */}
@@ -2328,9 +2353,14 @@ function WhatsNewModal({onClose,C}){
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:700,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
       <div className="slide-up" style={{background:"white",borderRadius:20,width:"100%",maxWidth:400,overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.25)"}}>
         <div style={{background:"linear-gradient(135deg,#0A2540,#1E4D7B)",padding:"22px 24px 18px"}}>
-          <div style={{fontSize:11,color:"rgba(255,255,255,0.55)",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>What's New in</div>
-          <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3,marginTop:4}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div>
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:4}}>Version 2.0 · June 2026</div>
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
+            <img src={IMG_HEADER} alt="PRA" style={{width:44,height:44,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(240,128,48,0.5)",flexShrink:0}}/>
+            <div>
+              <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>What's New in</div>
+              <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3,lineHeight:1}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.5)",marginTop:2}}>Version 2.0 · June 2026</div>
+            </div>
+          </div>
         </div>
         <div style={{padding:"18px 22px"}}>
           {items.map((item,i)=>(
@@ -2798,6 +2828,8 @@ function App(){
 
 const root=ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App/>);
+
+
 
 
 
