@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PRA Libreta — Senior Benefits Platform</title>
+<title>PRA Libreta - Retirement Benefits Platform</title>
 <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;PRA Libreta&quot;,&quot;short_name&quot;:&quot;PRA Libreta&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#0A2540&quot;,&quot;theme_color&quot;:&quot;#E8730A&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%230A2540'/><text y='140' x='20' font-size='140' font-family='serif'>📋</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}"/>
 <meta name="theme-color" content="#E8730A"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -72,6 +72,10 @@ const IMG_FOI = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST
 const IMG_HEADER = "data:image/png;base64,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";
 </script>
 <script type="text/babel">
+
+
+
+
 
 
 
@@ -183,6 +187,7 @@ const MOCK_TRANSACTIONS=[
   {id:"t3",member:"Carmen Lim",benefit:"Unlimited Weekday Movie Pass",partner:"SM Cinemas",amount:100,method:"Maya",date:"May 25, 2026",voucher:"PRA-WT9J-6L3D",status:"Completed"},
   {id:"t4",member:"Roberto Cruz",benefit:"Grandparent's Weekend Feast",partner:"Max's Restaurant",amount:578,method:"GCash",date:"May 24, 2026",voucher:"PRA-HQ2E-8F7C",status:"Completed"},
 ];
+
 const SRRV_EXPIRY_MAP={"SRRV-2022-001":"2027-03-12","SRRV-2021-045":"2026-08-05","SRRV-2023-088":"2027-11-18","SRRV-2020-012":"2025-02-22"};
 const DOCUMENTS=[
   {id:"doc1",title:"SRRV Certificate",type:"Visa Document",date:"March 12, 2022",icon:"ShieldCheck",color:"#1A7A4A"},
@@ -216,7 +221,7 @@ function PRACard({member,C}){
       <div style={{marginBottom:16,paddingBottom:14,borderBottom:"1px solid rgba(255,255,255,0.12)"}}>
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><img src={IMG_HEADER} alt="PRA" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover",border:"2px solid rgba(255,255,255,0.4)",flexShrink:0}}/><div style={{color:"white",fontWeight:800,fontSize:15,lineHeight:1.2}}>PRA <span style={{color:"#F08030"}}>Libreta</span><div style={{fontSize:10,color:"rgba(255,255,255,0.5)",fontWeight:400,marginTop:1}}>Philippine Retirement Authority</div></div></div>
       </div>
-      <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Senior Benefits Card — Libreta</div>
+      <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Retirement Benefits Card - Libreta</div>
       <div style={{fontSize:21,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:18}}>{member.firstName} {member.lastName}</div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:14}}>
         <div><div style={{fontSize:10,color:"rgba(255,255,255,0.4)",marginBottom:2}}>PRA ID Number</div><div style={{fontSize:15,fontWeight:700,letterSpacing:2,color:"#F08030"}}>{member.praId}</div></div>
@@ -233,7 +238,7 @@ function PRACard({member,C}){
   );
 }
 
-function BenefitModal({item,onClose,onPurchase,onClaim,claimed,C}){
+function BenefitModal({item,onClose,onPurchase,onClaim,claimed,C,member}){
   const finalPrice=calcFinal(item);
   const validityText=item.voucherValidity||"";
   const dateMatch=validityText.match(/(\w+ \d+, \d{4}|\d{4}-\d{2}-\d{2})/);
@@ -252,7 +257,8 @@ function BenefitModal({item,onClose,onPurchase,onClaim,claimed,C}){
         </div>
         <div style={{padding:"20px 22px"}}>
           {item.avgRating&&<div style={{marginBottom:16}}><StarRating value={item.avgRating} count={item.ratingCount}/></div>}
-          <div style={{fontSize:14,color:C.textSub,lineHeight:1.7,marginBottom:18}}>{item.description}</div>
+          <div style={{fontSize:14,color:C.textSub,lineHeight:1.7,marginBottom:16}}>{item.description}</div>
+          <PartnerOverview partnerName={item.partner} C={C}/>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:18}}>
             <div className="card" style={{padding:"12px 14px"}}><div style={{fontSize:11,color:C.textSub,fontWeight:600,textTransform:"uppercase",letterSpacing:.4,marginBottom:4}}>Location</div><div style={{fontSize:13,color:C.text,fontWeight:600,display:"flex",alignItems:"flex-start",gap:5}}><Icon name="MapPin" size={13} color="#E8730A"/>{item.location}</div></div>
             <div className="card" style={{padding:"12px 14px"}}><div style={{fontSize:11,color:C.textSub,fontWeight:600,textTransform:"uppercase",letterSpacing:.4,marginBottom:4}}>Contact</div><div style={{fontSize:13,color:C.text,fontWeight:600}}>{item.contact||"Visit partner"}</div></div>
@@ -276,6 +282,10 @@ function BenefitModal({item,onClose,onPurchase,onClaim,claimed,C}){
             ?<button className="btn-primary" style={{width:"100%",fontSize:16}} onClick={()=>{onPurchase(item);onClose();}}><Icon name="ShoppingCart" size={16} color="white"/> Purchase / Secure Voucher</button>
             :<button className="btn-claim" style={{width:"100%",opacity:claimed?.75:1,fontSize:16}} onClick={()=>{if(!claimed){onClaim(item);onClose();}}}>{claimed?<><Icon name="CheckCircle" size={16} color="#1A7A4A"/> Benefit Claimed</>:<><Icon name="BadgeCheck" size={16} color="#1A7A4A"/> Claim This Benefit</>}</button>
           }
+          <div style={{marginTop:24,paddingTop:16,borderTop:`1px solid ${C.border}`}}>
+            <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:14,display:"flex",alignItems:"center",gap:6}}><Icon name="Star" size={16} color="#E8730A"/> Reviews &amp; Ratings</div>
+            <ReviewsSection item={item} member={member} C={C}/>
+          </div>
         </div>
       </div>
     </div>
@@ -333,9 +343,9 @@ function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C,onOpenModa
 function OnboardingTour({member,onDone,C}){
   const[step,setStep]=useState(0);
   const steps=[
-    {icon:"ShieldCheck",color:"#1A7A4A",title:`Welcome, ${member.firstName}! 🎉`,body:"Your PRA Senior Benefits account is ready. Here's a quick look at what you can do."},
-    {icon:"Ticket",color:"#E8730A",title:"Browse Your Benefits",body:"Access exclusive discounts on health, travel, dining, and entertainment — negotiated just for PRA members."},
-    {icon:"Wallet",color:"#3498db",title:"My Vouchers",body:"After purchasing, your vouchers are stored here with a QR code to show at the partner venue — no printing needed."},
+    {icon:"ShieldCheck",color:"#1A7A4A",title:`Welcome, ${member.firstName}! 🎉`,body:"Your PRA Retirement Benefits account is ready. Here's a quick look at what you can do."},
+    {icon:"Ticket",color:"#E8730A",title:"Browse Your Benefits",body:"Access exclusive discounts on health, travel, dining, and entertainment - negotiated just for PRA members."},
+    {icon:"Wallet",color:"#3498db",title:"My Vouchers",body:"After purchasing, your vouchers are stored here with a QR code to show at the partner venue - no printing needed."},
     {icon:"Bell",color:"#9b59b6",title:"Stay Updated",body:"The bell icon keeps you notified of new benefits, partner updates, and important PRA announcements."},
     {icon:"Sparkles",color:"#E8730A",title:"You're all set!",body:"Your savings start now. Tap any benefit to see full details, or head straight to the Benefits tab."},
   ];
@@ -372,7 +382,7 @@ function RegistrationPage({onComplete,C,onBack}){
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",flexDirection:"column"}}>
       <div style={{background:"#0A2540",padding:"18px 24px",display:"flex",alignItems:"center",gap:14}}>
         <img src={IMG_HEADER} alt="PRA" style={{width:44,height:44,borderRadius:"50%",objectFit:"cover",flexShrink:0}}/><div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div>
-        <div style={{color:"rgba(255,255,255,0.55)",fontSize:12,marginLeft:4}}>Libreta — Senior Benefits Platform</div>
+        <div style={{color:"rgba(255,255,255,0.55)",fontSize:12,marginLeft:4}}>Libreta - Retirement Benefits Platform</div>
       </div>
       <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"28px 16px 48px"}}>
         <div style={{width:"100%",maxWidth:540}} className="fade-in">
@@ -457,7 +467,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
       {(isBirthday||birthdayClose)&&(
         <div className="card fade-in" style={{marginBottom:16,padding:"14px 18px",background:"linear-gradient(135deg,#FFF5E6,#FFF0D6)",border:"2px solid #E8730A",display:"flex",gap:12,alignItems:"center"}}>
           <div style={{fontSize:28}}>🎂</div>
-          <div><div style={{fontSize:15,fontWeight:700,color:"#E8730A"}}>{isBirthday?"Happy Birthday!":"Birthday Coming Up!"}</div><div style={{fontSize:13,color:"#2D3748"}}>{isBirthday?"Enjoy a special birthday treat from our partner restaurants this week!":"Your birthday is within 30 days — watch for exclusive partner offers!"}</div></div>
+          <div><div style={{fontSize:15,fontWeight:700,color:"#E8730A"}}>{isBirthday?"Happy Birthday!":"Birthday Coming Up!"}</div><div style={{fontSize:13,color:"#2D3748"}}>{isBirthday?"Enjoy a special birthday treat from our partner restaurants this week!":"Your birthday is within 30 days - watch for exclusive partner offers!"}</div></div>
         </div>
       )}
       {expiryDate&&(
@@ -468,7 +478,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
           </div>
           <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:13,color:C.textSub}}>Expiry</span><span style={{fontSize:13,fontWeight:700,color:C.text}}>{expiryDate.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"})}</span></div>
           <div style={{background:C.gray200,borderRadius:6,height:7,overflow:"hidden",marginBottom:6}}><div style={{height:"100%",borderRadius:6,background:isExpired?"#C0392B":isUrgent?"#E8730A":"#1A7A4A",width:`${Math.max(0,Math.min(100,(daysLeft/1825)*100))}%`,transition:"width 1s ease"}}/></div>
-          <div style={{fontSize:12,color:isExpired?"#C0392B":isUrgent?"#E8730A":C.textSub,fontWeight:isUrgent?700:400}}>{isExpired?"Expired — contact PRA immediately":daysLeft<30?`${daysLeft} days remaining — begin renewal now`:daysLeft<90?`${daysLeft} days remaining — renewal recommended soon`:`${daysLeft} days remaining`}</div>
+          <div style={{fontSize:12,color:isExpired?"#C0392B":isUrgent?"#E8730A":C.textSub,fontWeight:isUrgent?700:400}}>{isExpired?"Expired - contact PRA immediately":daysLeft<30?`${daysLeft} days remaining - begin renewal now`:daysLeft<90?`${daysLeft} days remaining - renewal recommended soon`:`${daysLeft} days remaining`}</div>
           {(isExpired||isUrgent)&&<button className="btn-primary" style={{width:"100%",marginTop:10,fontSize:13,padding:"10px",minHeight:40,background:isExpired?"#C0392B":"#E8730A"}} onClick={()=>onRenew&&onRenew()}><Icon name="RefreshCw" size={14} color="white"/> Start Renewal Application</button>}
         </div>
       )}
@@ -503,7 +513,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
           <div style={{width:44,height:44,borderRadius:12,background:"#E8730A",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="Gift" size={20} color="white"/></div>
           <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{t.referAFriend}</div><div style={{fontSize:12,color:C.textSub,marginTop:2}}>{t.referDesc}</div></div>
-          <button onClick={()=>{const code=member.praId.replace(/[^A-Z0-9]/g,"").slice(-6);const text=`Join PRA Senior Benefits with my referral code: PRA-${code}\nhttps://pra.gov.ph/benefits`;if(navigator.share){navigator.share({title:"Join PRA Benefits",text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);}alert(`Referral code PRA-${code} copied! Share with a friend.`);}} className="btn-primary" style={{fontSize:13,padding:"9px 14px",minHeight:36,flexShrink:0}}><Icon name="Share2" size={14} color="white"/> Share</button>
+          <button onClick={()=>{const code=member.praId.replace(/[^A-Z0-9]/g,"").slice(-6);const text=`Join PRA Retirement Benefits with my referral code: PRA-${code}\nhttps://pra.gov.ph/benefits`;if(navigator.share){navigator.share({title:"Join PRA Benefits",text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);}alert(`Referral code PRA-${code} copied! Share with a friend.`);}} className="btn-primary" style={{fontSize:13,padding:"9px 14px",minHeight:36,flexShrink:0}}><Icon name="Share2" size={14} color="white"/> Share</button>
         </div>
         <div style={{marginTop:12,background:"rgba(255,255,255,0.6)",borderRadius:8,padding:"8px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:12,color:C.textSub}}>Your referral code</span><span style={{fontFamily:"monospace",fontSize:14,fontWeight:800,color:"#E8730A",letterSpacing:2}}>PRA-{member.praId.replace(/[^A-Z0-9]/g,"").slice(-6)}</span></div>
       </div>
@@ -543,7 +553,7 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C,onOpenModal,favo
   const[search,setSearch]=useState("");
   const[viewMode,setViewMode]=useState("list");
   const handleClaim=(item)=>{onClaim&&onClaim(item);setClaimFeedback(item.partner);setTimeout(()=>setClaimFeedback(null),3000);};
-  const filtered=BENEFITS.filter(b=>{const mc=activeCategory==="all"||b.category===activeCategory;const ms=!search||b.title.toLowerCase().includes(search.toLowerCase())||b.partner.toLowerCase().includes(search.toLowerCase());return mc&&ms;});
+  const filtered=ALL_BENEFITS.filter(b=>{const mc=activeCategory==="all"||b.category===activeCategory;const ms=!search||b.title.toLowerCase().includes(search.toLowerCase())||b.partner.toLowerCase().includes(search.toLowerCase());return mc&&ms;});
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
       <div style={{marginBottom:20}}><div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:2}}>Benefits &amp; Promos</div><div style={{color:C.textSub,fontSize:14}}>Exclusive offers for PRA Members</div></div>
@@ -620,7 +630,7 @@ function CheckoutPage({item,member,onSuccess,onBack,C,bookingDates,setBookingDat
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}><div><label className="form-label">Expiry Date</label><input type="month" className={`form-input${errors.cardExp?" error":""}`} value={cardExp} onChange={e=>setCardExp(e.target.value)}/><Err field="cardExp"/></div><div><label className="form-label">CVV / CVC</label><input className={`form-input${errors.cardCvv?" error":""}`} value={cardCvv} onChange={e=>setCardCvv(e.target.value.replace(/\D/g,"").slice(0,4))} placeholder="..." style={{letterSpacing:4}}/><Err field="cardCvv"/></div></div>
         </div>
       )}
-      <button className="btn-primary" style={{width:"100%",fontSize:17,padding:"16px 28px",minHeight:58}} onClick={handlePay} disabled={processing}>{processing?<><Spinner/> Processing Payment...</>:<><Icon name="Lock" size={16} color="white"/> Confirm Payment — {fmt(finalPrice)}</>}</button>
+      <button className="btn-primary" style={{width:"100%",fontSize:17,padding:"16px 28px",minHeight:58}} onClick={handlePay} disabled={processing}>{processing?<><Spinner/> Processing Payment...</>:<><Icon name="Lock" size={16} color="white"/> Confirm Payment - {fmt(finalPrice)}</>}</button>
       <div style={{textAlign:"center",marginTop:12,fontSize:12,color:C.textSub,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="Lock" size={12} color={C.textSub}/> Secured by PRA Digital Platform</div>
     </div>
   );
@@ -642,7 +652,7 @@ function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
       <div style={{fontSize:26,fontWeight:700,color:"#1A7A4A",fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Payment Successful!</div>
       <div style={{fontSize:15,color:C.textSub,marginBottom:26}}>Your voucher is confirmed. Save or share the details below.</div>
       <div className="card" style={{padding:0,marginBottom:24,overflow:"hidden",border:"2px solid #E8730A"}}>
-        <div style={{background:"#0A2540",padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>PRA Libreta — Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div><StatusBadge type="green">CONFIRMED</StatusBadge></div>
+        <div style={{background:"#0A2540",padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>PRA Libreta - Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div><StatusBadge type="green">CONFIRMED</StatusBadge></div>
         <div style={{padding:"18px 20px"}}>
           <div style={{fontSize:26,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:3,marginBottom:2,textAlign:"center"}}>{result.voucher}</div>
           <div style={{fontSize:12,color:C.textSub,textAlign:"center",marginBottom:18}}>Voucher Reference Number</div>
@@ -929,8 +939,8 @@ function BenefitPerformanceRow({b,ratings,C}){
         <div style={{flex:1,minWidth:0}}><div style={{fontSize:13,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{b.title}</div><div style={{fontSize:11,color:C.textSub}}>{b.partner}</div></div>
         <div style={{display:"flex",gap:14,alignItems:"center",flexShrink:0}}>
           <div style={{textAlign:"center"}}><div style={{fontSize:13,fontWeight:700,color:C.text}}>{txCount}</div><div style={{fontSize:10,color:C.textSub}}>sales</div></div>
-          <div style={{textAlign:"center"}}><div style={{fontSize:13,fontWeight:700,color:"#E8730A"}}>{revenue>0?`PhP ${(revenue/1000).toFixed(1)}k`:"—"}</div><div style={{fontSize:10,color:C.textSub}}>revenue</div></div>
-          <div style={{textAlign:"center"}}><div style={{fontSize:12,color:"#E8730A"}}>{"★".repeat(Math.round(avgRating))}</div><div style={{fontSize:10,color:C.textSub}}>{avgRating?avgRating.toFixed(1):"—"}</div></div>
+          <div style={{textAlign:"center"}}><div style={{fontSize:13,fontWeight:700,color:"#E8730A"}}>{revenue>0?`PhP ${(revenue/1000).toFixed(1)}k`:" - "}</div><div style={{fontSize:10,color:C.textSub}}>revenue</div></div>
+          <div style={{textAlign:"center"}}><div style={{fontSize:12,color:"#E8730A"}}>{"★".repeat(Math.round(avgRating))}</div><div style={{fontSize:10,color:C.textSub}}>{avgRating?avgRating.toFixed(1):" - "}</div></div>
         </div>
       </div>
     </div>
@@ -1119,7 +1129,7 @@ function requestPushNotif(memberName){
   Notification.requestPermission().then(perm=>{
     if(perm==="granted"){
       setTimeout(()=>{
-        new Notification("PRA Libreta — New Benefit Added! 🎉",{
+        new Notification("PRA Libreta - New Benefit Added! 🎉",{
           body:`Hi ${memberName}! Robinsons Health Clinics is now a PRA Libreta partner. Tap to view discounted consultations.`,
           icon:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23E8730A'/><text y='.9em' font-size='80' x='10'>🏥</text></svg>",
         });
@@ -1148,7 +1158,7 @@ function RenewalWizard({member,onClose,C}){
           <div style={{fontSize:22,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:8}}>Application Submitted!</div>
           <div style={{fontSize:14,color:C.textSub,lineHeight:1.7,marginBottom:8}}>Your SRRV Renewal application reference number is:</div>
           <div style={{fontSize:20,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:2,marginBottom:20}}>RENEW-{member.praId.replace(/[^A-Z0-9]/g,"").slice(-6)}-2026</div>
-          <div style={{fontSize:13,color:C.textSub,marginBottom:24,lineHeight:1.6}}>A PRA officer will contact you at <strong style={{color:C.text}}>{member.mobile}</strong> within 3–5 business days to schedule your appointment.</div>
+          <div style={{fontSize:13,color:C.textSub,marginBottom:24,lineHeight:1.6}}>A PRA officer will contact you at <strong style={{color:C.text}}>{member.mobile}</strong> within 3-5 business days to schedule your appointment.</div>
           <button className="btn-primary" style={{width:"100%"}} onClick={onClose}>Done</button>
         </div>
       </div>
@@ -1163,7 +1173,7 @@ function RenewalWizard({member,onClose,C}){
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.15)",border:"none",borderRadius:"50%",width:30,height:30,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="X" size={14} color="white"/></button>
           </div>
           <div style={{display:"flex",gap:6}}>{steps.map((_,i)=><div key={i} style={{flex:1,height:4,borderRadius:4,background:i<=step?"#E8730A":"rgba(255,255,255,0.2)",transition:"background .3s"}}/>)}</div>
-          <div style={{marginTop:8,fontSize:12,color:"rgba(255,255,255,0.6)"}}>Step {step+1} of {steps.length} — {steps[step].title}</div>
+          <div style={{marginTop:8,fontSize:12,color:"rgba(255,255,255,0.6)"}}>Step {step+1} of {steps.length} - {steps[step].title}</div>
         </div>
         <div style={{padding:"22px 22px 0"}}>
           <div style={{fontSize:13,color:C.textSub,marginBottom:18,lineHeight:1.6}}>{steps[step].desc}</div>
@@ -1188,7 +1198,7 @@ function RenewalWizard({member,onClose,C}){
                   <span style={{fontSize:13,color:C.text,lineHeight:1.4}}>{doc}</span>
                 </div>
               ))}
-              <div style={{background:"#FFF8F0",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:"12px 14px",fontSize:13,color:"#2D3748",lineHeight:1.6,display:"flex",gap:8}}><Icon name="Info" size={15} color="#E8730A" style={{flexShrink:0}}/><span>Bring all original documents to the PRA main office or nearest regional office. Processing time is approximately 15–20 working days.</span></div>
+              <div style={{background:"#FFF8F0",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:"12px 14px",fontSize:13,color:"#2D3748",lineHeight:1.6,display:"flex",gap:8}}><Icon name="Info" size={15} color="#E8730A" style={{flexShrink:0}}/><span>Bring all original documents to the PRA main office or nearest regional office. Processing time is approximately 15-20 working days.</span></div>
             </div>
           )}
           {step===3&&(
@@ -1246,16 +1256,16 @@ Be concise, warm, and helpful. Answer in the language the user writes in (Englis
       if(isLocal){
         // Simulate a helpful response in local/demo mode
         const demoReplies={
-          "renew":"To renew your SRRV, start your application from the dashboard — tap the 'Start Renewal Application' button on the SRRV Visa Status card. You'll need your passport, ACR I-Card, annual fee receipt, and a medical certificate.",
-          "expire":"You can check your visa expiry on the Home dashboard — the SRRV Visa Status card shows your exact expiry date and days remaining.",
+          "renew":"To renew your SRRV, start your application from the dashboard - tap the 'Start Renewal Application' button on the SRRV Visa Status card. You'll need your passport, ACR I-Card, annual fee receipt, and a medical certificate.",
+          "expire":"You can check your visa expiry on the Home dashboard - the SRRV Visa Status card shows your exact expiry date and days remaining.",
           "benefit":"Browse all your PRA Libreta benefits in the Benefits tab. Tap 'Details' on any benefit to see partner info, location, and full terms before purchasing.",
           "voucher":"After purchasing, your vouchers are in the My Vouchers tab. Tap any voucher to expand it and show the QR code to the partner establishment.",
           "fee":"The annual SRRV membership fee is USD 360, payable directly to PRA. Contact PRA at (02) 8526-3048 or info@pra.gov.ph.",
           "points":"You earn 1 PRA Libreta Point for every PhP 100 spent on vouchers. Redeem 50 points for PhP 100 off your next purchase.",
-          "contact":"PRA Head Office: (02) 8526-3048 | Email: info@pra.gov.ph | Address: Legazpi Towers 300, Roxas Blvd, Pasay City. Office hours: Mon–Fri 8AM–5PM.",
+          "contact":"PRA Head Office: (02) 8526-3048 | Email: info@pra.gov.ph | Address: Legazpi Towers 300, Roxas Blvd, Pasay City. Office hours: Mon-Fri, 8AM-5PM.",
         };
         const lower=userMsg.toLowerCase();
-        let reply="I'm running in demo mode (local file). For a live AI response, host this app on a web server. In the meantime — ";
+        let reply="I'm running in demo mode (local file). For a live AI response, host this app on a web server. In the meantime - ";
         for(const [key,resp] of Object.entries(demoReplies)){
           if(lower.includes(key)){reply=resp;break;}
         }
@@ -1647,7 +1657,7 @@ function ReportsTab({C}){
     setTimeout(()=>{
       setGenerating(false);
       const rows=[
-        ["PRA LIBRETA — REVENUE REPORT","","","","","",""],
+        ["PRA LIBRETA - REVENUE REPORT","","","","","",""],
         [`Date Range: ${dateFrom} to ${dateTo}`,"","","","","",""],
         ["","","","","","",""],
         ["Member","Benefit","Partner","Amount","Method","Date","Voucher"],
@@ -1677,7 +1687,7 @@ function ReportsTab({C}){
       </div>
       {/* KPI row */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        {[{label:"Transactions",value:filtered.length,icon:"ReceiptText",color:"#3498db"},{label:"Revenue",value:`PhP ${(totalRev/1000).toFixed(1)}k`,icon:"TrendingUp",color:"#E8730A"},{label:"Avg. Value",value:filtered.length?`PhP ${Math.round(totalRev/filtered.length).toLocaleString()}`:"—",icon:"BarChart2",color:"#1A7A4A"}].map(k=>(
+        {[{label:"Transactions",value:filtered.length,icon:"ReceiptText",color:"#3498db"},{label:"Revenue",value:`PhP ${(totalRev/1000).toFixed(1)}k`,icon:"TrendingUp",color:"#E8730A"},{label:"Avg. Value",value:filtered.length?`PhP ${Math.round(totalRev/filtered.length).toLocaleString()}`:" - ",icon:"BarChart2",color:"#1A7A4A"}].map(k=>(
           <div key={k.label} className="card" style={{padding:"12px 14px"}}>
             <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><Icon name={k.icon} size={14} color={k.color}/><span style={{fontSize:11,color:C.textSub,fontWeight:600}}>{k.label}</span></div>
             <div style={{fontSize:17,fontWeight:800,color:C.text}}>{k.value}</div>
@@ -1745,7 +1755,7 @@ const I18N={
     digitalCard:"Your Digital Benefits Card",
     srrvStatus:"SRRV Visa Status",expiry:"Expiry",daysRemaining:"days remaining",
     renewNow:"begin renewal now",renewSoon:"renewal recommended soon",
-    expired:"Expired — contact PRA immediately",
+    expired:"Expired - contact PRA immediately",
     downloadID:"Download ID Card",myVouchers:"My Vouchers",
     pointsLabel:"PRA Libreta Points",redeemAt:"Redeem at",
     searchBenefits:"Search benefits, partners...",allBenefits:"All Benefits",
@@ -1769,7 +1779,7 @@ const I18N={
     digitalCard:"Iyong Digital Benefits Card",
     srrvStatus:"Katayuan ng SRRV Visa",expiry:"Petsa ng Pagkawalang-bisa",daysRemaining:"araw na natitira",
     renewNow:"simulan ang pagpapanibago ngayon",renewSoon:"inirerekomenda ang pagpapanibago sa lalong madaling panahon",
-    expired:"Nag-expire na — makipag-ugnayan agad sa PRA",
+    expired:"Nag-expire na - makipag-ugnayan agad sa PRA",
     downloadID:"I-download ang ID Card",myVouchers:"Aking Voucher",
     pointsLabel:"Mga Puntos ng PRA Libreta",redeemAt:"I-redeem sa",
     searchBenefits:"Maghanap ng benepisyo, kasosyo...",allBenefits:"Lahat ng Benepisyo",
@@ -2022,7 +2032,7 @@ function LoginPage({onLogin,onRegister,C}){
         {/* Logo */}
         <div style={{textAlign:"center",marginBottom:32}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10,marginBottom:12}}><img src={IMG_HEADER} alt="PRA" style={{width:64,height:64,borderRadius:"50%",objectFit:"cover",border:"3px solid rgba(240,128,48,0.5)",boxShadow:"0 4px 20px rgba(0,0,0,0.3)"}}/><div style={{color:"white",fontWeight:800,fontSize:22,letterSpacing:.5}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div></div>
-          <div style={{color:"rgba(255,255,255,0.55)",fontSize:14}}>Senior Benefits Platform</div>
+          <div style={{color:"rgba(255,255,255,0.55)",fontSize:14}}>Retirement Benefits Platform</div>
         </div>
         <div style={{background:"white",borderRadius:20,padding:"28px 28px 24px",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
           <div style={{fontSize:22,fontWeight:700,color:"#0A2540",marginBottom:4,fontFamily:"'Libre Baskerville',serif"}}>Welcome back</div>
@@ -2117,7 +2127,7 @@ const FAQ_ITEMS=[
   {q:"What if a partner establishment refuses to honor my benefit?",a:"Please report the incident to PRA immediately. Call (02) 8526-3048 or email info@pra.gov.ph with the establishment name, date, and details. PRA takes partner compliance seriously and will follow up within 3 business days."},
   {q:"How do PRA Libreta Points work?",a:"You earn 1 point for every PhP 100 spent on purchased vouchers. Once you accumulate 50 points, you can redeem them for PhP 100 off your next purchase. Points never expire as long as your SRRV is active."},
   {q:"Can I use this app offline?",a:"The core features of PRA Libreta work offline once the app is loaded. You can view your vouchers, ID card, and benefits list without an internet connection. Purchasing new vouchers and the AI assistant require a connection."},
-  {q:"How do I contact PRA for support?",a:"PRA Head Office: (02) 8526-3048 or (02) 8525-9358. Email: info@pra.gov.ph. Address: Legazpi Towers 300, Roxas Blvd, Pasay City. Office hours: Monday–Friday, 8:00 AM to 5:00 PM. Saturdays: 9:00 AM to 12:00 NN (starting June 15, 2026)."},
+  {q:"How do I contact PRA for support?",a:"PRA Head Office: (02) 8526-3048 or (02) 8525-9358. Email: info@pra.gov.ph. Address: Legazpi Towers 300, Roxas Blvd, Pasay City. Office hours: Monday-Friday, 8:00 AM to 5:00 PM. Saturdays: 9:00 AM to 12:00 NN (starting June 15, 2026)."},
 ];
 function FAQPage({C,lang}){
   const[open,setOpen]=useState(null);
@@ -2150,7 +2160,7 @@ function FAQPage({C,lang}){
       </div>
       <div className="card" style={{padding:"18px 20px",background:"linear-gradient(135deg,#0A2540,#1E4D7B)",border:"none"}}>
         <div style={{fontSize:15,fontWeight:700,color:"white",marginBottom:8}}>Still need help?</div>
-        <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",marginBottom:14}}>Our support team is available Monday–Friday, 8 AM–5 PM</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",marginBottom:14}}>Our support team is available Monday-Friday, 8 AM-5 PM</div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
           <a href="tel:028526-3048" style={{background:"rgba(255,255,255,0.15)",color:"white",borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,textDecoration:"none",display:"flex",alignItems:"center",gap:6}}><Icon name="Smartphone" size={14} color="white"/> (02) 8526-3048</a>
           <a href="mailto:info@pra.gov.ph" style={{background:"rgba(255,255,255,0.15)",color:"white",borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,textDecoration:"none",display:"flex",alignItems:"center",gap:6}}><Icon name="Globe" size={14} color="white"/> info@pra.gov.ph</a>
@@ -2305,7 +2315,7 @@ const COMM_LOG={
   ],
   "SRRV-2020-012":[
     {id:"c5",type:"voucher",text:"Voucher confirmation: Grandparent's Weekend Feast",detail:"Voucher PRA-HQ2E-8F7C · PhP 578",date:"May 24, 2026",read:true},
-    {id:"c6",type:"renewal",text:"SRRV Expiry Alert — URGENT",detail:"Visa expired Feb 22, 2025 — escalation notice sent",date:"Feb 22, 2025",read:false},
+    {id:"c6",type:"renewal",text:"SRRV Expiry Alert - URGENT",detail:"Visa expired Feb 22, 2025 - escalation notice sent",date:"Feb 22, 2025",read:false},
   ],
 };
 const COMM_ICONS={voucher:{icon:"Ticket",color:"#E8730A"},announcement:{icon:"Megaphone",color:"#3498db"},renewal:{icon:"RefreshCw",color:"#C0392B"}};
@@ -2326,7 +2336,7 @@ function SplashScreen({onDone}){
       <div style={{transform:`scale(${phase>=1?1:.6}) translateY(${phase>=1?0:30}px)`,opacity:phase>=1?1:0,transition:"all .6s cubic-bezier(.34,1.56,.64,1)",textAlign:"center"}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,marginBottom:20}}><img src={IMG_HEADER} alt="PRA" style={{width:80,height:80,borderRadius:"50%",objectFit:"cover",border:"3px solid rgba(240,128,48,0.6)",boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}}/><div style={{color:"white",fontWeight:800,fontSize:26,letterSpacing:.5}}>PRA <span style={{color:"#F08030"}}>Libreta</span></div></div>
         <div style={{transform:`translateY(${phase>=2?0:10}px)`,opacity:phase>=2?1:0,transition:"all .5s ease .2s"}}>
-          <div style={{color:"rgba(255,255,255,0.6)",fontSize:15,letterSpacing:1,marginBottom:32}}>Senior Benefits Platform</div>
+          <div style={{color:"rgba(255,255,255,0.6)",fontSize:15,letterSpacing:1,marginBottom:32}}>Retirement Benefits Platform</div>
           <div style={{display:"flex",justifyContent:"center",gap:6}}>
             {[0,1,2].map(i=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:"#E8730A",animation:"pulse 1.2s ease infinite",animationDelay:`${i*.2}s`,opacity:.8}}/>)}
           </div>
@@ -2344,10 +2354,10 @@ function SplashScreen({onDone}){
 // ─── What's New Modal ─────────────────────────────────────────────────────────
 function WhatsNewModal({onClose,C}){
   const items=[
-    {icon:"Sparkles",color:"#E8730A",title:"AI Assistant",desc:"Ask questions about your SRRV, benefits, and renewal process — powered by Claude AI."},
+    {icon:"Sparkles",color:"#E8730A",title:"AI Assistant",desc:"Ask questions about your SRRV, benefits, and renewal process - powered by Claude AI."},
     {icon:"BadgeCheck",color:"#3498db",title:"Digital ID Card",desc:"Download your official PRA Libreta ID card with QR verification, ready to print or save."},
     {icon:"Star",color:"#9b59b6",title:"PRA Libreta Points",desc:"Earn points on every purchase. Redeem 50 points for PhP 100 off your next voucher."},
-    {icon:"RefreshCw",color:"#1A7A4A",title:"SRRV Renewal Wizard",desc:"Start your renewal application directly from the app — no need to visit the office first."},
+    {icon:"RefreshCw",color:"#1A7A4A",title:"SRRV Renewal Wizard",desc:"Start your renewal application directly from the app - no need to visit the office first."},
   ];
   return(
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:700,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -2383,7 +2393,7 @@ const DEMO_STEPS=[
   {target:"dashboard",title:"1 · Home Dashboard",desc:"The dashboard shows SRRV status, savings summary, and featured benefits. The profile checklist guides new members through setup.",tip:"Try tapping the referral card or browsing Featured Benefits."},
   {target:"benefits",title:"2 · Benefits &amp; Promos",desc:"All PRA partner discounts in one place. Filter by category, search by name, or tap Details for the full benefit modal with map and contact info.",tip:"Tap 'Details' on any benefit to see the full partner modal."},
   {target:"benefits",title:"3 · Purchase Flow",desc:"Secure checkout with GCash, Maya, or credit card. Travel benefits show a booking calendar. OTP verification demo uses code 123456.",tip:"Try purchasing the Medical City package using GCash."},
-  {target:"vouchers",title:"4 · My Vouchers",desc:"All purchased vouchers stored here with QR codes. Tap a voucher to expand it — you'll see Share, Receipt, and a star rating.",tip:"Expand a voucher and tap Receipt to see the print view."},
+  {target:"vouchers",title:"4 · My Vouchers",desc:"All purchased vouchers stored here with QR codes. Tap a voucher to expand it - you'll see Share, Receipt, and a star rating.",tip:"Expand a voucher and tap Receipt to see the print view."},
   {target:"profile",title:"5 · Profile &amp; ID Card",desc:"Upload a real photo, download the digital ID card, toggle dark mode and language (EN/FIL), and access emergency contacts.",tip:"Tap 'Download Digital ID Card' to see the branded ID."},
   {target:"admin",title:"6 · Admin Console",desc:"Full back-office: live dashboard with analytics, member management, benefit CRUD with draft/publish, partner management, reports, and audit log.",tip:"Switch to Admin via Profile → 'Switch to Admin Demo'."},
 ];
@@ -2447,7 +2457,7 @@ function DependentsSection({member,C}){
           <div key={d.id} className="card" style={{padding:"12px 14px"}}>
             <div style={{display:"flex",gap:10,alignItems:"center"}}>
               <div style={{width:38,height:38,borderRadius:"50%",background:"#EFF6FF",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"#3498db",flexShrink:0}}>{d.firstName[0]}{d.lastName[0]}</div>
-              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{d.firstName} {d.lastName}</div><div style={{fontSize:12,color:C.textSub}}>{d.relationship} · {d.nationality||"—"} · DOB: {d.dob||"—"}</div></div>
+              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{d.firstName} {d.lastName}</div><div style={{fontSize:12,color:C.textSub}}>{d.relationship} · {d.nationality||" - "} · DOB: {d.dob||" - "}</div></div>
               <div style={{display:"flex",gap:6,alignItems:"center"}}><StatusBadge type="green">{d.status}</StatusBadge><button onClick={()=>setDeps(ds=>ds.filter(x=>x.id!==d.id))} style={{background:"none",border:"none",cursor:"pointer",padding:4}}><Icon name="Trash2" size={13} color="#C0392B"/></button></div>
             </div>
           </div>
@@ -2675,7 +2685,7 @@ function MemberImportModal({onClose,onImport,C}){
 const ADMIN_NOTIFS=[
   {id:"an1",type:"purchase",icon:"Ticket",color:"#E8730A",title:"New voucher purchased",body:"Maria Santos purchased Exec Check-up Package · PhP 6,800",time:"Just now",read:false},
   {id:"an2",type:"member",icon:"UserCircle",color:"#3498db",title:"Renewal application submitted",body:"Roberto Cruz submitted SRRV Renewal · Ref: RENEW-020012-2026",time:"2 hours ago",read:false},
-  {id:"an3",type:"system",icon:"AlertCircle",color:"#C0392B",title:"SRRV expiry alert",body:"Roberto Cruz's visa expired Feb 22, 2025 — action required",time:"Yesterday",read:true},
+  {id:"an3",type:"system",icon:"AlertCircle",color:"#C0392B",title:"SRRV expiry alert",body:"Roberto Cruz's visa expired Feb 22, 2025 - action required",time:"Yesterday",read:true},
   {id:"an4",type:"member",icon:"UserCircle",color:"#3498db",title:"New member registered",body:"Carmen Lim completed registration · SRRV-2023-088",time:"Nov 18, 2023",read:true},
 ];
 function AdminNotifDropdown({C}){
@@ -2729,7 +2739,281 @@ function MemberUsageChart({praId,C}){
           </div>
         ))}
       </div>
-      <div style={{fontSize:12,color:"#4A5568"}}>Preferred: <strong style={{color:Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0]?catColors[Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0][0]]:"#E8730A"}}>{Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0]?.[0]||"—"}</strong></div>
+      <div style={{fontSize:12,color:"#4A5568"}}>Preferred: <strong style={{color:Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0]?catColors[Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0][0]]:"#E8730A"}}>{Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0]?.[0]||" - "}</strong></div>
+    </div>
+  );
+}
+
+
+// ─── ADDITIONAL MOCK BENEFITS (25 more) ──────────────────────────────────────
+const EXTRA_BENEFITS=[
+  // HEALTH (8)
+  {id:"ospital-ng-makati",category:"health",categoryLabel:"Health & Wellness",title:"Senior Priority OPD Consultation",partner:"Ospital ng Makati",location:"Amorsolo St, Makati City",description:"Priority outpatient consultations for retirees across all departments. No queuing  -  dedicated senior lane. Includes basic labs (CBC, urinalysis) with every visit.",originalPrice:1200,discountPct:50,tag:"50% off consultations",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:600,avgRating:4.6,ratingCount:88,contact:"(02) 8870-0555"},
+  {id:"st-lukes",category:"health",categoryLabel:"Health & Wellness",title:"Annual Physical Exam Package",partner:"St. Luke's Medical Center",location:"E. Rodriguez Blvd, Quezon City",description:"Complete annual physical exam including ECG, chest X-ray, blood chemistry panel, urinalysis, and consultation with an internist. Results within 3 hours.",originalPrice:12500,discountPct:25,tag:"25% off for SRRV holders",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until September 30, 2026",active:true,savingsAmt:3125,avgRating:4.9,ratingCount:54,contact:"(02) 8789-7700"},
+  {id:"generika",category:"health",categoryLabel:"Health & Wellness",title:"Generic Medicine Discount Card",partner:"Generika Drugstore",location:"All branches nationwide",description:"10% additional discount on all generic medicines on top of the standard senior citizen discount. Valid for up to 3 transactions per month per member.",originalPrice:null,discountPct:10,tag:"Extra 10% on generic meds",iconName:"Heart",iconColor:"#e74c3c",type:"claim",voucherValidity:"Ongoing  -  no expiry",active:true,savingsAmt:0,avgRating:4.4,ratingCount:203,contact:"1-800-10-GENERIKA"},
+  {id:"asian-hospital",category:"health",categoryLabel:"Health & Wellness",title:"Dental Care Package",partner:"Asian Hospital & Medical Center",location:"Alabang, Muntinlupa City",description:"Comprehensive dental care package: oral prophylaxis, dental X-ray, fluoride treatment, and consultation with a licensed dentist. Valid for one session.",originalPrice:3800,discountPct:30,tag:"30% off dental care",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until October 31, 2026",active:true,savingsAmt:1140,avgRating:4.7,ratingCount:41,contact:"(02) 8771-9000"},
+  {id:"wellness-center",category:"health",categoryLabel:"Health & Wellness",title:"Therapeutic Massage & Spa",partner:"Nurture Wellness Village",location:"Tagaytay City, Cavite",description:"90-minute therapeutic massage package designed for seniors: Swedish relaxation massage, aromatherapy, and a complimentary herbal foot soak.",originalPrice:2800,discountPct:20,tag:"20% off wellness package",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:560,avgRating:4.8,ratingCount:67,contact:"(046) 483-0000"},
+  {id:"south-star",category:"health",categoryLabel:"Health & Wellness",title:"Vitamins & Supplements Bundle",partner:"South Star Drug",location:"All branches Metro Manila",description:"Bundle of 3 bestselling senior supplements: Calcium + Vitamin D3, Omega-3 Fish Oil, and Multivitamins for Adults 60+. One month supply each.",originalPrice:2100,discountPct:15,tag:"15% off supplements bundle",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:315,avgRating:4.3,ratingCount:156,contact:"(02) 8888-1234"},
+  {id:"eye-referral",category:"health",categoryLabel:"Health & Wellness",title:"Eye Exam + Eyeglass Discount",partner:"Eye Referral Center",location:"Quezon Ave, Quezon City",description:"Comprehensive eye examination (visual acuity, tonometry, fundoscopy) plus 20% discount on prescription eyeglass frames and lenses.",originalPrice:2500,discountPct:20,tag:"20% off eye exam + glasses",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until November 30, 2026",active:true,savingsAmt:500,avgRating:4.5,ratingCount:92,contact:"(02) 8373-1553"},
+  {id:"physio-plus",category:"health",categoryLabel:"Health & Wellness",title:"Physical Therapy Session Bundle",partner:"PhysioPlus Rehabilitation",location:"Ortigas Center, Pasig City",description:"Bundle of 5 physical therapy sessions ideal for seniors with joint pain, post-surgery recovery, or mobility issues. Includes initial assessment.",originalPrice:6500,discountPct:25,tag:"25% off PT sessions",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:1625,avgRating:4.7,ratingCount:38,contact:"(02) 8635-7890"},
+
+  // TRAVEL (6)
+  {id:"club-intramuros",category:"travel",categoryLabel:"Travel & Hotels",title:"Intramuros Heritage Tour",partner:"Club Intramuros Golf Course",location:"Intramuros, Manila",description:"Guided heritage walking tour of historic Intramuros including Fort Santiago, Manila Cathedral, and Casa Manila Museum. Lunch at a heritage restaurant included.",originalPrice:1800,discountPct:30,tag:"30% off heritage tour",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:540,avgRating:4.6,ratingCount:73,contact:"(02) 8527-3940"},
+  {id:"manor-baguio",category:"travel",categoryLabel:"Travel & Hotels",title:"Baguio Weekend Getaway 2D1N",partner:"The Manor at Camp John Hay",location:"Camp John Hay, Baguio City",description:"Weekend escape to Baguio: 2 days, 1 night in a Superior Room, daily breakfast for 2, complimentary pine forest walk, and free parking.",originalPrice:9800,discountPct:25,tag:"25% off weekend rate",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid for bookings until November 30, 2026",active:true,savingsAmt:2450,avgRating:4.8,ratingCount:49,contact:"(074) 424-0101"},
+  {id:"philippine-airlines",category:"travel",categoryLabel:"Travel & Hotels",title:"Senior Citizen Flight Discount",partner:"Philippine Airlines",location:"All domestic routes",description:"Additional 5% discount on published fares for PRA members on all PAL domestic routes, on top of existing senior citizen privileges. Applicable when booking directly.",originalPrice:null,discountPct:5,tag:"Extra 5% on PAL fares",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for travel until December 31, 2026",active:true,savingsAmt:0,avgRating:4.3,ratingCount:134,contact:"(02) 8855-8888"},
+  {id:"dakak-resort",category:"travel",categoryLabel:"Travel & Hotels",title:"Dakak Beach Resort 3D2N Package",partner:"Dakak Park & Beach Resort",location:"Dapitan City, Zamboanga del Norte",description:"Tropical beach escape: 3 days, 2 nights accommodation, daily breakfast, snorkeling equipment rental, and a sunset island-hopping tour.",originalPrice:18500,discountPct:20,tag:"20% off resort package",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid for bookings until October 31, 2026",active:true,savingsAmt:3700,avgRating:4.9,ratingCount:28,contact:"(065) 212-3457"},
+  {id:"villa-escudero",category:"travel",categoryLabel:"Travel & Hotels",title:"Villa Escudero Day Tour + Lunch",partner:"Villa Escudero Plantations",location:"San Pablo, Laguna",description:"Full-day cultural tour of Villa Escudero including the coconut plantation, waterfall restaurant lunch, museum visit, and bamboo rafting.",originalPrice:3200,discountPct:15,tag:"15% off day tour",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:480,avgRating:4.7,ratingCount:85,contact:"(042) 545-1234"},
+  {id:"airbnb-ph",category:"travel",categoryLabel:"Travel & Hotels",title:"PhP 1,500 Accommodation Credit",partner:"Airbnb Philippines",location:"All Philippine listings",description:"Receive PhP 1,500 travel credit applicable to any Airbnb listing in the Philippines with a minimum 2-night stay. Credit applied at checkout with promo code.",originalPrice:1500,fixedPrice:0,tag:"Free PhP 1,500 credit",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for bookings until September 30, 2026",active:true,savingsAmt:1500,avgRating:4.5,ratingCount:61,contact:"support.airbnb.com/ph"},
+
+  // DINING (6)
+  {id:"jollibee",category:"dining",categoryLabel:"Food & Dining",title:"Jollibee Senior Meal Deal",partner:"Jollibee",location:"All branches nationwide",description:"Special retiree combo: Chickenjoy + Spaghetti + Large Drink + Sundae at a flat rate of PhP 199. Only PhP 199 regardless of regular menu pricing.",originalPrice:320,fixedPrice:199,tag:"PhP 199 senior combo",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid every day until December 31, 2026",active:true,savingsAmt:121,avgRating:4.7,ratingCount:412,contact:"1-800-10-JOLLIBEE"},
+  {id:"ltb-grill",category:"dining",categoryLabel:"Food & Dining",title:"Boodle Fight Experience for 4",partner:"Abe: Culture and Cuisine",location:"Serendra, BGC Taguig",description:"Traditional Filipino boodle fight for 4 persons: assorted grilled meats, seafood, rice, and vegetables served on banana leaves. A cultural dining experience.",originalPrice:5600,discountPct:20,tag:"20% off boodle fight",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:1120,avgRating:4.8,ratingCount:57,contact:"(02) 8856-0526"},
+  {id:"spiral-sofitel",category:"dining",categoryLabel:"Food & Dining",title:"Spiral Sunday Brunch Discount",partner:"Spiral at Sofitel Manila",location:"CCP Complex, Pasay City",description:"15% discount on the famous Spiral Sunday buffet brunch for up to 4 persons. One of Manila's most celebrated dining experiences  -  21 themed food ateliers.",originalPrice:4200,discountPct:15,tag:"15% off Sunday brunch",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid every Sunday until November 30, 2026",active:true,savingsAmt:630,avgRating:4.9,ratingCount:44,contact:"(02) 8832-6988"},
+  {id:"greenwich",category:"dining",categoryLabel:"Food & Dining",title:"Pizza & Pasta Family Bundle",partner:"Greenwich Pizza",location:"All branches nationwide",description:"Family bundle: 1 large pizza (any variant) + 2 pastas + 4 drinks. Valid for dine-in and take-out. Retiree rate is PhP 100 off the regular combo price.",originalPrice:890,discountPct:null,fixedPrice:790,tag:"PhP 100 off family bundle",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:100,avgRating:4.4,ratingCount:189,contact:"1-800-10-GREENWICH"},
+  {id:"aristocrat",category:"dining",categoryLabel:"Food & Dining",title:"Classic Filipino Lunch for 2",partner:"The Aristocrat Restaurant",location:"Roxas Blvd, Malate Manila",description:"Set lunch for 2: Chicken Barbecue + Java Rice + Pancit Canton + 2 drinks + Leche Flan. A Manila institution since 1936.",originalPrice:980,discountPct:20,tag:"20% off classic set",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:196,avgRating:4.6,ratingCount:223,contact:"(02) 8524-7671"},
+  {id:"starbucks-ph",category:"dining",categoryLabel:"Food & Dining",title:"Starbucks Retiree Beverage Offer",partner:"Starbucks Philippines",location:"All branches nationwide",description:"One free regular-sized beverage (any handcrafted drink) per visit with a minimum purchase of PhP 300. Valid once per week per member.",originalPrice:280,fixedPrice:0,tag:"Free drink with PhP 300 purchase",iconName:"UtensilsCrossed",iconColor:"#27ae60",type:"purchase",voucherValidity:"Valid weekly until December 31, 2026",active:true,savingsAmt:280,avgRating:4.8,ratingCount:334,contact:"1-800-10-STARBUCKS"},
+
+  // ENTERTAINMENT (5)
+  {id:"nso-concert",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"National Symphony Orchestra Concert",partner:"Cultural Center of the Philippines",location:"CCP Main Theater, Pasay City",description:"Premium seating for two at any NSO regular season performance at the CCP Main Theater. Experience world-class classical music in Manila's premier arts venue.",originalPrice:2000,discountPct:30,tag:"30% off concert tickets",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Valid for 2026 season performances",active:true,savingsAmt:600,avgRating:4.9,ratingCount:31,contact:"(02) 8832-1125"},
+  {id:"museum-pass",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"National Museum Complex Pass",partner:"National Museum of the Philippines",location:"Rizal Park, Manila",description:"All-day pass to all three National Museum buildings: National Museum of Fine Arts, National Museum of Anthropology, and National Museum of Natural History.",originalPrice:150,fixedPrice:0,tag:"Free entry for SRRV holders",iconName:"Film",iconColor:"#9b59b6",type:"claim",voucherValidity:"Ongoing benefit  -  valid indefinitely",active:true,savingsAmt:150,avgRating:4.8,ratingCount:178,contact:"(02) 8527-1215"},
+  {id:"bgc-running",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"BGC Fun Run Entry Fee Waiver",partner:"BGC Arts Center",location:"Bonifacio Global City, Taguig",description:"Free entry to all BGC-organized fun runs and wellness events in 2026. Includes running kit (shirt + bib) for each event. Register through the PRA Libreta app.",originalPrice:800,fixedPrice:0,tag:"Free fun run entry",iconName:"Film",iconColor:"#9b59b6",type:"claim",voucherValidity:"Valid for all 2026 BGC events",active:true,savingsAmt:800,avgRating:4.5,ratingCount:92,contact:"(02) 8945-2138"},
+  {id:"netflix-voucher",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Netflix 3-Month Standard Plan",partner:"Netflix Philippines",location:"Streaming  -  nationwide",description:"3-month Netflix Standard Plan subscription (2 screens, Full HD) at the PRA senior rate. Redeem code sent to registered email within 24 hours of purchase.",originalPrice:1320,discountPct:25,tag:"25% off 3-month Netflix plan",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Redeem within 30 days of purchase",active:true,savingsAmt:330,avgRating:4.7,ratingCount:267,contact:"help.netflix.com/ph"},
+  {id:"book-sale",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Book Lovers Bundle",partner:"National Book Store",location:"All branches nationwide",description:"Any 5 books from the bestsellers table at a flat 40% discount. Valid per transaction. Choose from fiction, non-fiction, health, spirituality, or Filipino literature.",originalPrice:2000,discountPct:40,tag:"40% off any 5 bestsellers",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:800,avgRating:4.6,ratingCount:145,contact:"(02) 8525-0677"},
+];
+const ALL_BENEFITS=[...BENEFITS,...EXTRA_BENEFITS];
+
+
+// ─── Mock Reviews Data ────────────────────────────────────────────────────────
+const MOCK_REVIEWS={
+  "med-city":[
+    {id:"r1",author:"Maria S.",praId:"SRRV-2022-001",rating:5,comment:"Excellent service! The priority lane for seniors is a real blessing. Staff were very attentive and the check-up was thorough. Results were ready in 2 hours.",date:"May 28, 2026",helpful:12,verified:true},
+    {id:"r2",author:"Jose R.",praId:"SRRV-2021-045",rating:4,comment:"Good value for the price. The internist was knowledgeable and took time to explain everything. Slight wait at the lab section but overall a positive experience.",date:"April 15, 2026",helpful:8,verified:true},
+    {id:"r3",author:"Roberto C.",praId:"SRRV-2020-012",rating:5,comment:"I have been using this benefit every year since joining PRA. The Medical City truly treats seniors with dignity. Highly recommended.",date:"March 2, 2026",helpful:15,verified:true},
+  ],
+  "henann":[
+    {id:"r4",author:"Maria S.",praId:"SRRV-2022-001",rating:5,comment:"Absolutely stunning resort. The sea view room was breathtaking and the staff remembered our names after the first day. The PRA discount made it very affordable.",date:"February 10, 2026",helpful:21,verified:true},
+    {id:"r5",author:"Carmen L.",praId:"SRRV-2023-088",rating:4,comment:"Beautiful property and great food. The airport transfer was seamless. Only minor issue was the pool was crowded on weekends. Would still come back!",date:"January 20, 2026",helpful:9,verified:true},
+  ],
+  "sm-cinema":[
+    {id:"r6",author:"Roberto C.",praId:"SRRV-2020-012",rating:5,comment:"PhP 100 for any weekday movie is unbeatable. The senior seats at SM are always comfortable. I watch at least 2 movies a month with this benefit.",date:"May 30, 2026",helpful:18,verified:true},
+    {id:"r7",author:"Jose R.",praId:"SRRV-2021-045",rating:4,comment:"Great deal. Just make sure to arrive early for popular screenings as seats go fast even on weekdays. Staff always honor the PRA card without any fuss.",date:"May 15, 2026",helpful:6,verified:true},
+  ],
+  "jollibee":[
+    {id:"r8",author:"Maria S.",praId:"SRRV-2022-001",rating:5,comment:"My grandchildren love coming with me to Jollibee using this benefit. The combo is great value and the staff are always friendly to seniors.",date:"June 1, 2026",helpful:24,verified:true},
+  ],
+  "starbucks-ph":[
+    {id:"r9",author:"Carmen L.",praId:"SRRV-2023-088",rating:5,comment:"I use this every week without fail. The baristas at my branch already know about the PRA benefit and process it quickly. Love starting my mornings this way.",date:"May 25, 2026",helpful:31,verified:true},
+    {id:"r10",author:"Roberto C.",praId:"SRRV-2020-012",rating:4,comment:"Good perk but some branches are unfamiliar with the benefit. Recommend showing them the voucher in the app clearly. Once they understand, no problems.",date:"May 10, 2026",helpful:14,verified:true},
+  ],
+};
+
+// ─── Partner Store Overview ───────────────────────────────────────────────────
+const PARTNER_INFO={
+  "The Medical City":{
+    founded:"1977",type:"Tertiary Hospital",branches:5,employees:"5,000+",
+    about:"The Medical City is one of the Philippines' foremost tertiary hospitals, known for its Centers of Excellence in oncology, cardiology, and neuroscience. As a PRA Libreta partner since 2022, they provide priority senior lanes and dedicated patient navigators for all SRRV holders.",
+    highlights:["JCI Accredited","24/7 Emergency Services","Senior Priority Lanes","Home Service Available"],
+    rating:4.8,reviewCount:142,
+  },
+  "Henann Resort Boracay":{
+    founded:"2009",type:"5-Star Beach Resort",branches:3,employees:"800+",
+    about:"Henann Resort Boracay is one of the premier luxury beach resorts on Boracay Island, home to some of the most stunning beachfront properties in Southeast Asia. The resort offers world-class amenities tailored to discerning travelers, with a special affinity for senior guests.",
+    highlights:["Beachfront Location","Multiple Pools","Spa & Wellness Center","Senior-Friendly Rooms"],
+    rating:4.9,reviewCount:67,
+  },
+  "SM Cinemas":{
+    founded:"1990",type:"Cinema Chain",branches:70,employees:"2,000+",
+    about:"SM Cinemas is the largest cinema chain in the Philippines with over 70 locations across the country. They pioneered senior-friendly cinema experiences including larger seats, assistive listening devices, and the popular Senior Weekday program in partnership with PRA Libreta.",
+    highlights:["Largest Cinema Network","Assistive Listening Devices","Senior Comfort Seats","Online Booking"],
+    rating:4.7,reviewCount:301,
+  },
+  "Mercury Drug":{
+    founded:"1945",type:"Pharmacy Chain",branches:1000,employees:"12,000+",
+    about:"Mercury Drug is the Philippines' most trusted pharmacy chain with over 1,000 branches nationwide. For 80 years, they have served Filipino families with quality medicines and health products. Their partnership with PRA Libreta extends maintenance medication access to all SRRV holders.",
+    highlights:["1,000+ Branches","24/7 Locations Available","Generic Medicine Program","Home Delivery"],
+    rating:4.5,reviewCount:389,
+  },
+  "Max's Restaurant":{
+    founded:"1945",type:"Filipino Restaurant Chain",branches:120,employees:"3,500+",
+    about:"Max's Restaurant  -  'The House That Fried Chicken Built'  -  has been a cornerstone of Filipino dining culture since 1945. Known for their signature crispy fried chicken, Max's has evolved into a full-service Filipino restaurant celebrating family dining. Their weekend Senior Feast is specially crafted for PRA Libreta members.",
+    highlights:["Since 1945","120+ Branches","Family Dining Focus","Free Delivery Program"],
+    rating:4.6,reviewCount:198,
+  },
+  "Cebu Pacific":{
+    founded:"1996",type:"Low-Cost Airline",branches:null,employees:"4,000+",
+    about:"Cebu Pacific is the Philippines' largest low-cost carrier, connecting over 60 destinations domestically and internationally. As a PRA Libreta partner, they waive booking convenience fees for all SRRV holders, making domestic travel more accessible for retirees exploring the archipelago.",
+    highlights:["60+ Destinations","Online & App Booking","Generous Baggage Allowance","Senior Assistance Program"],
+    rating:4.2,reviewCount:215,
+  },
+};
+
+// ─── Review Stars Interactive ─────────────────────────────────────────────────
+function ReviewStars({value,onChange,size=24,readonly=false}){
+  const[hover,setHover]=useState(0);
+  return(
+    <div style={{display:"flex",gap:4}}>
+      {[1,2,3,4,5].map(s=>(
+        <button key={s}
+          onClick={()=>!readonly&&onChange&&onChange(s)}
+          onMouseEnter={()=>!readonly&&setHover(s)}
+          onMouseLeave={()=>!readonly&&setHover(0)}
+          style={{background:"none",border:"none",cursor:readonly?"default":"pointer",fontSize:size,lineHeight:1,padding:0,color:s<=(hover||value)?"#E8730A":"#D0D5DD",transition:"color .15s"}}>
+          ★
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Single Review Card ───────────────────────────────────────────────────────
+function ReviewCard({review,C}){
+  const[helpful,setHelpful]=useState(review.helpful);
+  const[voted,setVoted]=useState(false);
+  return(
+    <div style={{padding:"14px 0",borderBottom:`1px solid ${C.border}`}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <div style={{width:32,height:32,borderRadius:"50%",background:C.orangePale,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#E8730A",flexShrink:0}}>{review.author[0]}</div>
+          <div>
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <span style={{fontSize:13,fontWeight:700,color:C.text}}>{review.author}</span>
+              {review.verified&&<span style={{fontSize:10,background:"rgba(26,122,74,0.1)",color:"#1A7A4A",borderRadius:20,padding:"1px 6px",fontWeight:600}}>Verified</span>}
+            </div>
+            <div style={{fontSize:11,color:C.textSub}}>{review.date}</div>
+          </div>
+        </div>
+        <ReviewStars value={review.rating} readonly size={14}/>
+      </div>
+      <p style={{fontSize:13,color:C.textSub,lineHeight:1.65,margin:"0 0 8px 0"}}>{review.comment}</p>
+      <button onClick={()=>{if(!voted){setHelpful(h=>h+1);setVoted(true);}}} style={{background:"none",border:`1px solid ${C.border}`,borderRadius:6,padding:"4px 10px",fontSize:11,color:voted?"#1A7A4A":C.textSub,cursor:voted?"default":"pointer",display:"flex",alignItems:"center",gap:4,transition:"all .2s"}}>
+        <span>{voted?"✓":"👍"}</span> Helpful ({helpful})
+      </button>
+    </div>
+  );
+}
+
+// ─── Write Review Form ────────────────────────────────────────────────────────
+function WriteReviewForm({benefitId,member,onSubmit,C}){
+  const[rating,setRating]=useState(0);
+  const[comment,setComment]=useState("");
+  const[submitted,setSubmitted]=useState(false);
+  const[error,setError]=useState("");
+  const handleSubmit=()=>{
+    if(rating===0){setError("Please select a star rating.");return;}
+    if(comment.trim().length<10){setError("Please write at least 10 characters.");return;}
+    setError("");
+    const newReview={
+      id:"r"+Date.now(),
+      author:`${member.firstName} ${member.lastName[0]}.`,
+      praId:member.praId,
+      rating,
+      comment:comment.trim(),
+      date:new Date().toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}),
+      helpful:0,
+      verified:true,
+    };
+    onSubmit&&onSubmit(newReview);
+    setSubmitted(true);
+  };
+  if(submitted)return(
+    <div style={{background:"rgba(26,122,74,0.08)",border:"1.5px solid #1A7A4A",borderRadius:12,padding:"16px",textAlign:"center"}}>
+      <div style={{fontSize:22,marginBottom:6}}>🎉</div>
+      <div style={{fontSize:14,fontWeight:700,color:"#1A7A4A",marginBottom:4}}>Thank you for your review!</div>
+      <div style={{fontSize:13,color:C.textSub}}>Your feedback helps other PRA members make informed decisions.</div>
+    </div>
+  );
+  return(
+    <div style={{background:C.gray50,borderRadius:12,padding:"16px",border:`1px solid ${C.border}`}}>
+      <div style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:12}}>Write a Review</div>
+      <div style={{marginBottom:12}}>
+        <div style={{fontSize:12,color:C.textSub,marginBottom:6}}>Your Rating</div>
+        <ReviewStars value={rating} onChange={setRating} size={28}/>
+      </div>
+      <div style={{marginBottom:10}}>
+        <div style={{fontSize:12,color:C.textSub,marginBottom:6}}>Your Experience</div>
+        <textarea value={comment} onChange={e=>setComment(e.target.value)} placeholder="Share your experience with this benefit... (min. 10 characters)" style={{width:"100%",padding:"10px 12px",border:`1.5px solid ${error?'#C0392B':C.border}`,borderRadius:8,fontSize:13,color:C.text,background:C.surface,resize:"vertical",minHeight:80,outline:"none",fontFamily:"inherit",boxSizing:"border-box"}}/>
+      </div>
+      {error&&<div style={{fontSize:12,color:"#C0392B",marginBottom:8,display:"flex",alignItems:"center",gap:4}}><Icon name="AlertCircle" size={12} color="#C0392B"/>{error}</div>}
+      <button className="btn-primary" style={{width:"100%",fontSize:13}} onClick={handleSubmit}><Icon name="Star" size={13} color="white"/> Submit Review</button>
+    </div>
+  );
+}
+
+// ─── Reviews Section (used inside BenefitModal) ───────────────────────────────
+function ReviewsSection({item,member,C}){
+  const[reviews,setReviews]=useState(MOCK_REVIEWS[item.id]||[]);
+  const[showWrite,setShowWrite]=useState(false);
+  const[sortBy,setSortBy]=useState("recent");
+  const avgRating=reviews.length?reviews.reduce((s,r)=>s+r.rating,0)/reviews.length:item.avgRating||0;
+  const ratingDist=[5,4,3,2,1].map(s=>({stars:s,count:reviews.filter(r=>r.rating===s).length}));
+  const sorted=[...reviews].sort((a,b)=>sortBy==="helpful"?b.helpful-a.helpful:new Date(b.date)-new Date(a.date));
+  const alreadyReviewed=reviews.some(r=>r.praId===member?.praId);
+  return(
+    <div>
+      {/* Rating summary */}
+      <div style={{display:"flex",gap:20,alignItems:"center",padding:"16px 0",borderBottom:`1px solid ${C.border}`,marginBottom:16}}>
+        <div style={{textAlign:"center",flexShrink:0}}>
+          <div style={{fontSize:40,fontWeight:800,color:C.text,lineHeight:1}}>{avgRating.toFixed(1)}</div>
+          <ReviewStars value={Math.round(avgRating)} readonly size={14}/>
+          <div style={{fontSize:11,color:C.textSub,marginTop:2}}>{reviews.length} review{reviews.length!==1?"s":""}</div>
+        </div>
+        <div style={{flex:1}}>
+          {ratingDist.map(({stars,count})=>(
+            <div key={stars} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+              <span style={{fontSize:11,color:C.textSub,width:8}}>{stars}</span>
+              <span style={{fontSize:11,color:"#E8730A"}}>★</span>
+              <div style={{flex:1,height:6,background:C.gray200,borderRadius:3,overflow:"hidden"}}>
+                <div style={{height:"100%",background:"#E8730A",borderRadius:3,width:reviews.length?`${(count/reviews.length)*100}%`:"0%",transition:"width .5s"}}/>
+              </div>
+              <span style={{fontSize:11,color:C.textSub,width:16,textAlign:"right"}}>{count}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Sort + write */}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <div style={{display:"flex",gap:6}}>
+          {["recent","helpful"].map(s=>(
+            <button key={s} onClick={()=>setSortBy(s)} style={{background:sortBy===s?"#0A2540":C.surface,color:sortBy===s?"white":C.textSub,border:`1.5px solid ${sortBy===s?"#0A2540":C.border}`,borderRadius:6,padding:"5px 10px",fontSize:12,fontWeight:600,cursor:"pointer",textTransform:"capitalize"}}>{s}</button>
+          ))}
+        </div>
+        {!alreadyReviewed&&member&&<button onClick={()=>setShowWrite(s=>!s)} style={{background:"none",border:"1.5px solid #E8730A",borderRadius:6,padding:"5px 12px",fontSize:12,fontWeight:700,color:"#E8730A",cursor:"pointer"}}>{showWrite?"Cancel":"+ Write Review"}</button>}
+        {alreadyReviewed&&<span style={{fontSize:12,color:"#1A7A4A",fontWeight:600}}>✓ You reviewed this</span>}
+      </div>
+      {showWrite&&<div style={{marginBottom:16}}><WriteReviewForm benefitId={item.id} member={member} onSubmit={r=>{setReviews(rs=>[r,...rs]);setShowWrite(false);}} C={C}/></div>}
+      {/* Review list */}
+      {sorted.length===0?<div style={{textAlign:"center",padding:"24px",color:C.textSub,fontSize:13}}>No reviews yet. Be the first to share your experience!</div>
+      :<div>{sorted.map(r=><ReviewCard key={r.id} review={r} C={C}/>)}</div>}
+    </div>
+  );
+}
+
+// ─── Partner Store Overview Card ──────────────────────────────────────────────
+function PartnerOverview({partnerName,C}){
+  const info=PARTNER_INFO[partnerName];
+  if(!info)return null;
+  return(
+    <div style={{background:C.gray50,borderRadius:12,padding:"16px",border:`1px solid ${C.border}`,marginBottom:16}}>
+      <div style={{fontSize:13,fontWeight:700,color:C.textSub,textTransform:"uppercase",letterSpacing:.5,marginBottom:10}}>About the Partner</div>
+      <div style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:4}}>{partnerName}</div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:8}}>
+            <span style={{fontSize:11,color:C.textSub,background:C.surface,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px 8px"}}>{info.type}</span>
+            {info.founded&&<span style={{fontSize:11,color:C.textSub,background:C.surface,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px 8px"}}>Est. {info.founded}</span>}
+            {info.branches&&<span style={{fontSize:11,color:C.textSub,background:C.surface,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px 8px"}}>{info.branches}+ branches</span>}
+          </div>
+          <p style={{fontSize:13,color:C.textSub,lineHeight:1.65,margin:0}}>{info.about}</p>
+        </div>
+      </div>
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        {info.highlights.map((h,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:4,background:"rgba(26,122,74,0.08)",borderRadius:6,padding:"4px 8px"}}>
+            <Icon name="Check" size={10} color="#1A7A4A"/>
+            <span style={{fontSize:11,color:"#1A7A4A",fontWeight:600}}>{h}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -2790,12 +3074,12 @@ function App(){
       {showDemoMode&&<DemoWalkthrough onClose={()=>setShowDemoMode(false)} onNavigate={nav} C={C}/>}
       {showImport&&<MemberImportModal onClose={()=>setShowImport(false)} onImport={n=>console.log("Imported",n)} C={C}/>}
       {appScreen==="app"&&showTour&&member&&<OnboardingTour member={member} onDone={()=>setShowTour(false)} C={C}/>}
-      {appScreen==="app"&&modalBenefit&&<BenefitModal item={modalBenefit} onClose={()=>setModalBenefit(null)} onPurchase={purchase} onClaim={claim} claimed={claimedIds.includes(modalBenefit.id)} C={C}/>}
+      {appScreen==="app"&&modalBenefit&&<BenefitModal item={modalBenefit} onClose={()=>setModalBenefit(null)} onPurchase={purchase} onClaim={claim} claimed={claimedIds.includes(modalBenefit.id)} C={C} member={member}/>}
       {appScreen==="app"&&member&&mode==="member"&&(
         <div style={{paddingBottom:80,background:C.bg,minHeight:"100vh"}}>
           <NavBar active={activeNav} onNavigate={nav} memberName={member.firstName} C={C} notifOpen={notifOpen} setNotifOpen={setNotifOpen} readNotifs={readNotifs} setReadNotifs={setReadNotifs} announcements={ANNOUNCEMENTS} lang={lang} onNavigateFn={nav}/>
           <div style={{maxWidth:640,margin:"0 auto"}}>
-            {view==="dashboard"&&<Dashboard member={member} onNavigate={nav} onPurchase={purchase} onClaim={claim} claimedIds={claimedIds} benefits={BENEFITS} announcements={ANNOUNCEMENTS} C={C} purchasedVouchers={purchasedVouchers} onOpenModal={setModalBenefit} onRenew={()=>setShowRenewal(true)} points={points} onShowID={()=>setShowIDCard(true)} lang={lang} memberPhoto={memberPhoto}/>}
+            {view==="dashboard"&&<Dashboard member={member} onNavigate={nav} onPurchase={purchase} onClaim={claim} claimedIds={claimedIds} benefits={ALL_BENEFITS} announcements={ANNOUNCEMENTS} C={C} purchasedVouchers={purchasedVouchers} onOpenModal={setModalBenefit} onRenew={()=>setShowRenewal(true)} points={points} onShowID={()=>setShowIDCard(true)} lang={lang} memberPhoto={memberPhoto}/>}
             {view==="benefits"&&<BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={purchase} C={C} onOpenModal={setModalBenefit} favorites={favorites} setFavorites={setFavorites} claimedIds={claimedIds} onClaim={claim}/>}
             {view==="checkout"&&selectedBenefit&&<CheckoutPage item={selectedBenefit} member={member} onSuccess={paySuccess} onBack={()=>setView("benefits")} C={C} bookingDates={bookingDates} setBookingDates={setBookingDates}/>}
             {view==="success"&&successResult&&<PaymentSuccess result={successResult} member={member} onDone={()=>{setView("benefits");window.scrollTo({top:0});}} onViewVouchers={()=>{setView("vouchers");window.scrollTo({top:0});}} onRate={(id,stars)=>setRatings(r=>({...r,[id]:stars}))} C={C}/>}
@@ -2828,6 +3112,10 @@ function App(){
 
 const root=ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App/>);
+
+
+
+
 
 
 
