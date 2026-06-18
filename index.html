@@ -62,6 +62,96 @@ body.dark .carousel-btn:hover{border-color:#E8730A;color:#E8730A;background:rgba
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#E4E8EE;border-radius:6px}
 body.dark ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)}
+
+/* ===== Liveliness / animation library ===== */
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes blobMove{0%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.12)}66%{transform:translate(-26px,24px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
+@keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+@keyframes ringExpand{0%{transform:scale(.55);opacity:.65}100%{transform:scale(2.3);opacity:0}}
+@keyframes confettiFall{0%{transform:translateY(-12vh) rotate(0deg);opacity:1}100%{transform:translateY(112vh) rotate(720deg);opacity:.85}}
+@keyframes bellWiggle{0%,55%,100%{transform:rotate(0)}8%,24%{transform:rotate(-15deg)}16%,32%{transform:rotate(15deg)}40%{transform:rotate(-7deg)}48%{transform:rotate(7deg)}}
+@keyframes badgePulse{0%{box-shadow:0 0 0 0 rgba(232,115,10,.65)}70%{box-shadow:0 0 0 8px rgba(232,115,10,0)}100%{box-shadow:0 0 0 0 rgba(232,115,10,0)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 4px 16px rgba(232,115,10,.4)}50%{box-shadow:0 6px 30px rgba(232,115,10,.78)}}
+@keyframes sheen{0%{left:-60%}100%{left:140%}}
+@keyframes gradientDrift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes toastIn{0%{transform:translateY(-26px) scale(.92);opacity:0}60%{transform:translateY(4px) scale(1.02)}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes sparkleSpin{0%{transform:rotate(0) scale(.9);opacity:.6}50%{transform:rotate(180deg) scale(1.15);opacity:1}100%{transform:rotate(360deg) scale(.9);opacity:.6}}
+
+.float-y{animation:floatY 5s ease-in-out infinite}
+.pop-in{animation:popIn .55s cubic-bezier(.34,1.56,.64,1) both}
+.bell-animate{animation:bellWiggle 1.6s ease-in-out infinite;transform-origin:50% 10%}
+.badge-pulse{animation:badgePulse 1.6s ease-out infinite}
+.glow-pulse{animation:glowPulse 2.4s ease-in-out infinite}
+.toast-in{animation:toastIn .5s cubic-bezier(.34,1.56,.64,1) both}
+.spark{animation:sparkleSpin 3s linear infinite}
+.success-ring{position:absolute;inset:-3px;border-radius:50%;border:3px solid #1A7A4A;animation:ringExpand 1.6s ease-out infinite}
+
+/* button sheen + tactile press */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:"";position:absolute;top:0;left:-60%;width:38%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);pointer-events:none;opacity:0}
+.btn-primary:hover::after{opacity:1;animation:sheen .7s ease}
+.btn-claim{transition:all .2s,transform .1s}
+.btn-claim:active{transform:scale(.96)}
+.btn-ghost:active{transform:scale(.97)}
+
+/* lively cards */
+.card{transition:transform .28s cubic-bezier(.34,1.4,.64,1),box-shadow .28s,border-color .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(10,37,64,.1)}
+body.dark .card:hover{box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.benefit-card:hover{transform:translateY(-4px) scale(1.01)}
+.lift:hover{transform:translateY(-3px)}
+.tap{transition:transform .12s}
+.tap:active{transform:scale(.95)}
+
+/* staggered list entrance */
+.stagger>*{animation:fadeIn .5s ease both}
+.stagger>*:nth-child(1){animation-delay:.03s}
+.stagger>*:nth-child(2){animation-delay:.09s}
+.stagger>*:nth-child(3){animation-delay:.15s}
+.stagger>*:nth-child(4){animation-delay:.21s}
+.stagger>*:nth-child(5){animation-delay:.27s}
+.stagger>*:nth-child(6){animation-delay:.33s}
+.stagger>*:nth-child(7){animation-delay:.39s}
+.stagger>*:nth-child(8){animation-delay:.45s}
+.stagger>*:nth-child(n+9){animation-delay:.5s}
+
+/* ambient animated background */
+.ambient{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.ambient .blob{position:absolute;border-radius:50%;filter:blur(55px)}
+
+/* ===== Game-like juice ===== */
+@keyframes flash{0%{opacity:.7}100%{opacity:0}}
+@keyframes burstOut{0%{transform:translate(0,0) scale(1);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.25);opacity:0}}
+@keyframes punchIn{0%{transform:scale(0) rotate(-12deg);opacity:0}55%{transform:scale(1.25) rotate(4deg)}75%{transform:scale(.92)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes coinFlip{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}70%{transform:scale(.95)}100%{transform:scale(1);opacity:1}}
+@keyframes shimmerText{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes shockwave{0%{transform:scale(.4);opacity:.55;border-width:14px}100%{transform:scale(2.7);opacity:0;border-width:1px}}
+@keyframes popNum{0%{transform:scale(1.4);color:#1A7A4A}100%{transform:scale(1)}}
+
+.punch-in{animation:punchIn .6s cubic-bezier(.34,1.56,.64,1) both}
+.bounce-in{animation:bounceIn .7s cubic-bezier(.34,1.56,.64,1) both}
+.coin{display:inline-block;animation:coinFlip 1.1s ease-in-out infinite}
+.shockwave{position:absolute;inset:-8px;border-radius:50%;border:6px solid #1A7A4A;animation:shockwave 1.3s ease-out infinite}
+.shimmer-text{background:linear-gradient(90deg,#E8730A,#F1C40F,#1A7A4A,#E8730A);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shimmerText 2.4s linear infinite}
+.reward-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#FFF5E6,#FFE3B0);color:#B45309;border:2px solid #E8730A;border-radius:30px;padding:10px 20px;font-size:16px;font-weight:800;box-shadow:0 6px 22px rgba(232,115,10,.4)}
+body.dark .reward-badge{background:linear-gradient(135deg,rgba(232,115,10,.22),rgba(241,196,15,.18));color:#FBBF24}
+.pop-num{display:inline-block;animation:popNum .5s ease-out}
+
+/* extra button juice */
+.btn-primary{transition:background .2s,transform .14s cubic-bezier(.34,1.7,.5,1),box-shadow .2s}
+.btn-primary:hover{transform:translateY(-2px) scale(1.025)}
+.btn-primary:active{transform:scale(.92)}
+.btn-claim{transition:all .2s,transform .14s cubic-bezier(.34,1.7,.5,1)}
+.btn-claim:hover{transform:translateY(-1px)}
+.btn-claim:active{transform:scale(.92)}
+.btn-ghost:active{transform:scale(.93)}
+.carousel-btn:active{transform:scale(.86)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::after,*::before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .ambient{display:none}
+}
 </style>
 </head>
 <body class="light">
@@ -582,7 +672,7 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C,onOpenModal,favo
       {viewMode==="list"&&<div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:20}}>
         {CATEGORIES.map(c=><button key={c.id} onClick={()=>setActiveCategory(c.id)} style={{background:activeCategory===c.id?"#0A2540":C.surface,color:activeCategory===c.id?"white":C.textSub,border:`1.5px solid ${activeCategory===c.id?"#0A2540":C.border}`,borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,whiteSpace:"nowrap",transition:"all .2s",display:"flex",alignItems:"center",gap:6,minHeight:40,cursor:"pointer"}}><Icon name={c.iconName} size={14} color={activeCategory===c.id?"white":C.textSub}/>{c.label}</button>)}
       </div>}
-      {viewMode==="list"&&(filtered.length===0?<div style={{textAlign:"center",padding:"48px 24px",color:C.textSub}}><div style={{display:"flex",justifyContent:"center",marginBottom:12,opacity:.4}}><Icon name="Search" size={36} color={C.textSub}/></div><div style={{fontSize:16,fontWeight:600}}>No results found</div><div style={{fontSize:14,marginTop:4}}>Try a different search or category</div></div>:<div style={{display:"flex",flexDirection:"column",gap:16}}>{filtered.map(item=><BenefitCard key={item.id} item={item} onPurchase={onPurchase} onClaim={handleClaim} claimed={claimedIds.includes(item.id)} C={C} onOpenModal={onOpenModal} favorited={favorites.includes(item.id)} onFavorite={()=>setFavorites&&setFavorites(fs=>fs.includes(item.id)?fs.filter(x=>x!==item.id):[...fs,item.id])}/>)}</div>)}
+      {viewMode==="list"&&(filtered.length===0?<div style={{textAlign:"center",padding:"48px 24px",color:C.textSub}}><div style={{display:"flex",justifyContent:"center",marginBottom:12,opacity:.4}}><Icon name="Search" size={36} color={C.textSub}/></div><div style={{fontSize:16,fontWeight:600}}>No results found</div><div style={{fontSize:14,marginTop:4}}>Try a different search or category</div></div>:<div className="stagger" style={{display:"flex",flexDirection:"column",gap:16}}>{filtered.map(item=><BenefitCard key={item.id} item={item} onPurchase={onPurchase} onClaim={handleClaim} claimed={claimedIds.includes(item.id)} C={C} onOpenModal={onOpenModal} favorited={favorites.includes(item.id)} onFavorite={()=>setFavorites&&setFavorites(fs=>fs.includes(item.id)?fs.filter(x=>x!==item.id):[...fs,item.id])}/>)}</div>)}
     </div>
   );
 }
@@ -645,10 +735,104 @@ function CheckoutPage({item,member,onSuccess,onBack,C,bookingDates,setBookingDat
 }
 
 
+// ── Ambient animated background (drifting color blobs) ───────────────────────
+function AmbientBackground({C}){
+  const op=C.isDark?0.22:0.16;
+  const blobs=[
+    {c:"#E8730A",size:340,top:"-6%",left:"-8%",dur:"18s",delay:"0s"},
+    {c:"#3498db",size:300,top:"45%",left:"72%",dur:"22s",delay:"-4s"},
+    {c:"#1A7A4A",size:260,top:"68%",left:"8%",dur:"20s",delay:"-8s"},
+    {c:"#9b59b6",size:240,top:"12%",left:"60%",dur:"26s",delay:"-2s"},
+  ];
+  return(
+    <div className="ambient" aria-hidden="true">
+      {blobs.map((b,i)=>(
+        <div key={i} className="blob" style={{width:b.size,height:b.size,top:b.top,left:b.left,background:b.c,opacity:op,animation:`blobMove ${b.dur} ease-in-out ${b.delay} infinite`}}/>
+      ))}
+    </div>
+  );
+}
+
+// ── Confetti burst (celebration on checkout / milestones) ────────────────────
+// ── Celebratory sound (synthesized, no assets) ───────────────────────────────
+function playChime(){
+  try{
+    const Ctx=window.AudioContext||window.webkitAudioContext;
+    if(!Ctx)return;
+    const ctx=new Ctx();
+    if(ctx.state==="suspended")ctx.resume();
+    const notes=[523.25,659.25,783.99,1046.50,1318.51];
+    notes.forEach((f,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="triangle";o.frequency.value=f;o.connect(g);g.connect(ctx.destination);
+      const t=ctx.currentTime+i*0.09;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
+      o.start(t);o.stop(t+0.52);
+    });
+    setTimeout(()=>{try{ctx.close();}catch(e){}},1800);
+  }catch(e){}
+}
+
+// ── Animated number count-up ─────────────────────────────────────────────────
+function CountUp({value,duration=1100,format}){
+  const[disp,setDisp]=useState(0);
+  const raf=useRef(0);
+  useEffect(()=>{
+    const to=Number(value)||0,start=performance.now();
+    const tick=(now)=>{
+      const p=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-p,3);
+      setDisp(to*eased);
+      if(p<1)raf.current=requestAnimationFrame(tick);else setDisp(to);
+    };
+    raf.current=requestAnimationFrame(tick);
+    return()=>cancelAnimationFrame(raf.current);
+  },[value,duration]);
+  const out=format?format(disp):Math.round(disp).toLocaleString();
+  return <>{out}</>;
+}
+
+// ── Confetti + firework celebration burst ────────────────────────────────────
+function Confetti(){
+  const colors=["#E8730A","#F08030","#1A7A4A","#3498db","#9b59b6","#F1C40F","#e74c3c","#FF6B9D","#16C79A"];
+  const emojis=["🎉","⭐","✨","🎊","💰","🏆","🎈"];
+  const fall=useRef(Array.from({length:95},(_,i)=>({
+    left:Math.random()*100,delay:Math.random()*0.7,dur:2+Math.random()*1.9,
+    size:8+Math.random()*11,color:colors[i%colors.length],rot:Math.random()*360,
+    round:Math.random()>0.45,emoji:Math.random()>0.83?emojis[i%emojis.length]:null,
+  }))).current;
+  const burst=useRef(Array.from({length:34},(_,i)=>{
+    const ang=(i/34)*Math.PI*2,dist=130+Math.random()*180;
+    return{dx:Math.cos(ang)*dist,dy:Math.sin(ang)*dist,color:colors[i%colors.length],size:8+Math.random()*8,delay:Math.random()*0.12};
+  })).current;
+  const[show,setShow]=useState(true);
+  useEffect(()=>{const t=setTimeout(()=>setShow(false),4400);return()=>clearTimeout(t);},[]);
+  if(!show)return null;
+  return(
+    <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:9000,overflow:"hidden"}} aria-hidden="true">
+      <div style={{position:"absolute",inset:0,background:"white",animation:"flash .55s ease-out forwards"}}/>
+      <div style={{position:"absolute",top:"36%",left:"50%"}}>
+        {burst.map((b,i)=>(
+          <div key={i} style={{position:"absolute",width:b.size,height:b.size,borderRadius:"50%",background:b.color,boxShadow:`0 0 8px ${b.color}`,"--dx":b.dx+"px","--dy":b.dy+"px",animation:`burstOut 1s ${b.delay}s cubic-bezier(.15,.7,.3,1) forwards`}}/>
+        ))}
+      </div>
+      {fall.map((p,i)=>(
+        p.emoji
+          ?<div key={i} style={{position:"absolute",top:0,left:p.left+"%",fontSize:p.size+11,animation:`confettiFall ${p.dur}s ${p.delay}s ease-in forwards`}}>{p.emoji}</div>
+          :<div key={i} style={{position:"absolute",top:0,left:p.left+"%",width:p.size,height:p.round?p.size:p.size*0.5,background:p.color,borderRadius:p.round?"50%":2,transform:`rotate(${p.rot}deg)`,animation:`confettiFall ${p.dur}s ${p.delay}s ease-in forwards`}}/>
+      ))}
+    </div>
+  );
+}
+
 function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
   const[showRating,setShowRating]=useState(true);
   const[ratingDone,setRatingDone]=useState(0);
   const[hoverStar,setHoverStar]=useState(0);
+  const earned=calcPoints(result.amount);
+  useEffect(()=>{playChime();},[]);
   const methodLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
   const now=new Date();
   const dateStr=now.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
@@ -656,9 +840,11 @@ function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
   const shareVoucher=()=>{const text=`Evera Voucher: ${result.voucher}\nBenefit: ${result.item.title} @ ${result.item.partner}\nAmount: ${fmt(result.amount)}\nValidity: ${result.item.voucherValidity}`;if(navigator.share){navigator.share({title:"Evera Voucher",text});}else if(navigator.clipboard){navigator.clipboard.writeText(text);alert("Voucher details copied!");}else alert(text);};
   return(
     <div className="slide-up" style={{padding:"32px 18px",textAlign:"center"}}>
-      <div className="pulse" style={{width:88,height:88,borderRadius:"50%",background:"#E6F4EC",border:"3px solid #1A7A4A",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}><Icon name="CheckCircle" size={42} color="#1A7A4A"/></div>
-      <div style={{fontSize:26,fontWeight:700,color:"#1A7A4A",fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Payment Successful!</div>
-      <div style={{fontSize:15,color:C.textSub,marginBottom:26}}>Your voucher is confirmed. Save or share the details below.</div>
+      <Confetti/>
+      <div className="pop-in" style={{position:"relative",width:88,height:88,borderRadius:"50%",background:"#E6F4EC",border:"3px solid #1A7A4A",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}><span className="shockwave"/><span className="success-ring"/><span className="success-ring" style={{animationDelay:".4s"}}/><span className="success-ring" style={{animationDelay:".8s"}}/><Icon name="CheckCircle" size={42} color="#1A7A4A"/></div>
+      <div className="punch-in shimmer-text" style={{fontSize:30,fontWeight:800,fontFamily:"'Libre Baskerville',serif",marginBottom:6}}>Payment Successful!</div>
+      <div style={{fontSize:15,color:C.textSub,marginBottom:18}}>Your voucher is confirmed. Save or share the details below.</div>
+      {earned>0&&<div className="bounce-in reward-badge" style={{margin:"0 auto 24px",animationDelay:".35s"}}><span className="coin" style={{fontSize:20}}>🪙</span> +<CountUp value={earned} duration={900}/> Evera Points!</div>}
       <div className="card" style={{padding:0,marginBottom:24,overflow:"hidden",border:"2px solid #E8730A"}}>
         <div style={{background:"#0A2540",padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>Evera - Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div><StatusBadge type="green">CONFIRMED</StatusBadge></div>
         <div style={{padding:"18px 20px"}}>
@@ -768,7 +954,7 @@ function MyVouchersPage({member,purchasedVouchers,claimedIds,ratings,setRatings,
 
 function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouchers,claimedIds,lang,setLang,points,onShowID,memberPhoto,setMemberPhoto,onLogout}){
   const[activeSection,setActiveSection]=useState("profile");
-  const T={en:{profile:"My Profile",docs:"Documents"},fil:{profile:"Aking Profile",docs:"Mga Dokumento"}};
+  const T={en:useT("en"),fil:useT("fil"),zh:useT("zh"),ja:useT("ja"),ko:useT("ko"),hi:useT("hi")};
   const t=T[lang]||T.en;
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
@@ -804,8 +990,8 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouc
               <button onClick={toggleDark} style={{background:darkMode?"#E8730A":C.gray200,border:"none",borderRadius:12,width:44,height:24,position:"relative",transition:"background .3s",cursor:"pointer"}}><div style={{width:18,height:18,borderRadius:"50%",background:"white",position:"absolute",top:3,left:darkMode?23:3,transition:"left .3s",boxShadow:"0 1px 3px rgba(0,0,0,0.2)"}}/></button>
             </div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 20px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10}}><Icon name="Globe" size={18} color="#E8730A"/><div><div style={{fontSize:14,fontWeight:600,color:C.text}}>Language</div><div style={{fontSize:12,color:C.textSub}}>{lang==="fil"?"Filipino":"English"}</div></div></div>
-              <div style={{display:"flex",gap:6}}>{["en","fil"].map(l=><button key={l} onClick={()=>setLang(l)} style={{background:lang===l?"#E8730A":C.gray200,color:lang===l?"white":C.textSub,border:"none",borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:700,cursor:"pointer",transition:"all .2s"}}>{l==="en"?"EN":"FIL"}</button>)}</div>
+              <div style={{display:"flex",alignItems:"center",gap:10}}><Icon name="Globe" size={18} color="#E8730A"/><div><div style={{fontSize:14,fontWeight:600,color:C.text}}>Language</div><div style={{fontSize:12,color:C.textSub}}>{LANG_NAMES[lang]||"English"}</div></div></div>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:230}}>{["en","fil","zh","ja","ko","hi"].map(l=><button key={l} onClick={()=>setLang(l)} className="tap" style={{background:lang===l?"#E8730A":C.gray200,color:lang===l?"white":C.textSub,border:"none",borderRadius:8,padding:"5px 11px",fontSize:12,fontWeight:700,cursor:"pointer",transition:"all .2s"}}>{LANG_SHORT[l]}</button>)}</div>
             </div>
           </div>
           <SOSCard member={member} C={C}/>
@@ -832,12 +1018,13 @@ function ProfilePage({member,onSwitchToAdmin,darkMode,toggleDark,C,purchasedVouc
 }
 
 function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotifs,setReadNotifs,announcements,lang,onNavigateFn}){
+  const t=useT(lang);
   const tabs=[
-    {id:"dashboard",label:lang==="fil"?"Tahanan":"Home",iconName:"LayoutDashboard"},
-    {id:"benefits",label:lang==="fil"?"Benepisyo":"Benefits",iconName:"Ticket"},
-    {id:"vouchers",label:lang==="fil"?"Voucher":"Vouchers",iconName:"Wallet"},
-    {id:"faq",label:lang==="fil"?"Tulong":"Help",iconName:"Info"},
-    {id:"profile",label:lang==="fil"?"Profile":"Profile",iconName:"UserCircle"},
+    {id:"dashboard",label:t.home,iconName:"LayoutDashboard"},
+    {id:"benefits",label:t.benefits,iconName:"Ticket"},
+    {id:"vouchers",label:t.vouchers,iconName:"Wallet"},
+    {id:"faq",label:t.help,iconName:"Info"},
+    {id:"profile",label:t.navProfile,iconName:"UserCircle"},
   ];
   const allNotifs=[...AUTO_NOTIFS,...announcements.map(a=>({...a,icon:"Newspaper",color:"#3498db"}))];
   const unread=allNotifs.filter(a=>!readNotifs.includes(a.id)).length;
@@ -849,18 +1036,18 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
           <GlobalSearch onNavigate={onNavigateFn||onNavigate} onPurchase={()=>{}} C={C} lang={lang}/>
           <div style={{position:"relative"}}>
             <button onClick={()=>setNotifOpen(o=>!o)} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",position:"relative"}}>
-              <Icon name="Bell" size={16} color="white"/>
-              {unread>0&&<span style={{position:"absolute",top:5,right:5,width:8,height:8,borderRadius:"50%",background:"#E8730A",border:"2px solid #0A2540"}}/>}
+              <span className={unread>0?"bell-animate":""} style={{display:"flex"}}><Icon name="Bell" size={16} color="white"/></span>
+              {unread>0&&<span className="badge-pulse" style={{position:"absolute",top:4,right:4,minWidth:14,height:14,padding:"0 3px",borderRadius:8,background:"#E8730A",border:"2px solid #0A2540",color:"white",fontSize:9,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>{unread}</span>}
             </button>
             {notifOpen&&(
               <div style={{position:"absolute",top:42,right:0,width:300,background:C.surface,borderRadius:12,boxShadow:"0 8px 30px rgba(0,0,0,0.18)",border:`1px solid ${C.border}`,zIndex:200,overflow:"hidden"}}>
                 <div style={{padding:"12px 16px",borderBottom:"1px solid #E4E8EE",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:14,fontWeight:700,color:C.text}}>Notifications</span><button onClick={()=>{setReadNotifs(announcements.map(a=>a.id));setNotifOpen(false);}} style={{fontSize:11,color:"#E8730A",background:"none",border:"none",cursor:"pointer",fontWeight:600}}>Mark all read</button></div>
-                {allNotifs.slice(0,6).map(ann=>(
-                  <div key={ann.id} onClick={()=>setReadNotifs(rs=>[...new Set([...rs,ann.id])])} style={{padding:"10px 16px",borderBottom:"1px solid #F0F0F0",background:readNotifs.includes(ann.id)?C.surface:C.orangePale,cursor:"pointer",display:"flex",gap:10,alignItems:"flex-start"}}>
-                    <div style={{width:7,height:7,borderRadius:"50%",background:readNotifs.includes(ann.id)?"transparent":"#E8730A",flexShrink:0,marginTop:5}}/>
-                    <div><div style={{fontSize:13,fontWeight:600,color:C.text,lineHeight:1.3}}>{ann.title}</div><div style={{fontSize:11,color:C.textSub,marginTop:2}}>{ann.date}</div></div>
+                {allNotifs.slice(0,6).map(ann=>{const isUnread=!readNotifs.includes(ann.id);const isNew=ann.type==="new";return(
+                  <div key={ann.id} onClick={()=>setReadNotifs(rs=>[...new Set([...rs,ann.id])])} style={{padding:"10px 16px",borderBottom:"1px solid #F0F0F0",background:isUnread?C.orangePale:C.surface,cursor:"pointer",display:"flex",gap:10,alignItems:"flex-start",transition:"background .2s"}}>
+                    {isNew&&isUnread?<span className="spark" style={{flexShrink:0,marginTop:1,fontSize:13,lineHeight:1}}>✨</span>:<div style={{width:7,height:7,borderRadius:"50%",background:isUnread?"#E8730A":"transparent",flexShrink:0,marginTop:5}}/>}
+                    <div><div style={{fontSize:13,fontWeight:600,color:C.text,lineHeight:1.3}}>{ann.title}{isNew&&isUnread&&<span style={{marginLeft:6,fontSize:9,fontWeight:800,color:"#1A7A4A",background:"rgba(26,122,74,0.14)",padding:"1px 6px",borderRadius:20,letterSpacing:.5}}>NEW</span>}</div><div style={{fontSize:11,color:C.textSub,marginTop:2}}>{ann.date}</div></div>
                   </div>
-                ))}
+                );})}
               </div>
             )}
           </div>
@@ -976,7 +1163,8 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
   const exportCSV=()=>{const rows=[["Member","Benefit","Partner","Amount","Method","Date","Voucher","Status"],...MOCK_TRANSACTIONS.map(t=>[t.member,t.benefit,t.partner,t.amount,t.method,t.date,t.voucher,t.status])];const csv=rows.map(r=>r.map(v=>`"${v}"`).join(",")).join("\n");const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download="pra_transactions.csv";a.click();};
   const IR=({label,value,onChange,placeholder,type="text"})=>(<div style={{marginBottom:12}}><label className="form-label">{label}</label><input type={type} className="form-input" value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder}/></div>);
   return(
-    <div style={{minHeight:"100vh",background:C.bg}}>
+    <div style={{minHeight:"100vh",background:"transparent"}}>
+      <AmbientBackground C={C}/>
       {showImportModal&&<MemberImportModal onClose={()=>setShowImportModal(false)} onImport={()=>{}} C={C}/>}
       {selectedAdminMember&&<MemberDetailModal member={selectedAdminMember} purchasedVouchers={[]} claimedCount={0} points={0} C={C} onClose={()=>setSelectedAdminMember(null)}/>}
       <div style={{background:"#0A2540",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
@@ -988,7 +1176,7 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
           <button onClick={onLogout} style={{background:"rgba(192,57,43,0.2)",border:"1px solid rgba(192,57,43,0.4)",borderRadius:8,padding:"7px 12px",color:"#ff8a80",fontWeight:600,fontSize:13,display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}><Icon name="X" size={13} color="#ff8a80"/> Sign Out</button>
         </div>
       </div>
-      <div style={{display:"flex",maxWidth:960,margin:"0 auto",minHeight:"calc(100vh - 56px)"}}>
+      <div style={{display:"flex",maxWidth:960,margin:"0 auto",minHeight:"calc(100vh - 56px)",position:"relative",zIndex:1}}>
         <div style={{width:200,flexShrink:0,background:C.surface,borderRight:`1px solid ${C.border}`,padding:"20px 0",position:"sticky",top:56,height:"calc(100vh - 56px)",overflowY:"auto"}}>
           {adminTabs.map(t=>(
             <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{width:"100%",background:activeTab===t.id?C.orangePale:"none",color:activeTab===t.id?"#E8730A":C.textSub,border:"none",borderLeft:activeTab===t.id?"3px solid #E8730A":"3px solid transparent",padding:"12px 20px",fontSize:14,fontWeight:activeTab===t.id?700:500,display:"flex",alignItems:"center",gap:10,cursor:"pointer",transition:"all .2s",textAlign:"left",position:"relative"}}>
@@ -997,16 +1185,16 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
             </button>
           ))}
         </div>
-        <div style={{flex:1,padding:"24px",overflowY:"auto"}}>
+        <div key={activeTab} className="fade-in" style={{flex:1,padding:"24px",overflowY:"auto"}}>
           {activeTab==="dashboard"&&(
             <div className="fade-in">
               <div style={{fontSize:20,fontWeight:700,color:C.text,marginBottom:16,fontFamily:"'Libre Baskerville',serif"}}>Admin Dashboard</div>
               <AdminClock C={C}/>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,marginBottom:24}}>
-                {[{label:"Total Members",value:MOCK_MEMBERS.length,sub:`${MOCK_MEMBERS.filter(m=>m.status==="Active").length} active`,iconName:"Users",color:"#3498db"},{label:"Transactions",value:MOCK_TRANSACTIONS.length,sub:"This month",iconName:"ReceiptText",color:"#27ae60"},{label:"Total Revenue",value:"PhP "+totalRevenue.toLocaleString(),sub:"All time",iconName:"TrendingUp",color:"#E8730A"},{label:"Active Benefits",value:benefits.filter(b=>b.active).length,sub:`${CATEGORIES.length-1} categories`,iconName:"Ticket",color:"#9b59b6"}].map(stat=>(
+              <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,marginBottom:24}}>
+                {[{label:"Total Members",num:MOCK_MEMBERS.length,sub:`${MOCK_MEMBERS.filter(m=>m.status==="Active").length} active`,iconName:"Users",color:"#3498db"},{label:"Transactions",num:MOCK_TRANSACTIONS.length,sub:"This month",iconName:"ReceiptText",color:"#27ae60"},{label:"Total Revenue",num:totalRevenue,money:true,sub:"All time",iconName:"TrendingUp",color:"#E8730A"},{label:"Active Benefits",num:benefits.filter(b=>b.active).length,sub:`${CATEGORIES.length-1} categories`,iconName:"Ticket",color:"#9b59b6"}].map(stat=>(
                   <div key={stat.label} className="card" style={{padding:"16px 18px"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}><div style={{fontSize:12,color:C.textSub,fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>{stat.label}</div><div style={{width:32,height:32,borderRadius:8,background:stat.color+"18",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={stat.iconName} size={16} color={stat.color}/></div></div>
-                    <div style={{fontSize:22,fontWeight:800,color:C.text}}>{stat.value}</div>
+                    <div style={{fontSize:22,fontWeight:800,color:C.text}}><CountUp value={stat.num} format={stat.money?(v=>"PhP "+Math.round(v).toLocaleString()):undefined}/></div>
                     <div style={{fontSize:12,color:C.textSub,marginTop:2}}>{stat.sub}</div>
                   </div>
                 ))}
@@ -1352,7 +1540,7 @@ function PointsBadge({points,C}){
         </div>
         <div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>Evera Points</div>
-          <div style={{fontSize:22,fontWeight:800,fontFamily:"'Libre Baskerville',serif"}}>{points.toLocaleString()} <span style={{fontSize:13,fontWeight:600,opacity:.8}}>pts</span></div>
+          <div style={{fontSize:22,fontWeight:800,fontFamily:"'Libre Baskerville',serif"}}><span key={points} className="pop-num" style={{display:"inline-block"}}><CountUp value={points} duration={900}/></span> <span style={{fontSize:13,fontWeight:600,opacity:.8}}>pts</span></div>
         </div>
       </div>
       <div style={{textAlign:"right"}}>
@@ -1753,7 +1941,7 @@ function ReportsTab({C}){
 // ─── i18n strings ─────────────────────────────────────────────────────────────
 const I18N={
   en:{
-    home:"Home",benefits:"Benefits",vouchers:"Vouchers",profile:"My Profile",
+    home:"Home",benefits:"Benefits",vouchers:"Vouchers",profile:"My Profile",navProfile:"Profile",help:"Help",
     goodDay:"Good day",memberSince:"Evera Member",available:"Available",
     totalSavings:"Total Savings Unlocked",browseByCategory:"Browse by Category",
     featuredBenefits:"Featured Benefits",viewAll:"View All Benefits",
@@ -1775,9 +1963,11 @@ const I18N={
     backToBenefits:"Back to Benefits",shareVoucher:"Share Voucher",
     noVouchersYet:"No vouchers yet",browseBtn:"Browse Benefits",
     purchased:"Purchased",claimed:"Claimed",
+    taskPhoto:"Upload profile photo",taskLang:"Set your language preference",taskClaim:"Claim your first benefit",taskPurchase:"Purchase your first voucher",taskId:"Download your digital ID card",
+    docs:"Documents",
   },
   fil:{
-    home:"Tahanan",benefits:"Benepisyo",vouchers:"Voucher",profile:"Aking Profile",
+    home:"Tahanan",benefits:"Benepisyo",vouchers:"Voucher",profile:"Aking Profile",navProfile:"Profile",help:"Tulong",
     goodDay:"Magandang araw",memberSince:"Miyembro ng Evera",available:"Available",
     totalSavings:"Kabuuang Nakatipid",browseByCategory:"Mag-browse ayon sa Kategorya",
     featuredBenefits:"Mga Tampok na Benepisyo",viewAll:"Tingnan Lahat ng Benepisyo",
@@ -1799,8 +1989,116 @@ const I18N={
     backToBenefits:"Bumalik sa Benepisyo",shareVoucher:"Ibahagi ang Voucher",
     noVouchersYet:"Wala pang voucher",browseBtn:"Mag-browse ng Benepisyo",
     purchased:"Binili",claimed:"Na-claim",
+    taskPhoto:"Mag-upload ng larawan",taskLang:"Itakda ang wika",taskClaim:"I-claim ang unang benepisyo",taskPurchase:"Bumili ng unang voucher",taskId:"I-download ang ID Card",
+    docs:"Mga Dokumento",
+  },
+  zh:{
+    home:"首页",benefits:"福利",vouchers:"礼券",profile:"我的资料",navProfile:"我的",help:"帮助",
+    goodDay:"您好",memberSince:"Evera 会员",available:"可用",
+    totalSavings:"已节省总额",browseByCategory:"按类别浏览",
+    featuredBenefits:"精选福利",viewAll:"查看全部福利",
+    newsAnnouncements:"新闻与公告",referAFriend:"推荐一位退休伙伴",
+    referDesc:"分享您的代码，邀请朋友加入 Evera",
+    digitalCard:"您的电子福利卡",
+    srrvStatus:"SRRV 签证状态",expiry:"到期日",daysRemaining:"天后到期",
+    renewNow:"立即开始续签",renewSoon:"建议尽快续签",
+    expired:"已过期 - 请立即联系我们",
+    downloadID:"下载会员卡",myVouchers:"我的礼券",
+    pointsLabel:"Evera 积分",redeemAt:"兑换地点",
+    searchBenefits:"搜索福利、合作伙伴…",allBenefits:"全部福利",
+    purchaseBtn:"购买",claimBtn:"领取此福利",detailsBtn:"详情",
+    claimedBtn:"已领取",bookBooked:"预订",
+    travelDates:"选择出行日期",checkIn:"入住",checkOut:"退房",
+    selectCheckout:"现在请选择退房日期",
+    confirmPayment:"确认付款",processingPayment:"正在处理付款…",
+    paymentSuccess:"付款成功！",viewMyVouchers:"查看我的礼券",
+    backToBenefits:"返回福利",shareVoucher:"分享礼券",
+    noVouchersYet:"暂无礼券",browseBtn:"浏览福利",
+    purchased:"已购买",claimed:"已领取",
+    taskPhoto:"上传头像",taskLang:"设置语言偏好",taskClaim:"领取您的第一个福利",taskPurchase:"购买您的第一张礼券",taskId:"下载您的电子会员卡",
+    docs:"文件",
+  },
+  ja:{
+    home:"ホーム",benefits:"特典",vouchers:"バウチャー",profile:"プロフィール",navProfile:"プロフィール",help:"ヘルプ",
+    goodDay:"こんにちは",memberSince:"Evera 会員",available:"利用可能",
+    totalSavings:"節約した合計額",browseByCategory:"カテゴリー別に見る",
+    featuredBenefits:"注目の特典",viewAll:"すべての特典を見る",
+    newsAnnouncements:"ニュースとお知らせ",referAFriend:"退職仲間を紹介する",
+    referDesc:"コードを共有して友人を Evera に招待しましょう",
+    digitalCard:"デジタル特典カード",
+    srrvStatus:"SRRV ビザの状態",expiry:"有効期限",daysRemaining:"日 残り",
+    renewNow:"今すぐ更新を開始",renewSoon:"早めの更新をおすすめします",
+    expired:"期限切れ - すぐにご連絡ください",
+    downloadID:"IDカードをダウンロード",myVouchers:"マイバウチャー",
+    pointsLabel:"Evera ポイント",redeemAt:"利用先",
+    searchBenefits:"特典・提携先を検索…",allBenefits:"すべての特典",
+    purchaseBtn:"購入",claimBtn:"この特典を受け取る",detailsBtn:"詳細",
+    claimedBtn:"受取済み",bookBooked:"予約",
+    travelDates:"旅行日を選択",checkIn:"チェックイン",checkOut:"チェックアウト",
+    selectCheckout:"チェックアウト日を選択してください",
+    confirmPayment:"支払いを確認",processingPayment:"支払い処理中…",
+    paymentSuccess:"支払い完了！",viewMyVouchers:"マイバウチャーを見る",
+    backToBenefits:"特典に戻る",shareVoucher:"バウチャーを共有",
+    noVouchersYet:"バウチャーはまだありません",browseBtn:"特典を見る",
+    purchased:"購入済み",claimed:"受取済み",
+    taskPhoto:"プロフィール写真をアップロード",taskLang:"言語設定を選ぶ",taskClaim:"最初の特典を受け取る",taskPurchase:"最初のバウチャーを購入",taskId:"デジタルIDカードをダウンロード",
+    docs:"書類",
+  },
+  ko:{
+    home:"홈",benefits:"혜택",vouchers:"바우처",profile:"내 프로필",navProfile:"프로필",help:"도움말",
+    goodDay:"안녕하세요",memberSince:"Evera 회원",available:"사용 가능",
+    totalSavings:"총 절약 금액",browseByCategory:"카테고리별 보기",
+    featuredBenefits:"추천 혜택",viewAll:"모든 혜택 보기",
+    newsAnnouncements:"뉴스 및 공지",referAFriend:"동료 은퇴자 추천하기",
+    referDesc:"코드를 공유하고 친구를 Evera에 초대하세요",
+    digitalCard:"디지털 혜택 카드",
+    srrvStatus:"SRRV 비자 상태",expiry:"만료일",daysRemaining:"일 남음",
+    renewNow:"지금 갱신 시작",renewSoon:"빠른 갱신을 권장합니다",
+    expired:"만료됨 - 즉시 문의하세요",
+    downloadID:"ID 카드 다운로드",myVouchers:"내 바우처",
+    pointsLabel:"Evera 포인트",redeemAt:"사용처",
+    searchBenefits:"혜택, 파트너 검색…",allBenefits:"모든 혜택",
+    purchaseBtn:"구매",claimBtn:"이 혜택 받기",detailsBtn:"상세",
+    claimedBtn:"받음",bookBooked:"예약",
+    travelDates:"여행 날짜 선택",checkIn:"체크인",checkOut:"체크아웃",
+    selectCheckout:"이제 체크아웃 날짜를 선택하세요",
+    confirmPayment:"결제 확인",processingPayment:"결제 처리 중…",
+    paymentSuccess:"결제 완료!",viewMyVouchers:"내 바우처 보기",
+    backToBenefits:"혜택으로 돌아가기",shareVoucher:"바우처 공유",
+    noVouchersYet:"아직 바우처가 없습니다",browseBtn:"혜택 둘러보기",
+    purchased:"구매함",claimed:"받음",
+    taskPhoto:"프로필 사진 업로드",taskLang:"언어 설정하기",taskClaim:"첫 혜택 받기",taskPurchase:"첫 바우처 구매",taskId:"디지털 ID 카드 다운로드",
+    docs:"문서",
+  },
+  hi:{
+    home:"होम",benefits:"लाभ",vouchers:"वाउचर",profile:"मेरी प्रोफ़ाइल",navProfile:"प्रोफ़ाइल",help:"सहायता",
+    goodDay:"नमस्ते",memberSince:"Evera सदस्य",available:"उपलब्ध",
+    totalSavings:"कुल बचत",browseByCategory:"श्रेणी अनुसार देखें",
+    featuredBenefits:"विशेष लाभ",viewAll:"सभी लाभ देखें",
+    newsAnnouncements:"समाचार और घोषणाएँ",referAFriend:"किसी सेवानिवृत्त मित्र को रेफ़र करें",
+    referDesc:"अपना कोड साझा करें और किसी मित्र को Evera से जोड़ें",
+    digitalCard:"आपका डिजिटल लाभ कार्ड",
+    srrvStatus:"SRRV वीज़ा स्थिति",expiry:"समाप्ति",daysRemaining:"दिन शेष",
+    renewNow:"अभी नवीनीकरण शुरू करें",renewSoon:"जल्द नवीनीकरण की सलाह दी जाती है",
+    expired:"समाप्त - तुरंत हमसे संपर्क करें",
+    downloadID:"ID कार्ड डाउनलोड करें",myVouchers:"मेरे वाउचर",
+    pointsLabel:"Evera पॉइंट",redeemAt:"रिडीम स्थान",
+    searchBenefits:"लाभ, साझेदार खोजें…",allBenefits:"सभी लाभ",
+    purchaseBtn:"खरीदें",claimBtn:"यह लाभ प्राप्त करें",detailsBtn:"विवरण",
+    claimedBtn:"प्राप्त किया",bookBooked:"बुक करें",
+    travelDates:"यात्रा तिथियाँ चुनें",checkIn:"चेक-इन",checkOut:"चेक-आउट",
+    selectCheckout:"अब अपनी चेक-आउट तिथि चुनें",
+    confirmPayment:"भुगतान की पुष्टि करें",processingPayment:"भुगतान प्रोसेस हो रहा है…",
+    paymentSuccess:"भुगतान सफल!",viewMyVouchers:"मेरे वाउचर देखें",
+    backToBenefits:"लाभ पर वापस जाएँ",shareVoucher:"वाउचर साझा करें",
+    noVouchersYet:"अभी कोई वाउचर नहीं",browseBtn:"लाभ ब्राउज़ करें",
+    purchased:"खरीदा",claimed:"प्राप्त किया",
+    taskPhoto:"प्रोफ़ाइल फ़ोटो अपलोड करें",taskLang:"अपनी भाषा चुनें",taskClaim:"अपना पहला लाभ प्राप्त करें",taskPurchase:"अपना पहला वाउचर खरीदें",taskId:"अपना डिजिटल ID कार्ड डाउनलोड करें",
+    docs:"दस्तावेज़",
   },
 };
+const LANG_NAMES={en:"English",fil:"Filipino",zh:"中文",ja:"日本語",ko:"한국어",hi:"हिन्दी"};
+const LANG_SHORT={en:"EN",fil:"FIL",zh:"中文",ja:"日本語",ko:"한국어",hi:"हिन्दी"};
 const useT=(lang)=>I18N[lang]||I18N.en;
 
 // ─── Global Search ─────────────────────────────────────────────────────────────
@@ -2085,12 +2383,13 @@ function LoginPage({onLogin,onRegister,C}){
 
 // ─── Profile Completion Tracker ────────────────────────────────────────────────
 function ProfileChecklist({member,memberPhoto,purchasedVouchers,claimedIds,lang,onNavigate,C}){
+  const t=useT(lang);
   const tasks=[
-    {id:"photo",label:lang==="fil"?"Mag-upload ng larawan":"Upload profile photo",done:!!memberPhoto,action:()=>onNavigate("profile")},
-    {id:"lang",label:lang==="fil"?"Itakda ang wika":"Set your language preference",done:lang==="fil",action:()=>onNavigate("profile")},
-    {id:"claim",label:lang==="fil"?"I-claim ang unang benepisyo":"Claim your first benefit",done:claimedIds.length>0,action:()=>onNavigate("benefits","health")},
-    {id:"purchase",label:lang==="fil"?"Bumili ng unang voucher":"Purchase your first voucher",done:purchasedVouchers.length>0,action:()=>onNavigate("benefits")},
-    {id:"id",label:lang==="fil"?"I-download ang ID Card":"Download your digital ID card",done:false,action:()=>onNavigate("profile")},
+    {id:"photo",label:t.taskPhoto,done:!!memberPhoto,action:()=>onNavigate("profile")},
+    {id:"lang",label:t.taskLang,done:lang!=="en",action:()=>onNavigate("profile")},
+    {id:"claim",label:t.taskClaim,done:claimedIds.length>0,action:()=>onNavigate("benefits","health")},
+    {id:"purchase",label:t.taskPurchase,done:purchasedVouchers.length>0,action:()=>onNavigate("benefits")},
+    {id:"id",label:t.taskId,done:false,action:()=>onNavigate("profile")},
   ];
   const done=tasks.filter(t=>t.done).length;
   const pct=Math.round((done/tasks.length)*100);
@@ -2340,7 +2639,10 @@ function SplashScreen({onDone}){
     return()=>{clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);clearTimeout(t4);};
   },[]);
   return(
-    <div style={{position:"fixed",inset:0,background:"linear-gradient(160deg,#0A2540 0%,#1a3a5c 60%,#0f2d4a 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9999,transition:"opacity .4s",opacity:phase===3?0:1}}>
+    <div style={{position:"fixed",inset:0,background:"linear-gradient(150deg,#0A2540 0%,#1a3a5c 45%,#13406e 70%,#0f2d4a 100%)",backgroundSize:"220% 220%",animation:"gradientDrift 12s ease infinite",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9999,transition:"opacity .4s",opacity:phase===3?0:1,overflow:"hidden"}}>
+      <div className="float-y" style={{position:"absolute",top:"12%",left:"14%",width:160,height:160,borderRadius:"50%",background:"radial-gradient(circle,rgba(232,115,10,0.5),transparent 70%)",filter:"blur(8px)",pointerEvents:"none"}}/>
+      <div className="float-y" style={{position:"absolute",bottom:"16%",right:"12%",width:200,height:200,borderRadius:"50%",background:"radial-gradient(circle,rgba(52,152,219,0.4),transparent 70%)",filter:"blur(10px)",pointerEvents:"none",animationDelay:"-2.5s"}}/>
+      <div className="float-y" style={{position:"absolute",top:"60%",left:"8%",width:120,height:120,borderRadius:"50%",background:"radial-gradient(circle,rgba(155,89,182,0.35),transparent 70%)",filter:"blur(8px)",pointerEvents:"none",animationDelay:"-1.2s"}}/>
       <div style={{transform:`scale(${phase>=1?1:.6}) translateY(${phase>=1?0:30}px)`,opacity:phase>=1?1:0,transition:"all .6s cubic-bezier(.34,1.56,.64,1)",textAlign:"center"}}>
         <div style={{textAlign:"center",marginBottom:20}}><div style={{fontSize:52,fontWeight:900,letterSpacing:-1,color:"white",lineHeight:1}}>Ev<span style={{color:"#F08030"}}>era</span></div><div style={{fontSize:14,color:"rgba(255,255,255,0.5)",marginTop:6,letterSpacing:2,textTransform:"uppercase"}}>Retirement Benefits</div><div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginTop:4,letterSpacing:1}}>A service by Aruga Life</div></div>
         <div style={{transform:`translateY(${phase>=2?0:10}px)`,opacity:phase>=2?1:0,transition:"all .5s ease .2s"}}>
@@ -3064,7 +3366,7 @@ function App(){
   const[favorites,setFavorites]=useState([]);
   const[showImport,setShowImport]=useState(false);
   const C=getC(darkMode);
-  useEffect(()=>{document.body.style.background=C.bg;},[darkMode]);
+  useEffect(()=>{document.body.className=darkMode?"dark":"light";document.body.style.background=C.bg;},[darkMode]);
   const nav=(page,cat="all")=>{setBenefitCategory(cat);setView(page);setNotifOpen(false);window.scrollTo({top:0,behavior:"smooth"});};
   const purchase=(item)=>{setSelectedBenefit(item);setView("checkout");window.scrollTo({top:0,behavior:"smooth"});};
   const paySuccess=(result)=>{
@@ -3090,9 +3392,10 @@ function App(){
       {appScreen==="app"&&showTour&&member&&<OnboardingTour member={member} onDone={()=>setShowTour(false)} C={C}/>}
       {appScreen==="app"&&modalBenefit&&<BenefitModal item={modalBenefit} onClose={()=>setModalBenefit(null)} onPurchase={purchase} onClaim={claim} claimed={claimedIds.includes(modalBenefit.id)} C={C} member={member}/>}
       {appScreen==="app"&&member&&mode==="member"&&(
-        <div style={{paddingBottom:80,background:C.bg,minHeight:"100vh"}}>
+        <div style={{paddingBottom:80,background:"transparent",minHeight:"100vh"}}>
+          <AmbientBackground C={C}/>
           <NavBar active={activeNav} onNavigate={nav} memberName={member.firstName} C={C} notifOpen={notifOpen} setNotifOpen={setNotifOpen} readNotifs={readNotifs} setReadNotifs={setReadNotifs} announcements={ANNOUNCEMENTS} lang={lang} onNavigateFn={nav}/>
-          <div style={{maxWidth:640,margin:"0 auto"}}>
+          <div key={view} className="fade-in" style={{maxWidth:640,margin:"0 auto",position:"relative",zIndex:1}}>
             {view==="dashboard"&&<Dashboard member={member} onNavigate={nav} onPurchase={purchase} onClaim={claim} claimedIds={claimedIds} benefits={ALL_BENEFITS} announcements={ANNOUNCEMENTS} C={C} purchasedVouchers={purchasedVouchers} onOpenModal={setModalBenefit} onRenew={()=>setShowRenewal(true)} points={points} onShowID={()=>setShowIDCard(true)} lang={lang} memberPhoto={memberPhoto}/>}
             {view==="benefits"&&<BenefitsHub member={member} initialCategory={benefitCategory} onPurchase={purchase} C={C} onOpenModal={setModalBenefit} favorites={favorites} setFavorites={setFavorites} claimedIds={claimedIds} onClaim={claim}/>}
             {view==="checkout"&&selectedBenefit&&<CheckoutPage item={selectedBenefit} member={member} onSuccess={paySuccess} onBack={()=>setView("benefits")} C={C} bookingDates={bookingDates} setBookingDates={setBookingDates}/>}
@@ -3111,7 +3414,7 @@ function App(){
             <Icon name="Info" size={17} color="rgba(255,255,255,0.8)"/>
           </button>
           {/* Floating chat button */}
-          <button onClick={()=>setShowChat(c=>!c)} style={{position:"fixed",bottom:90,right:16,zIndex:250,width:52,height:52,borderRadius:"50%",background:showChat?"#0A2540":"#E8730A",border:"none",boxShadow:"0 4px 16px rgba(232,115,10,0.4)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all .3s"}}>
+          <button onClick={()=>setShowChat(c=>!c)} className={showChat?"":"glow-pulse"} style={{position:"fixed",bottom:90,right:16,zIndex:250,width:52,height:52,borderRadius:"50%",background:showChat?"#0A2540":"#E8730A",border:"none",boxShadow:"0 4px 16px rgba(232,115,10,0.4)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all .3s"}}>
             <Icon name={showChat?"X":"Sparkles"} size={22} color="white"/>
           </button>
           {showChat&&<ChatBot member={member} C={C} onClose={()=>setShowChat(false)}/>}
