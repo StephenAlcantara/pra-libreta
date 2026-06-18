@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ArugaLife - Retirement Benefits Platform</title>
+<title>Evera - Retirement Benefits Platform</title>
 <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;PRA Libreta&quot;,&quot;short_name&quot;:&quot;PRA Libreta&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#0A2540&quot;,&quot;theme_color&quot;:&quot;#E8730A&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%230A2540'/><text y='140' x='20' font-size='140' font-family='serif'>📋</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}"/>
 <meta name="theme-color" content="#E8730A"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="ArugaLife"/>
+<meta name="apple-mobile-web-app-title" content="Evera"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -171,7 +171,7 @@ const getC=(dark)=>({
   textSub:dark?"rgba(255,255,255,0.55)":"#4A5568",isDark:dark
 });
 const BENEFITS=[
-  {id:"med-city",category:"health",categoryLabel:"Health & Wellness",title:"Executive Check-up Package",partner:"The Medical City",location:"Ortigas Center, Pasig City",description:"Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist.",originalPrice:8500,discountPct:20,tag:"20% off for ArugaLife Members",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:1700,avgRating:4.8,ratingCount:142,contact:"(02) 8988-1000"},
+  {id:"med-city",category:"health",categoryLabel:"Health & Wellness",title:"Executive Check-up Package",partner:"The Medical City",location:"Ortigas Center, Pasig City",description:"Comprehensive executive medical check-up including CBC, urinalysis, chest X-ray, ECG, and consultation with an internist.",originalPrice:8500,discountPct:20,tag:"20% off for Evera Members",iconName:"Heart",iconColor:"#e74c3c",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:1700,avgRating:4.8,ratingCount:142,contact:"(02) 8988-1000"},
   {id:"mercury",category:"health",categoryLabel:"Health & Wellness",title:"Maintenance Medication Discount",partner:"Mercury Drug",location:"All branches nationwide",description:"Extra 5% discount on top of the standard 20% senior citizen discount on all maintenance medications.",originalPrice:null,discountPct:5,tag:"Extra 5% on senior discount",iconName:"Heart",iconColor:"#e74c3c",type:"claim",voucherValidity:"Ongoing benefit - no expiry",active:true,savingsAmt:0,avgRating:4.5,ratingCount:389,contact:"1-800-10-MERCURY"},
   {id:"henann",category:"travel",categoryLabel:"Travel & Hotels",title:"Staycation Package - 3D2N",partner:"Henann Resort Boracay",location:"White Beach, Boracay Island",description:"Exclusive retiree off-season rate: 3 days, 2 nights in a Deluxe Sea View Room, daily breakfast for 2, complimentary airport transfer.",originalPrice:22000,discountPct:30,tag:"Exclusive retiree off-season rate",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid for bookings until March 31, 2026",active:true,savingsAmt:6600,avgRating:4.9,ratingCount:67,contact:"(036) 288-5555"},
   {id:"cebupac",category:"travel",categoryLabel:"Travel & Hotels",title:"Domestic Flight - Zero Booking Fee",partner:"Cebu Pacific",location:"All domestic routes",description:"Book any Cebu Pacific domestic flight with zero booking convenience fees.",originalPrice:null,discountPct:null,tag:"Zero booking fees for retirees",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for travel dates within 2026",active:true,savingsAmt:0,avgRating:4.2,ratingCount:215,contact:"(02) 8702-0888"},
@@ -179,9 +179,9 @@ const BENEFITS=[
   {id:"sm-cinema",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Unlimited Weekday Movie Pass",partner:"SM Cinemas",location:"All SM Cinema branches",description:"Watch any movie on any weekday before 5:00 PM for only PhP 100 flat rate.",originalPrice:350,discountPct:null,fixedPrice:100,tag:"PhP 100 flat rate before 5 PM",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Valid Jan-Dec 2026, weekdays only",active:true,savingsAmt:250,avgRating:4.7,ratingCount:301,contact:"(02) 8556-0919"},
 ];
 const ANNOUNCEMENTS=[
-  {id:"ann1",title:"New Partner: Robinsons Health Clinics",body:"ArugaLife members can now avail of discounted consultations and lab tests at all Robinsons Health Clinics nationwide starting July 2026.",date:"June 1, 2026",type:"new",active:true},
+  {id:"ann1",title:"New Partner: Robinsons Health Clinics",body:"Evera members can now avail of discounted consultations and lab tests at all Robinsons Health Clinics nationwide starting July 2026.",date:"June 1, 2026",type:"new",active:true},
   {id:"ann2",title:"SRRV Renewal Reminder",body:"Members with SRRV expiring before December 2026 are encouraged to begin their renewal process early.",date:"May 28, 2026",type:"reminder",active:true},
-  {id:"ann3",title:"ArugaLife Office Hours Update",body:"Our Our office will be open on Saturdays from 9:00 AM to 12:00 NN starting June 15, 2026.",date:"May 20, 2026",type:"info",active:true},
+  {id:"ann3",title:"Evera Office Hours Update",body:"Our Our office will be open on Saturdays from 9:00 AM to 12:00 NN starting June 15, 2026.",date:"May 20, 2026",type:"info",active:true},
 ];
 const MOCK_MEMBERS=[
   {id:"m1",firstName:"Maria",lastName:"Santos",email:"maria@example.com",praId:"SRRV-2022-001",age:68,city:"Makati",province:"Metro Manila",mobile:"09171234567",status:"Active",joinDate:"March 12, 2022"},
@@ -199,7 +199,7 @@ const MOCK_TRANSACTIONS=[
 const SRRV_EXPIRY_MAP={"SRRV-2022-001":"2027-03-12","SRRV-2021-045":"2026-08-05","SRRV-2023-088":"2027-11-18","SRRV-2020-012":"2025-02-22"};
 const DOCUMENTS=[
   {id:"doc1",title:"SRRV Certificate",type:"Visa Document",date:"March 12, 2022",icon:"ShieldCheck",color:"#1A7A4A"},
-  {id:"doc2",title:"ArugaLife Member ID Card",type:"Identification",date:"March 12, 2022",icon:"BadgeCheck",color:"#3498db"},
+  {id:"doc2",title:"Evera Member ID Card",type:"Identification",date:"March 12, 2022",icon:"BadgeCheck",color:"#3498db"},
   {id:"doc3",title:"Annual Fee Receipt 2025",type:"Payment Receipt",date:"January 5, 2025",icon:"ReceiptText",color:"#E8730A"},
   {id:"doc4",title:"Annual Fee Receipt 2026",type:"Payment Receipt",date:"January 3, 2026",icon:"ReceiptText",color:"#E8730A"},
   {id:"doc5",title:"Health Insurance Certificate",type:"Insurance",date:"February 1, 2026",icon:"Heart",color:"#e74c3c"},
@@ -227,7 +227,7 @@ function MemberCard({member,C}){
       <div style={{position:"absolute",bottom:-30,left:-20,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,0.03)"}}/>
       
       <div style={{marginBottom:16,paddingBottom:14,borderBottom:"1px solid rgba(255,255,255,0.12)"}}>
-        <div style={{marginBottom:10}}><div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.5}}>Aruga<span style={{color:"#F08030"}}>Life</span></div><div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:1}}>Retirement Benefits Platform</div></div>
+        <div style={{marginBottom:10}}><div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.5}}>Ev<span style={{color:"#F08030"}}>era</span></div><div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:1}}>Retirement Benefits Platform</div></div>
       </div>
       <div style={{fontSize:11,color:"rgba(255,255,255,0.45)",letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Retirement Benefits Card - Libreta</div>
       <div style={{fontSize:21,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:18}}>{member.firstName} {member.lastName}</div>
@@ -283,7 +283,7 @@ function BenefitModal({item,onClose,onPurchase,onClaim,claimed,C,member}){
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:C.textSub}}>Original Price</span><span style={{fontSize:13,color:C.textSub,textDecoration:"line-through"}}>{fmt(item.originalPrice)}</span></div>
               {item.discountPct&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:13,color:"#1A7A4A",fontWeight:600}}>Discount ({item.discountPct}%)</span><span style={{fontSize:13,color:"#1A7A4A",fontWeight:600}}>-{fmt(item.originalPrice*item.discountPct/100)}</span></div>}
               <div style={{display:"flex",justifyContent:"space-between",borderTop:`1px solid ${C.border}`,paddingTop:8,marginTop:4}}><span style={{fontSize:15,fontWeight:700,color:C.text}}>Your Price</span><span style={{fontSize:18,fontWeight:800,color:"#E8730A"}}>{item.fixedPrice?fmt(item.fixedPrice):fmt(finalPrice)}</span></div>
-              {item.savingsAmt>0&&<div style={{marginTop:6,fontSize:12,color:"#1A7A4A",fontWeight:600}}>💰 You save {fmt(item.savingsAmt)} with your ArugaLife membership</div>}
+              {item.savingsAmt>0&&<div style={{marginTop:6,fontSize:12,color:"#1A7A4A",fontWeight:600}}>💰 You save {fmt(item.savingsAmt)} with your Evera membership</div>}
             </div>
           )}
           {item.type==="purchase"
@@ -351,8 +351,8 @@ function BenefitCard({item,onPurchase,onClaim,claimed,compact=false,C,onOpenModa
 function OnboardingTour({member,onDone,C}){
   const[step,setStep]=useState(0);
   const steps=[
-    {icon:"ShieldCheck",color:"#1A7A4A",title:`Welcome, ${member.firstName}! 🎉`,body:"Your ArugaLife account is ready. Here's a quick look at what you can do."},
-    {icon:"Ticket",color:"#E8730A",title:"Browse Your Benefits",body:"Access exclusive discounts on health, travel, dining, and entertainment - negotiated just for ArugaLife members."},
+    {icon:"ShieldCheck",color:"#1A7A4A",title:`Welcome, ${member.firstName}! 🎉`,body:"Your Evera account is ready. Here's a quick look at what you can do."},
+    {icon:"Ticket",color:"#E8730A",title:"Browse Your Benefits",body:"Access exclusive discounts on health, travel, dining, and entertainment - negotiated just for Evera members."},
     {icon:"Wallet",color:"#3498db",title:"My Vouchers",body:"After purchasing, your vouchers are stored here with a QR code to show at the partner venue - no printing needed."},
     {icon:"Bell",color:"#9b59b6",title:"Stay Updated",body:"The bell icon keeps you notified of new benefits, partner updates, and important announcements."},
     {icon:"Sparkles",color:"#E8730A",title:"You're all set!",body:"Your savings start now. Tap any benefit to see full details, or head straight to the Benefits tab."},
@@ -389,7 +389,7 @@ function RegistrationPage({onComplete,C,onBack}){
   return(
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",flexDirection:"column"}}>
       <div style={{background:"#0A2540",padding:"18px 24px",display:"flex",alignItems:"center",gap:14}}>
-        <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3}}>Aruga<span style={{color:"#F08030"}}>Life</span></div>
+        <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:.3}}>Ev<span style={{color:"#F08030"}}>era</span></div>
         <div style={{color:"rgba(255,255,255,0.55)",fontSize:12,marginLeft:4}}>Libreta - Retirement Benefits Platform</div>
       </div>
       <div style={{flex:1,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"28px 16px 48px"}}>
@@ -417,8 +417,8 @@ function RegistrationPage({onComplete,C,onBack}){
           )}
           {step===2&&(
             <div className="card fade-in" style={{padding:"24px 28px"}}>
-              <div style={{background:"#FFF5E6",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:14,marginBottom:22,display:"flex",gap:10,alignItems:"flex-start"}}><Icon name="Info" size={18} color="#E8730A"/><div style={{fontSize:14,color:"#2D3748",lineHeight:1.6}}>Your <strong>Member ID</strong> can be found on your OSCA-issued identification card or ArugaLife membership certificate.</div></div>
-              <div style={{marginBottom:18}}><label className="form-label">Member ID Number *</label><input className={`form-input${errors.praId?" error":""}`} value={form.praId} onChange={e=>set("praId",e.target.value)} placeholder="e.g. SRRV-2024-123456"/><div className="form-hint">Enter exactly as it appears on your ArugaLife card.</div><Err field="praId"/></div>
+              <div style={{background:"#FFF5E6",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:14,marginBottom:22,display:"flex",gap:10,alignItems:"flex-start"}}><Icon name="Info" size={18} color="#E8730A"/><div style={{fontSize:14,color:"#2D3748",lineHeight:1.6}}>Your <strong>Member ID</strong> can be found on your OSCA-issued identification card or Evera membership certificate.</div></div>
+              <div style={{marginBottom:18}}><label className="form-label">Member ID Number *</label><input className={`form-input${errors.praId?" error":""}`} value={form.praId} onChange={e=>set("praId",e.target.value)} placeholder="e.g. SRRV-2024-123456"/><div className="form-hint">Enter exactly as it appears on your Evera card.</div><Err field="praId"/></div>
               <div><label className="form-label">Senior Citizen ID Number (Optional)</label><input className="form-input" value={form.seniorId} onChange={e=>set("seniorId",e.target.value)} placeholder="e.g. OSCA-01-2024-456789"/></div>
             </div>
           )}
@@ -427,7 +427,7 @@ function RegistrationPage({onComplete,C,onBack}){
               <div style={{marginBottom:18}}><label className="form-label">Email Address</label><input type="email" className={`form-input${errors.email?" error":""}`} value={form.email} onChange={e=>set("email",e.target.value)} placeholder="yourname@email.com"/><Err field="email"/></div>
               <div style={{marginBottom:18}}><label className="form-label">Password</label><input type="password" className={`form-input${errors.password?" error":""}`} value={form.password} onChange={e=>set("password",e.target.value)} placeholder="At least 8 characters"/><Err field="password"/></div>
               <div style={{marginBottom:18}}><label className="form-label">Confirm Password</label><input type="password" className={`form-input${errors.confirmPassword?" error":""}`} value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)} placeholder="Re-enter your password"/><Err field="confirmPassword"/></div>
-              <div style={{background:C.gray50,borderRadius:10,padding:14,fontSize:13,color:C.textSub,lineHeight:1.7,border:`1px solid ${C.border}`}}>By completing registration, you agree to the <span style={{color:"#E8730A",fontWeight:700}}>ArugaLife Terms and Conditions</span>.</div>
+              <div style={{background:C.gray50,borderRadius:10,padding:14,fontSize:13,color:C.textSub,lineHeight:1.7,border:`1px solid ${C.border}`}}>By completing registration, you agree to the <span style={{color:"#E8730A",fontWeight:700}}>Evera Terms and Conditions</span>.</div>
             </div>
           )}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20,gap:12}}>
@@ -466,7 +466,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         <div style={{position:"absolute",top:-36,right:-16,width:160,height:160,borderRadius:"50%",background:"rgba(232,115,10,0.1)"}}/>
         <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",marginBottom:2}}>{t.goodDay}</div>
         <div style={{fontSize:26,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>{member.firstName} {member.lastName}</div>
-        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:18}}>ArugaLife Member · Age {member.age} · {member.city}, {member.province}</div>
+        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:18}}>Evera Member · Age {member.age} · {member.city}, {member.province}</div>
         <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
           <div style={{background:"rgba(255,255,255,0.1)",borderRadius:8,padding:"7px 14px"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Status</div><div style={{fontSize:13,fontWeight:700,color:"#F08030",display:"flex",alignItems:"center",gap:5}}><Icon name="ShieldCheck" size={13} color="#F08030"/> Active SRRV</div></div>
           <div style={{background:"rgba(255,255,255,0.1)",borderRadius:8,padding:"7px 14px"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>{t.benefits}</div><div style={{fontSize:13,fontWeight:700,color:"white"}}>{benefits.length} {t.available}</div></div>
@@ -521,7 +521,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
           <div style={{width:44,height:44,borderRadius:12,background:"#E8730A",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="Gift" size={20} color="white"/></div>
           <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{t.referAFriend}</div><div style={{fontSize:12,color:C.textSub,marginTop:2}}>{t.referDesc}</div></div>
-          <button onClick={()=>{const code=member.praId.replace(/[^A-Z0-9]/g,"").slice(-6);const text=`Join ArugaLife Retirement Benefits with my referral code: AL-${code}\nhttps://arugalife.ph`;if(navigator.share){navigator.share({title:"Join ArugaLife Benefits",text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);}alert(`Referral code AL-${code} copied! Share with a friend.`);}} className="btn-primary" style={{fontSize:13,padding:"9px 14px",minHeight:36,flexShrink:0}}><Icon name="Share2" size={14} color="white"/> Share</button>
+          <button onClick={()=>{const code=member.praId.replace(/[^A-Z0-9]/g,"").slice(-6);const text=`Join Evera Retirement Benefits with my referral code: EV-${code}\nhttps://arugalife.ph`;if(navigator.share){navigator.share({title:"Join Evera Benefits",text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);}alert(`Referral code EV-${code} copied! Share with a friend.`);}} className="btn-primary" style={{fontSize:13,padding:"9px 14px",minHeight:36,flexShrink:0}}><Icon name="Share2" size={14} color="white"/> Share</button>
         </div>
         <div style={{marginTop:12,background:"rgba(255,255,255,0.6)",borderRadius:8,padding:"8px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:12,color:C.textSub}}>Your referral code</span><span style={{fontFamily:"monospace",fontSize:14,fontWeight:800,color:"#E8730A",letterSpacing:2}}>AL-{member.praId.replace(/[^A-Z0-9]/g,"").slice(-6)}</span></div>
       </div>
@@ -564,7 +564,7 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C,onOpenModal,favo
   const filtered=ALL_BENEFITS.filter(b=>{const mc=activeCategory==="all"||b.category===activeCategory;const ms=!search||b.title.toLowerCase().includes(search.toLowerCase())||b.partner.toLowerCase().includes(search.toLowerCase());return mc&&ms;});
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
-      <div style={{marginBottom:20}}><div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:2}}>Benefits &amp; Promos</div><div style={{color:C.textSub,fontSize:14}}>Exclusive offers for ArugaLife Members</div></div>
+      <div style={{marginBottom:20}}><div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:2}}>Benefits &amp; Promos</div><div style={{color:C.textSub,fontSize:14}}>Exclusive offers for Evera Members</div></div>
       <div style={{position:"relative",marginBottom:18}}>
         <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",display:"flex",pointerEvents:"none"}}><Icon name="Search" size={16} color={C.textSub}/></span>
         <input className="form-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search benefits, partners..." style={{paddingLeft:40,paddingRight:search?40:14}}/>
@@ -578,7 +578,7 @@ function BenefitsHub({member,initialCategory="all",onPurchase,C,onOpenModal,favo
         ))}
       </div>
       {viewMode==="map"&&<BenefitsMapView benefits={filtered} onPurchase={onPurchase} onClaim={handleClaim} claimedIds={claimedIds} C={C} onOpenModal={onOpenModal}/>}
-      {viewMode==="list"&&claimFeedback&&<div style={{background:"#E6F4EC",border:"1.5px solid #1A7A4A",borderRadius:10,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:10}}><Icon name="CheckCircle" size={18} color="#1A7A4A"/><div><strong style={{color:"#1A7A4A",fontSize:14}}>Benefit Claimed!</strong><div style={{fontSize:13,color:"#2D3748",marginTop:1}}>Show your ArugaLife Card at <strong>{claimFeedback}</strong> to avail this discount.</div></div></div>}
+      {viewMode==="list"&&claimFeedback&&<div style={{background:"#E6F4EC",border:"1.5px solid #1A7A4A",borderRadius:10,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",gap:10}}><Icon name="CheckCircle" size={18} color="#1A7A4A"/><div><strong style={{color:"#1A7A4A",fontSize:14}}>Benefit Claimed!</strong><div style={{fontSize:13,color:"#2D3748",marginTop:1}}>Show your Evera Card at <strong>{claimFeedback}</strong> to avail this discount.</div></div></div>}
       {viewMode==="list"&&<div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:20}}>
         {CATEGORIES.map(c=><button key={c.id} onClick={()=>setActiveCategory(c.id)} style={{background:activeCategory===c.id?"#0A2540":C.surface,color:activeCategory===c.id?"white":C.textSub,border:`1.5px solid ${activeCategory===c.id?"#0A2540":C.border}`,borderRadius:8,padding:"8px 14px",fontSize:13,fontWeight:600,whiteSpace:"nowrap",transition:"all .2s",display:"flex",alignItems:"center",gap:6,minHeight:40,cursor:"pointer"}}><Icon name={c.iconName} size={14} color={activeCategory===c.id?"white":C.textSub}/>{c.label}</button>)}
       </div>}
@@ -639,7 +639,7 @@ function CheckoutPage({item,member,onSuccess,onBack,C,bookingDates,setBookingDat
         </div>
       )}
       <button className="btn-primary" style={{width:"100%",fontSize:17,padding:"16px 28px",minHeight:58}} onClick={handlePay} disabled={processing}>{processing?<><Spinner/> Processing Payment...</>:<><Icon name="Lock" size={16} color="white"/> Confirm Payment - {fmt(finalPrice)}</>}</button>
-      <div style={{textAlign:"center",marginTop:12,fontSize:12,color:C.textSub,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="Lock" size={12} color={C.textSub}/> Secured by ArugaLife</div>
+      <div style={{textAlign:"center",marginTop:12,fontSize:12,color:C.textSub,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="Lock" size={12} color={C.textSub}/> Secured by Evera</div>
     </div>
   );
 }
@@ -653,14 +653,14 @@ function PaymentSuccess({result,member,onDone,C,onViewVouchers,onRate}){
   const now=new Date();
   const dateStr=now.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
   const timeStr=now.toLocaleTimeString("en-PH",{hour:"2-digit",minute:"2-digit"});
-  const shareVoucher=()=>{const text=`ArugaLife Voucher: ${result.voucher}\nBenefit: ${result.item.title} @ ${result.item.partner}\nAmount: ${fmt(result.amount)}\nValidity: ${result.item.voucherValidity}`;if(navigator.share){navigator.share({title:"ArugaLife Voucher",text});}else if(navigator.clipboard){navigator.clipboard.writeText(text);alert("Voucher details copied!");}else alert(text);};
+  const shareVoucher=()=>{const text=`Evera Voucher: ${result.voucher}\nBenefit: ${result.item.title} @ ${result.item.partner}\nAmount: ${fmt(result.amount)}\nValidity: ${result.item.voucherValidity}`;if(navigator.share){navigator.share({title:"Evera Voucher",text});}else if(navigator.clipboard){navigator.clipboard.writeText(text);alert("Voucher details copied!");}else alert(text);};
   return(
     <div className="slide-up" style={{padding:"32px 18px",textAlign:"center"}}>
       <div className="pulse" style={{width:88,height:88,borderRadius:"50%",background:"#E6F4EC",border:"3px solid #1A7A4A",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}><Icon name="CheckCircle" size={42} color="#1A7A4A"/></div>
       <div style={{fontSize:26,fontWeight:700,color:"#1A7A4A",fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Payment Successful!</div>
       <div style={{fontSize:15,color:C.textSub,marginBottom:26}}>Your voucher is confirmed. Save or share the details below.</div>
       <div className="card" style={{padding:0,marginBottom:24,overflow:"hidden",border:"2px solid #E8730A"}}>
-        <div style={{background:"#0A2540",padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>ArugaLife - Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div><StatusBadge type="green">CONFIRMED</StatusBadge></div>
+        <div style={{background:"#0A2540",padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{color:"rgba(255,255,255,0.5)",fontSize:11,letterSpacing:2,textTransform:"uppercase"}}>Evera - Digital Voucher</div><div style={{color:"white",fontWeight:700,fontSize:15,marginTop:1}}>Philippine Retirement Authority</div></div><StatusBadge type="green">CONFIRMED</StatusBadge></div>
         <div style={{padding:"18px 20px"}}>
           <div style={{fontSize:26,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:3,marginBottom:2,textAlign:"center"}}>{result.voucher}</div>
           <div style={{fontSize:12,color:C.textSub,textAlign:"center",marginBottom:18}}>Voucher Reference Number</div>
@@ -696,7 +696,7 @@ function MyVouchersPage({member,purchasedVouchers,claimedIds,ratings,setRatings,
   const payLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
   const makeQR=(code)=>{const seed=code.split("").reduce((a,c)=>a+c.charCodeAt(0),0);return Array.from({length:21},(_,r)=>Array.from({length:21},(_,c)=>{const v=(seed*31+r*17+c*13)%4;return v<2||(r<7&&c<7&&r>0&&c>0&&!(r>1&&r<5&&c>1&&c<5))||(r<7&&c>13&&r>0&&c<20&&!(r>1&&r<5&&c>14&&c<19))||(r>13&&c<7&&r<20&&c>0&&!(r>14&&r<18&&c>1&&c<5));}));};
   const claimedBenefits=BENEFITS.filter(b=>claimedIds.includes(b.id));
-  const shareVoucher=(v)=>{const text=`ArugaLife Voucher: ${v.id}\nBenefit: ${v.benefit} @ ${v.partner}\nAmount: ${fmt(v.amount)}\nValidity: ${v.validity}`;if(navigator.share){navigator.share({title:"ArugaLife Voucher",text});}else if(navigator.clipboard){navigator.clipboard.writeText(text);alert("Voucher details copied!");}};
+  const shareVoucher=(v)=>{const text=`Evera Voucher: ${v.id}\nBenefit: ${v.benefit} @ ${v.partner}\nAmount: ${fmt(v.amount)}\nValidity: ${v.validity}`;if(navigator.share){navigator.share({title:"Evera Voucher",text});}else if(navigator.clipboard){navigator.clipboard.writeText(text);alert("Voucher details copied!");}};
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
       <div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>My Vouchers</div>
@@ -757,7 +757,7 @@ function MyVouchersPage({member,purchasedVouchers,claimedIds,ratings,setRatings,
           {claimedBenefits.map(b=>(
             <div key={b.id} className="card" style={{padding:"14px 18px"}}>
               <div style={{display:"flex",gap:12,alignItems:"center"}}><div style={{width:40,height:40,borderRadius:10,background:"#E6F4EC",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name={b.iconName} size={18} color={b.iconColor}/></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{b.title}</div><div style={{fontSize:13,color:"#E8730A",fontWeight:600}}>{b.partner}</div><div style={{fontSize:12,color:C.textSub,marginTop:2,display:"flex",alignItems:"center",gap:4}}><Icon name="Calendar" size={11} color={C.textSub}/>{b.voucherValidity}</div></div><StatusBadge type="green">Claimed</StatusBadge></div>
-              <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,fontSize:12,color:C.textSub}}>Show your ArugaLife Benefits Card at {b.partner} to avail this discount.</div>
+              <div style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${C.border}`,fontSize:12,color:C.textSub}}>Show your Evera Benefits Card at {b.partner} to avail this discount.</div>
             </div>
           ))}
         </div>
@@ -844,7 +844,7 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
   return(
     <>
       <div style={{background:"#0A2540",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:17,letterSpacing:-.3}}>Aruga<span style={{color:"#F08030"}}>Life</span></div></div>
+        <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:17,letterSpacing:-.3}}>Ev<span style={{color:"#F08030"}}>era</span></div></div>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <GlobalSearch onNavigate={onNavigateFn||onNavigate} onPurchase={()=>{}} C={C} lang={lang}/>
           <div style={{position:"relative"}}>
@@ -980,7 +980,7 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
       {showImportModal&&<MemberImportModal onClose={()=>setShowImportModal(false)} onImport={()=>{}} C={C}/>}
       {selectedAdminMember&&<MemberDetailModal member={selectedAdminMember} purchasedVouchers={[]} claimedCount={0} points={0} C={C} onClose={()=>setSelectedAdminMember(null)}/>}
       <div style={{background:"#0A2540",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:16,letterSpacing:-.3}}>Aruga<span style={{color:"#F08030"}}>Life</span></div><StatusBadge type="orange">Admin</StatusBadge></div>
+        <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:16,letterSpacing:-.3}}>Ev<span style={{color:"#F08030"}}>era</span></div><StatusBadge type="orange">Admin</StatusBadge></div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
           <AdminNotifDropdown C={C}/>
           <button onClick={toggleDark} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,padding:"6px 10px",color:"white",display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}><Icon name={darkMode?"Sun":"Moon"} size={14} color="white"/></button>
@@ -1065,7 +1065,7 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
                     <div><label className="form-label">Category</label><select className="form-input" value={nb.category} onChange={e=>setNb(b=>({...b,category:e.target.value}))}><option value="health">Health &amp; Wellness</option><option value="travel">Travel &amp; Hotels</option><option value="dining">Food &amp; Dining</option><option value="entertainment">Entertainment</option></select></div>
                     <div><label className="form-label">Type</label><select className="form-input" value={nb.type} onChange={e=>setNb(b=>({...b,type:e.target.value}))}><option value="purchase">Purchase</option><option value="claim">Claim (Free)</option></select></div>
                     <IR label="Location" value={nb.location} onChange={v=>setNb(b=>({...b,location:v}))} placeholder="e.g. All branches nationwide"/>
-                    <IR label="Tag" value={nb.tag} onChange={v=>setNb(b=>({...b,tag:v}))} placeholder="e.g. 20% off for ArugaLife Members"/>
+                    <IR label="Tag" value={nb.tag} onChange={v=>setNb(b=>({...b,tag:v}))} placeholder="e.g. 20% off for Evera Members"/>
                     <IR label="Original Price" value={nb.originalPrice} onChange={v=>setNb(b=>({...b,originalPrice:v}))} placeholder="e.g. 8500" type="number"/>
                     <IR label="Discount %" value={nb.discountPct} onChange={v=>setNb(b=>({...b,discountPct:v}))} placeholder="e.g. 20" type="number"/>
                   </div>
@@ -1136,8 +1136,8 @@ function requestPushNotif(memberName){
   Notification.requestPermission().then(perm=>{
     if(perm==="granted"){
       setTimeout(()=>{
-        new Notification("ArugaLife - New Benefit Added! 🎉",{
-          body:`Hi ${memberName}! Robinsons Health Clinics is now a ArugaLife partner. Tap to view discounted consultations.`,
+        new Notification("Evera - New Benefit Added! 🎉",{
+          body:`Hi ${memberName}! Robinsons Health Clinics is now a Evera partner. Tap to view discounted consultations.`,
           icon:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23E8730A'/><text y='.9em' font-size='80' x='10'>🏥</text></svg>",
         });
       }, 3500);
@@ -1165,7 +1165,7 @@ function RenewalWizard({member,onClose,C}){
           <div style={{fontSize:22,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:8}}>Application Submitted!</div>
           <div style={{fontSize:14,color:C.textSub,lineHeight:1.7,marginBottom:8}}>Your SRRV Renewal application reference number is:</div>
           <div style={{fontSize:20,fontWeight:800,color:"#E8730A",fontFamily:"monospace",letterSpacing:2,marginBottom:20}}>RENEW-{member.praId.replace(/[^A-Z0-9]/g,"").slice(-6)}-2026</div>
-          <div style={{fontSize:13,color:C.textSub,marginBottom:24,lineHeight:1.6}}>A ArugaLife support officer will contact you at <strong style={{color:C.text}}>{member.mobile}</strong> within 3-5 business days to schedule your appointment.</div>
+          <div style={{fontSize:13,color:C.textSub,marginBottom:24,lineHeight:1.6}}>A Evera support officer will contact you at <strong style={{color:C.text}}>{member.mobile}</strong> within 3-5 business days to schedule your appointment.</div>
           <button className="btn-primary" style={{width:"100%"}} onClick={onClose}>Done</button>
         </div>
       </div>
@@ -1205,7 +1205,7 @@ function RenewalWizard({member,onClose,C}){
                   <span style={{fontSize:13,color:C.text,lineHeight:1.4}}>{doc}</span>
                 </div>
               ))}
-              <div style={{background:"#FFF8F0",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:"12px 14px",fontSize:13,color:"#2D3748",lineHeight:1.6,display:"flex",gap:8}}><Icon name="Info" size={15} color="#E8730A" style={{flexShrink:0}}/><span>Bring all original documents to ArugaLife main office or nearest regional office. Processing time is approximately 15-20 working days.</span></div>
+              <div style={{background:"#FFF8F0",border:"1px solid rgba(232,115,10,0.3)",borderRadius:10,padding:"12px 14px",fontSize:13,color:"#2D3748",lineHeight:1.6,display:"flex",gap:8}}><Icon name="Info" size={15} color="#E8730A" style={{flexShrink:0}}/><span>Bring all original documents to Evera main office or nearest regional office. Processing time is approximately 15-20 working days.</span></div>
             </div>
           )}
           {step===3&&(
@@ -1231,21 +1231,21 @@ function RenewalWizard({member,onClose,C}){
 
 // ── AI Chatbot ────────────────────────────────────────────────────────────────
 function ChatBot({member,C,onClose}){
-  const[messages,setMessages]=useState([{role:"assistant",text:`Hello ${member.firstName}! 👋 I'm your ArugaLife assistant. I can answer questions about your SRRV, benefits, renewal process, and more. How can I help you today?`}]);
+  const[messages,setMessages]=useState([{role:"assistant",text:`Hello ${member.firstName}! 👋 I'm your Evera assistant. I can answer questions about your SRRV, benefits, renewal process, and more. How can I help you today?`}]);
   const[input,setInput]=useState("");
   const[loading,setLoading]=useState(false);
   const bottomRef=useRef(null);
   useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth"});},[messages]);
-  const systemPrompt=`You are a helpful assistant for ArugaLife, the digital benefits platform of the Philippine Retirement Authority (PRA). You help SRRV (Special Resident Retiree's Visa) holders navigate their benefits and answer questions about PRA programs.
+  const systemPrompt=`You are a helpful assistant for Evera, a service offered by Aruga Life and the digital benefits platform of the Philippine Retirement Authority (PRA). You help SRRV (Special Resident Retiree's Visa) holders navigate their benefits and answer questions about PRA programs.
 
 The member you are assisting is: ${member.firstName} ${member.lastName}, Member ID: ${member.praId}, Age: ${member.age}, from ${member.city}, ${member.province}.
 
 Key facts:
-- ArugaLife manages the SRRV benefits program for foreign retirees in the Philippines.
+- Evera manages the SRRV benefits program for foreign retirees in the Philippines.
 - SRRV holders enjoy tax-free pension remittances, no exit clearance needed, and multiple-entry privileges.
 - The annual fee for SRRV is USD 360.
 - Renewal must be done before expiry to avoid penalties.
-- ArugaLife benefits include discounts at health, travel, dining, and entertainment partners.
+- Evera benefits include discounts at health, travel, dining, and entertainment partners.
 - For urgent matters: support at (02) 8526-3048, email support@arugalife.ph.
 
 Be concise, warm, and helpful. Answer in the language the user writes in (English or Filipino). Keep responses under 120 words unless a detailed list is needed.`;
@@ -1265,11 +1265,11 @@ Be concise, warm, and helpful. Answer in the language the user writes in (Englis
         const demoReplies={
           "renew":"To renew your SRRV, start your application from the dashboard - tap the 'Start Renewal Application' button on the SRRV Visa Status card. You'll need your passport, ACR I-Card, annual fee receipt, and a medical certificate.",
           "expire":"You can check your visa expiry on the Home dashboard - the SRRV Visa Status card shows your exact expiry date and days remaining.",
-          "benefit":"Browse all your ArugaLife benefits in the Benefits tab. Tap 'Details' on any benefit to see partner info, location, and full terms before purchasing.",
+          "benefit":"Browse all your Evera benefits in the Benefits tab. Tap 'Details' on any benefit to see partner info, location, and full terms before purchasing.",
           "voucher":"After purchasing, your vouchers are in the My Vouchers tab. Tap any voucher to expand it and show the QR code to the partner establishment.",
           "fee":"The annual SRRV membership fee is USD 360, payable directly to PRA. Contact us at (02) 8526-3048 or support@arugalife.ph.",
-          "points":"You earn 1 ArugaLife Point for every PhP 100 spent on vouchers. Redeem 50 points for PhP 100 off your next purchase.",
-          "contact":"ArugaLife Support: (02) 8526-3048 | Email: support@arugalife.ph. Office hours: Mon-Fri, 8AM-5PM.",
+          "points":"You earn 1 Evera Point for every PhP 100 spent on vouchers. Redeem 50 points for PhP 100 off your next purchase.",
+          "contact":"Evera Support: (02) 8526-3048 | Email: support@arugalife.ph. Office hours: Mon-Fri, 8AM-5PM.",
         };
         const lower=userMsg.toLowerCase();
         let reply="I'm running in demo mode (local file). For a live AI response, host this app on a web server. In the meantime - ";
@@ -1306,7 +1306,7 @@ Be concise, warm, and helpful. Answer in the language the user writes in (Englis
       <div style={{background:"linear-gradient(135deg,#0A2540,#1E4D7B)",padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <div style={{width:36,height:36,borderRadius:"50%",background:"rgba(232,115,10,0.2)",border:"2px solid #E8730A",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="Sparkles" size={17} color="#E8730A"/></div>
-          <div><div style={{fontSize:14,fontWeight:700,color:"white"}}>ArugaLife Assistant</div><div style={{fontSize:11,color:"rgba(255,255,255,0.55)",display:"flex",alignItems:"center",gap:4}}><span style={{width:6,height:6,borderRadius:"50%",background:"#1A7A4A",display:"inline-block"}}/>Online</div></div>
+          <div><div style={{fontSize:14,fontWeight:700,color:"white"}}>Evera Assistant</div><div style={{fontSize:11,color:"rgba(255,255,255,0.55)",display:"flex",alignItems:"center",gap:4}}><span style={{width:6,height:6,borderRadius:"50%",background:"#1A7A4A",display:"inline-block"}}/>Online</div></div>
         </div>
         <button onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:"50%",width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="X" size={13} color="white"/></button>
       </div>
@@ -1351,7 +1351,7 @@ function PointsBadge({points,C}){
           <Icon name="Star" size={18} color="white"/>
         </div>
         <div>
-          <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>ArugaLife Points</div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>Evera Points</div>
           <div style={{fontSize:22,fontWeight:800,fontFamily:"'Libre Baskerville',serif"}}>{points.toLocaleString()} <span style={{fontSize:13,fontWeight:600,opacity:.8}}>pts</span></div>
         </div>
       </div>
@@ -1449,7 +1449,7 @@ function IDCardModal({member,C,onClose,memberPhoto}){
   const handlePrint=()=>{
     const content=cardRef.current.innerHTML;
     const w=window.open("","_blank","width=400,height=650");
-    w.document.write(`<html><head><title>ArugaLife Member ID Card</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Source Sans 3',Arial,sans-serif;background:#f0f0f0;display:flex;align-items:center;justify-content:center;min-height:100vh}@media print{body{background:white}}</style></head><body>${content}</body></html>`);
+    w.document.write(`<html><head><title>Evera Member ID Card</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Source Sans 3',Arial,sans-serif;background:#f0f0f0;display:flex;align-items:center;justify-content:center;min-height:100vh}@media print{body{background:white}}</style></head><body>${content}</body></html>`);
     w.document.close();
     setTimeout(()=>w.print(),600);
   };
@@ -1459,14 +1459,14 @@ function IDCardModal({member,C,onClose,memberPhoto}){
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",zIndex:700,display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} className="slide-up" style={{background:C.surface,borderRadius:20,padding:"24px 20px",maxWidth:420,width:"100%",maxHeight:"92vh",overflowY:"auto"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
-          <div style={{fontSize:16,fontWeight:700,color:C.text}}>ArugaLife Digital ID Card</div>
+          <div style={{fontSize:16,fontWeight:700,color:C.text}}>Evera Digital ID Card</div>
           <button onClick={onClose} style={{background:C.gray200,border:"none",borderRadius:"50%",width:30,height:30,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Icon name="X" size={14} color={C.textSub}/></button>
         </div>
         {/* The card itself */}
         <div ref={cardRef} style={{background:"white",borderRadius:16,overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,0.15)",marginBottom:16}}>
           {/* Card header */}
           <div style={{background:"linear-gradient(135deg,#0A2540 0%,#1a3a5c 100%)",padding:"18px 20px 14px"}}>
-            <div style={{marginBottom:10}}><div style={{color:"white",fontWeight:800,fontSize:16}}>Aruga<span style={{color:"#F08030"}}>Life</span></div></div>
+            <div style={{marginBottom:10}}><div style={{color:"white",fontWeight:800,fontSize:16}}>Ev<span style={{color:"#F08030"}}>era</span></div></div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",letterSpacing:2,textTransform:"uppercase"}}>Official Member Identification Card</div>
           </div>
           {/* Photo + info strip */}
@@ -1514,7 +1514,7 @@ function IDCardModal({member,C,onClose,memberPhoto}){
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           <button className="btn-ghost" style={{fontSize:13}} onClick={handlePrint}><Icon name="Printer" size={14} color="currentColor"/> Print / Save PDF</button>
-          <button className="btn-primary" style={{fontSize:13}} onClick={()=>{alert("In production, this would download a signed PDF with ArugaLife digital watermark and QR verification link.");}}><Icon name="Download" size={14} color="white"/> Download PDF</button>
+          <button className="btn-primary" style={{fontSize:13}} onClick={()=>{alert("In production, this would download a signed PDF with Evera digital watermark and QR verification link.");}}><Icon name="Download" size={14} color="white"/> Download PDF</button>
         </div>
         <div style={{marginTop:12,fontSize:12,color:C.textSub,textAlign:"center",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="ShieldCheck" size={12} color={C.textSub}/> This card is digitally signed and verifiable</div>
       </div>
@@ -1664,7 +1664,7 @@ function ReportsTab({C}){
     setTimeout(()=>{
       setGenerating(false);
       const rows=[
-        ["ARUGALIFE - REVENUE REPORT","","","","","",""],
+        ["EVERA - REVENUE REPORT","","","","","",""],
         [`Date Range: ${dateFrom} to ${dateTo}`,"","","","","",""],
         ["","","","","","",""],
         ["Member","Benefit","Partner","Amount","Method","Date","Voucher"],
@@ -1754,17 +1754,17 @@ function ReportsTab({C}){
 const I18N={
   en:{
     home:"Home",benefits:"Benefits",vouchers:"Vouchers",profile:"My Profile",
-    goodDay:"Good day",memberSince:"ArugaLife Member",available:"Available",
+    goodDay:"Good day",memberSince:"Evera Member",available:"Available",
     totalSavings:"Total Savings Unlocked",browseByCategory:"Browse by Category",
     featuredBenefits:"Featured Benefits",viewAll:"View All Benefits",
     newsAnnouncements:"News & Announcements",referAFriend:"Refer a Fellow Retiree",
-    referDesc:"Share your code and help a friend join ArugaLife",
+    referDesc:"Share your code and help a friend join Evera",
     digitalCard:"Your Digital Benefits Card",
     srrvStatus:"SRRV Visa Status",expiry:"Expiry",daysRemaining:"days remaining",
     renewNow:"begin renewal now",renewSoon:"renewal recommended soon",
     expired:"Expired - contact us immediately",
     downloadID:"Download ID Card",myVouchers:"My Vouchers",
-    pointsLabel:"ArugaLife Points",redeemAt:"Redeem at",
+    pointsLabel:"Evera Points",redeemAt:"Redeem at",
     searchBenefits:"Search benefits, partners...",allBenefits:"All Benefits",
     purchaseBtn:"Purchase",claimBtn:"Claim This Benefit",detailsBtn:"Details",
     claimedBtn:"Claimed",bookBooked:"Book",
@@ -1778,7 +1778,7 @@ const I18N={
   },
   fil:{
     home:"Tahanan",benefits:"Benepisyo",vouchers:"Voucher",profile:"Aking Profile",
-    goodDay:"Magandang araw",memberSince:"Miyembro ng ArugaLife",available:"Available",
+    goodDay:"Magandang araw",memberSince:"Miyembro ng Evera",available:"Available",
     totalSavings:"Kabuuang Nakatipid",browseByCategory:"Mag-browse ayon sa Kategorya",
     featuredBenefits:"Mga Tampok na Benepisyo",viewAll:"Tingnan Lahat ng Benepisyo",
     newsAnnouncements:"Balita at Anunsyo",referAFriend:"Mag-refer ng Kapwa Retirado",
@@ -1786,9 +1786,9 @@ const I18N={
     digitalCard:"Iyong Digital Benefits Card",
     srrvStatus:"Katayuan ng SRRV Visa",expiry:"Petsa ng Pagkawalang-bisa",daysRemaining:"araw na natitira",
     renewNow:"simulan ang pagpapanibago ngayon",renewSoon:"inirerekomenda ang pagpapanibago sa lalong madaling panahon",
-    expired:"Nag-expire na - makipag-ugnayan agad sa ArugaLife",
+    expired:"Nag-expire na - makipag-ugnayan agad sa Evera",
     downloadID:"I-download ang ID Card",myVouchers:"Aking Voucher",
-    pointsLabel:"Mga Puntos ng ArugaLife",redeemAt:"I-redeem sa",
+    pointsLabel:"Mga Puntos ng Evera",redeemAt:"I-redeem sa",
     searchBenefits:"Maghanap ng benepisyo, kasosyo...",allBenefits:"Lahat ng Benepisyo",
     purchaseBtn:"Bilhin",claimBtn:"I-claim ang Benepisyong Ito",detailsBtn:"Detalye",
     claimedBtn:"Na-claim na",bookBooked:"Mag-book",
@@ -2038,12 +2038,13 @@ function LoginPage({onLogin,onRegister,C}){
       <div style={{width:"100%",maxWidth:420}} className="slide-up">
         {/* Logo */}
         <div style={{textAlign:"center",marginBottom:32}}>
-          <div style={{textAlign:"center",marginBottom:12}}><div style={{fontSize:38,fontWeight:900,color:"white",letterSpacing:-1}}>Aruga<span style={{color:"#F08030"}}>Life</span></div></div>
+          <div style={{textAlign:"center",marginBottom:12}}><div style={{fontSize:38,fontWeight:900,color:"white",letterSpacing:-1}}>Ev<span style={{color:"#F08030"}}>era</span></div></div>
           <div style={{color:"rgba(255,255,255,0.55)",fontSize:14}}>Retirement Benefits Platform</div>
+          <div style={{color:"rgba(255,255,255,0.4)",fontSize:12,marginTop:3}}>A service offered by Aruga Life</div>
         </div>
         <div style={{background:"white",borderRadius:20,padding:"28px 28px 24px",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
           <div style={{fontSize:22,fontWeight:700,color:"#0A2540",marginBottom:4,fontFamily:"'Libre Baskerville',serif"}}>Welcome back</div>
-          <div style={{fontSize:14,color:"#4A5568",marginBottom:22}}>Sign in to your ArugaLife account</div>
+          <div style={{fontSize:14,color:"#4A5568",marginBottom:22}}>Sign in to your Evera account</div>
           <div style={{marginBottom:14}}>
             <label style={{display:"block",fontSize:13,fontWeight:600,color:"#2D3748",marginBottom:6}}>Email Address</label>
             <input className="form-input" type="email" value={email} onChange={e=>{setEmail(e.target.value);setError("");}} placeholder="yourname@email.com" onKeyDown={e=>e.key==="Enter"&&handleLogin()}/>
@@ -2119,22 +2120,22 @@ function ProfileChecklist({member,memberPhoto,purchasedVouchers,claimedIds,lang,
 // ─── Enhanced Notifications (with auto-alerts) ────────────────────────────────
 const AUTO_NOTIFS=[
   {id:"voucher-expiry",title:"Voucher expiring soon",body:"Your Henann Resort Boracay voucher expires in 7 days. Use it before March 31.",type:"warning",date:"Today",icon:"Clock",color:"#E8730A"},
-  {id:"new-benefit",title:"New benefit added!",body:"Robinsons Health Clinics is now a ArugaLife partner. Avail discounted consultations.",type:"new",date:"June 1, 2026",icon:"Sparkles",color:"#1A7A4A"},
+  {id:"new-benefit",title:"New benefit added!",body:"Robinsons Health Clinics is now a Evera partner. Avail discounted consultations.",type:"new",date:"June 1, 2026",icon:"Sparkles",color:"#1A7A4A"},
   {id:"renewal-due",title:"SRRV Renewal reminder",body:"Your visa expires in less than 90 days. Start your renewal application now.",type:"reminder",date:"May 28, 2026",icon:"ShieldCheck",color:"#3498db"},
 ];
 
 // ─── FAQ / Help Center ────────────────────────────────────────────────────────
 const FAQ_ITEMS=[
-  {q:"What is the ArugaLife?",a:"ArugaLife is the official digital benefits platform of the Philippine Retirement Authority. It gives SRRV holders access to exclusive discounts and privileges with partner establishments across health, travel, dining, and entertainment."},
-  {q:"How do I use my voucher at a partner establishment?",a:"After purchasing a voucher, go to My Vouchers and expand the voucher card. Show the QR code or reference number to the partner staff. For claimed (free) benefits, simply present your ArugaLife Benefits Card or show the Claimed status on this app."},
+  {q:"What is Evera?",a:"Evera is a service offered by Aruga Life, serving as the official digital benefits platform of the Philippine Retirement Authority. It gives SRRV holders access to exclusive discounts and privileges with partner establishments across health, travel, dining, and entertainment."},
+  {q:"How do I use my voucher at a partner establishment?",a:"After purchasing a voucher, go to My Vouchers and expand the voucher card. Show the QR code or reference number to the partner staff. For claimed (free) benefits, simply present your Evera Benefits Card or show the Claimed status on this app."},
   {q:"When does my SRRV need to be renewed?",a:"SRRV holders must pay an annual fee of USD 360 and report to PRA yearly. Your visa itself does not expire as long as annual requirements are met. If your status shows 'Expired', please contact us immediately at (02) 8526-3048."},
   {q:"What documents do I need for SRRV renewal?",a:"You will need a valid passport with photocopy, your current ACR I-Card, latest annual fee receipt, a medical certificate issued within 6 months, 2x2 ID photos (white background, 6 copies), and a duly accomplished SRRV Renewal Form."},
-  {q:"What is the annual membership fee?",a:"The annual fee for SRRV holders is USD 360. This must be paid directly to PRA at their head office in Makati or any accredited bank. Payment can also be arranged online through ArugaLife website."},
-  {q:"Can I transfer my voucher to another person?",a:"No. ArugaLife vouchers are non-transferable. They are linked to your ArugaLife membership and can only be used by the registered member. Presenting a voucher purchased by another member will not be honored by partner establishments."},
-  {q:"What if a partner establishment refuses to honor my benefit?",a:"Please report the incident to us immediately. Call (02) 8526-3048 or email support@arugalife.ph with the establishment name, date, and details. ArugaLife takes partner compliance seriously and will follow up within 3 business days."},
-  {q:"How do ArugaLife Points work?",a:"You earn 1 point for every PhP 100 spent on purchased vouchers. Once you accumulate 50 points, you can redeem them for PhP 100 off your next purchase. Points never expire as long as your SRRV is active."},
-  {q:"Can I use this app offline?",a:"The core features of ArugaLife work offline once the app is loaded. You can view your vouchers, ID card, and benefits list without an internet connection. Purchasing new vouchers and the AI assistant require a connection."},
-  {q:"How do I contact us for support?",a:"ArugaLife Support: (02) 8526-3048. Email: support@arugalife.ph. Address: support@arugalife.ph. Office hours: Monday-Friday, 8:00 AM to 5:00 PM. Saturdays: 9:00 AM to 12:00 NN (starting June 15, 2026)."},
+  {q:"What is the annual membership fee?",a:"The annual fee for SRRV holders is USD 360. This must be paid directly to PRA at their head office in Makati or any accredited bank. Payment can also be arranged online through Evera website."},
+  {q:"Can I transfer my voucher to another person?",a:"No. Evera vouchers are non-transferable. They are linked to your Evera membership and can only be used by the registered member. Presenting a voucher purchased by another member will not be honored by partner establishments."},
+  {q:"What if a partner establishment refuses to honor my benefit?",a:"Please report the incident to us immediately. Call (02) 8526-3048 or email support@arugalife.ph with the establishment name, date, and details. Evera takes partner compliance seriously and will follow up within 3 business days."},
+  {q:"How do Evera Points work?",a:"You earn 1 point for every PhP 100 spent on purchased vouchers. Once you accumulate 50 points, you can redeem them for PhP 100 off your next purchase. Points never expire as long as your SRRV is active."},
+  {q:"Can I use this app offline?",a:"The core features of Evera work offline once the app is loaded. You can view your vouchers, ID card, and benefits list without an internet connection. Purchasing new vouchers and the AI assistant require a connection."},
+  {q:"How do I contact us for support?",a:"Evera Support: (02) 8526-3048. Email: support@arugalife.ph. Address: support@arugalife.ph. Office hours: Monday-Friday, 8:00 AM to 5:00 PM. Saturdays: 9:00 AM to 12:00 NN (starting June 15, 2026)."},
 ];
 function FAQPage({C,lang}){
   const[open,setOpen]=useState(null);
@@ -2143,7 +2144,7 @@ function FAQPage({C,lang}){
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
       <div style={{fontSize:24,fontWeight:700,color:C.text,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>Help Center</div>
-      <div style={{color:C.textSub,fontSize:14,marginBottom:20}}>Frequently asked questions about ArugaLife</div>
+      <div style={{color:C.textSub,fontSize:14,marginBottom:20}}>Frequently asked questions about Evera</div>
       <div style={{position:"relative",marginBottom:20}}>
         <span style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",pointerEvents:"none"}}><Icon name="Search" size={16} color={C.textSub}/></span>
         <input className="form-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search questions..." style={{paddingLeft:40}}/>
@@ -2182,7 +2183,7 @@ function ReceiptModal({voucher,member,C,onClose}){
   const receiptRef=useRef(null);
   const handlePrint=()=>{
     const w=window.open("","_blank","width=500,height=700");
-    w.document.write(`<html><head><title>ArugaLife Voucher Receipt</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}body{padding:24px;background:white}@media print{body{padding:0}}</style></head><body>${receiptRef.current.innerHTML}</body></html>`);
+    w.document.write(`<html><head><title>Evera Voucher Receipt</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}body{padding:24px;background:white}@media print{body{padding:0}}</style></head><body>${receiptRef.current.innerHTML}</body></html>`);
     w.document.close();setTimeout(()=>w.print(),400);
   };
   const payLabel={gcash:"GCash",maya:"Maya",card:"Credit/Debit Card"};
@@ -2196,7 +2197,7 @@ function ReceiptModal({voucher,member,C,onClose}){
         <div ref={receiptRef} style={{padding:"20px 22px"}}>
           {/* Letterhead */}
           <div style={{textAlign:"center",marginBottom:16,paddingBottom:16,borderBottom:`2px solid #0A2540`}}>
-            <div style={{marginBottom:6}}><div style={{fontWeight:800,fontSize:18,color:"#0A2540"}}>Aruga<span style={{color:"#E8730A"}}>Life</span></div></div>
+            <div style={{marginBottom:6}}><div style={{fontWeight:800,fontSize:18,color:"#0A2540"}}>Ev<span style={{color:"#E8730A"}}>era</span></div></div>
             <div style={{fontSize:11,color:"#4A5568"}}>Philippine Retirement Authority</div>
             <div style={{fontSize:10,color:"#9AA5B4"}}>support@arugalife.ph · (02) 8526-3048</div>
           </div>
@@ -2314,7 +2315,7 @@ function AdminClock({C}){
 const COMM_LOG={
   "SRRV-2022-001":[
     {id:"c1",type:"voucher",text:"Voucher confirmation: Executive Check-up Package",detail:"Voucher AL-XK4L-9P2Q · PhP 6,800",date:"May 30, 2026",read:true},
-    {id:"c2",type:"announcement",text:"ArugaLife Office Hours Update",detail:"Sent via in-app notification",date:"May 20, 2026",read:true},
+    {id:"c2",type:"announcement",text:"Evera Office Hours Update",detail:"Sent via in-app notification",date:"May 20, 2026",read:true},
     {id:"c3",type:"renewal",text:"SRRV Annual Reminder",detail:"Annual fee due reminder sent via SMS to 09171234567",date:"Jan 3, 2026",read:true},
   ],
   "SRRV-2021-045":[
@@ -2341,7 +2342,7 @@ function SplashScreen({onDone}){
   return(
     <div style={{position:"fixed",inset:0,background:"linear-gradient(160deg,#0A2540 0%,#1a3a5c 60%,#0f2d4a 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:9999,transition:"opacity .4s",opacity:phase===3?0:1}}>
       <div style={{transform:`scale(${phase>=1?1:.6}) translateY(${phase>=1?0:30}px)`,opacity:phase>=1?1:0,transition:"all .6s cubic-bezier(.34,1.56,.64,1)",textAlign:"center"}}>
-        <div style={{textAlign:"center",marginBottom:20}}><div style={{fontSize:52,fontWeight:900,letterSpacing:-1,color:"white",lineHeight:1}}>Aruga<span style={{color:"#F08030"}}>Life</span></div><div style={{fontSize:14,color:"rgba(255,255,255,0.5)",marginTop:6,letterSpacing:2,textTransform:"uppercase"}}>Retirement Benefits</div></div>
+        <div style={{textAlign:"center",marginBottom:20}}><div style={{fontSize:52,fontWeight:900,letterSpacing:-1,color:"white",lineHeight:1}}>Ev<span style={{color:"#F08030"}}>era</span></div><div style={{fontSize:14,color:"rgba(255,255,255,0.5)",marginTop:6,letterSpacing:2,textTransform:"uppercase"}}>Retirement Benefits</div><div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginTop:4,letterSpacing:1}}>A service by Aruga Life</div></div>
         <div style={{transform:`translateY(${phase>=2?0:10}px)`,opacity:phase>=2?1:0,transition:"all .5s ease .2s"}}>
           <div style={{color:"rgba(255,255,255,0.6)",fontSize:15,letterSpacing:1,marginBottom:32}}>Retirement Benefits Platform</div>
           <div style={{display:"flex",justifyContent:"center",gap:6}}>
@@ -2362,8 +2363,8 @@ function SplashScreen({onDone}){
 function WhatsNewModal({onClose,C}){
   const items=[
     {icon:"Sparkles",color:"#E8730A",title:"AI Assistant",desc:"Ask questions about your SRRV, benefits, and renewal process - powered by Claude AI."},
-    {icon:"BadgeCheck",color:"#3498db",title:"Digital ID Card",desc:"Download your official ArugaLife ID card with QR verification, ready to print or save."},
-    {icon:"Star",color:"#9b59b6",title:"ArugaLife Points",desc:"Earn points on every purchase. Redeem 50 points for PhP 100 off your next voucher."},
+    {icon:"BadgeCheck",color:"#3498db",title:"Digital ID Card",desc:"Download your official Evera ID card with QR verification, ready to print or save."},
+    {icon:"Star",color:"#9b59b6",title:"Evera Points",desc:"Earn points on every purchase. Redeem 50 points for PhP 100 off your next voucher."},
     {icon:"RefreshCw",color:"#27ae60",title:"SRRV Renewal Wizard",desc:"Start your renewal application directly from the app - no need to visit the office first."},
   ];
   return(
@@ -2373,7 +2374,7 @@ function WhatsNewModal({onClose,C}){
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
             <div>
               <div style={{fontSize:10,color:"rgba(255,255,255,0.55)",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>What's New in</div>
-              <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:-.3,lineHeight:1}}>Aruga<span style={{color:"#F08030"}}>Life</span></div>
+              <div style={{color:"white",fontWeight:800,fontSize:18,letterSpacing:-.3,lineHeight:1}}>Ev<span style={{color:"#F08030"}}>era</span></div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.5)",marginTop:2}}>Version 2.0 · June 2026</div>
             </div>
           </div>
@@ -2773,7 +2774,7 @@ const EXTRA_BENEFITS=[
   // TRAVEL (6)
   {id:"club-intramuros",category:"travel",categoryLabel:"Travel & Hotels",title:"Intramuros Heritage Tour",partner:"Club Intramuros Golf Course",location:"Intramuros, Manila",description:"Guided heritage walking tour of historic Intramuros including Fort Santiago, Manila Cathedral, and Casa Manila Museum. Lunch at a heritage restaurant included.",originalPrice:1800,discountPct:30,tag:"30% off heritage tour",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:540,avgRating:4.6,ratingCount:73,contact:"(02) 8527-3940"},
   {id:"manor-baguio",category:"travel",categoryLabel:"Travel & Hotels",title:"Baguio Weekend Getaway 2D1N",partner:"The Manor at Camp John Hay",location:"Camp John Hay, Baguio City",description:"Weekend escape to Baguio: 2 days, 1 night in a Superior Room, daily breakfast for 2, complimentary pine forest walk, and free parking.",originalPrice:9800,discountPct:25,tag:"25% off weekend rate",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid for bookings until November 30, 2026",active:true,savingsAmt:2450,avgRating:4.8,ratingCount:49,contact:"(074) 424-0101"},
-  {id:"philippine-airlines",category:"travel",categoryLabel:"Travel & Hotels",title:"Senior Citizen Flight Discount",partner:"Philippine Airlines",location:"All domestic routes",description:"Additional 5% discount on published fares for ArugaLife members on all PAL domestic routes, on top of existing senior citizen privileges. Applicable when booking directly.",originalPrice:null,discountPct:5,tag:"Extra 5% on PAL fares",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for travel until December 31, 2026",active:true,savingsAmt:0,avgRating:4.3,ratingCount:134,contact:"(02) 8855-8888"},
+  {id:"philippine-airlines",category:"travel",categoryLabel:"Travel & Hotels",title:"Senior Citizen Flight Discount",partner:"Philippine Airlines",location:"All domestic routes",description:"Additional 5% discount on published fares for Evera members on all PAL domestic routes, on top of existing senior citizen privileges. Applicable when booking directly.",originalPrice:null,discountPct:5,tag:"Extra 5% on PAL fares",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for travel until December 31, 2026",active:true,savingsAmt:0,avgRating:4.3,ratingCount:134,contact:"(02) 8855-8888"},
   {id:"dakak-resort",category:"travel",categoryLabel:"Travel & Hotels",title:"Dakak Beach Resort 3D2N Package",partner:"Dakak Park & Beach Resort",location:"Dapitan City, Zamboanga del Norte",description:"Tropical beach escape: 3 days, 2 nights accommodation, daily breakfast, snorkeling equipment rental, and a sunset island-hopping tour.",originalPrice:18500,discountPct:20,tag:"20% off resort package",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid for bookings until October 31, 2026",active:true,savingsAmt:3700,avgRating:4.9,ratingCount:28,contact:"(065) 212-3457"},
   {id:"villa-escudero",category:"travel",categoryLabel:"Travel & Hotels",title:"Villa Escudero Day Tour + Lunch",partner:"Villa Escudero Plantations",location:"San Pablo, Laguna",description:"Full-day cultural tour of Villa Escudero including the coconut plantation, waterfall restaurant lunch, museum visit, and bamboo rafting.",originalPrice:3200,discountPct:15,tag:"15% off day tour",iconName:"Plane",iconColor:"#3498db",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:480,avgRating:4.7,ratingCount:85,contact:"(042) 545-1234"},
   {id:"airbnb-ph",category:"travel",categoryLabel:"Travel & Hotels",title:"PhP 1,500 Accommodation Credit",partner:"Airbnb Philippines",location:"All Philippine listings",description:"Receive PhP 1,500 travel credit applicable to any Airbnb listing in the Philippines with a minimum 2-night stay. Credit applied at checkout with promo code.",originalPrice:1500,fixedPrice:0,tag:"Free PhP 1,500 credit",iconName:"Plane",iconColor:"#3498db",type:"claim",voucherValidity:"Valid for bookings until September 30, 2026",active:true,savingsAmt:1500,avgRating:4.5,ratingCount:61,contact:"support.airbnb.com/ph"},
@@ -2789,8 +2790,8 @@ const EXTRA_BENEFITS=[
   // ENTERTAINMENT (5)
   {id:"nso-concert",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"National Symphony Orchestra Concert",partner:"Cultural Center of the Philippines",location:"CCP Main Theater, Pasay City",description:"Premium seating for two at any NSO regular season performance at the CCP Main Theater. Experience world-class classical music in Manila's premier arts venue.",originalPrice:2000,discountPct:30,tag:"30% off concert tickets",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Valid for 2026 season performances",active:true,savingsAmt:600,avgRating:4.9,ratingCount:31,contact:"(02) 8832-1125"},
   {id:"museum-pass",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"National Museum Complex Pass",partner:"National Museum of the Philippines",location:"Rizal Park, Manila",description:"All-day pass to all three National Museum buildings: National Museum of Fine Arts, National Museum of Anthropology, and National Museum of Natural History.",originalPrice:150,fixedPrice:0,tag:"Free entry for SRRV holders",iconName:"Film",iconColor:"#9b59b6",type:"claim",voucherValidity:"Ongoing benefit  -  valid indefinitely",active:true,savingsAmt:150,avgRating:4.8,ratingCount:178,contact:"(02) 8527-1215"},
-  {id:"bgc-running",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"BGC Fun Run Entry Fee Waiver",partner:"BGC Arts Center",location:"Bonifacio Global City, Taguig",description:"Free entry to all BGC-organized fun runs and wellness events in 2026. Includes running kit (shirt + bib) for each event. Register through the ArugaLife app.",originalPrice:800,fixedPrice:0,tag:"Free fun run entry",iconName:"Film",iconColor:"#9b59b6",type:"claim",voucherValidity:"Valid for all 2026 BGC events",active:true,savingsAmt:800,avgRating:4.5,ratingCount:92,contact:"(02) 8945-2138"},
-  {id:"netflix-voucher",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Netflix 3-Month Standard Plan",partner:"Netflix Philippines",location:"Streaming  -  nationwide",description:"3-month Netflix Standard Plan subscription (2 screens, Full HD) at ArugaLife senior rate. Redeem code sent to registered email within 24 hours of purchase.",originalPrice:1320,discountPct:25,tag:"25% off 3-month Netflix plan",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Redeem within 30 days of purchase",active:true,savingsAmt:330,avgRating:4.7,ratingCount:267,contact:"help.netflix.com/ph"},
+  {id:"bgc-running",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"BGC Fun Run Entry Fee Waiver",partner:"BGC Arts Center",location:"Bonifacio Global City, Taguig",description:"Free entry to all BGC-organized fun runs and wellness events in 2026. Includes running kit (shirt + bib) for each event. Register through the Evera app.",originalPrice:800,fixedPrice:0,tag:"Free fun run entry",iconName:"Film",iconColor:"#9b59b6",type:"claim",voucherValidity:"Valid for all 2026 BGC events",active:true,savingsAmt:800,avgRating:4.5,ratingCount:92,contact:"(02) 8945-2138"},
+  {id:"netflix-voucher",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Netflix 3-Month Standard Plan",partner:"Netflix Philippines",location:"Streaming  -  nationwide",description:"3-month Netflix Standard Plan subscription (2 screens, Full HD) at Evera senior rate. Redeem code sent to registered email within 24 hours of purchase.",originalPrice:1320,discountPct:25,tag:"25% off 3-month Netflix plan",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Redeem within 30 days of purchase",active:true,savingsAmt:330,avgRating:4.7,ratingCount:267,contact:"help.netflix.com/ph"},
   {id:"book-sale",category:"entertainment",categoryLabel:"Entertainment & Leisure",title:"Book Lovers Bundle",partner:"National Book Store",location:"All branches nationwide",description:"Any 5 books from the bestsellers table at a flat 40% discount. Valid per transaction. Choose from fiction, non-fiction, health, spirituality, or Filipino literature.",originalPrice:2000,discountPct:40,tag:"40% off any 5 bestsellers",iconName:"Film",iconColor:"#9b59b6",type:"purchase",voucherValidity:"Valid until December 31, 2026",active:true,savingsAmt:800,avgRating:4.6,ratingCount:145,contact:"(02) 8525-0677"},
 ];
 const ALL_BENEFITS=[...BENEFITS,...EXTRA_BENEFITS];
@@ -2809,13 +2810,13 @@ const MOCK_REVIEWS={
   ],
   "sm-cinema":[
     {id:"r6",author:"Roberto C.",praId:"SRRV-2020-012",rating:5,comment:"PhP 100 for any weekday movie is unbeatable. The senior seats at SM are always comfortable. I watch at least 2 movies a month with this benefit.",date:"May 30, 2026",helpful:18,verified:true},
-    {id:"r7",author:"Jose R.",praId:"SRRV-2021-045",rating:4,comment:"Great deal. Just make sure to arrive early for popular screenings as seats go fast even on weekdays. Staff always honor ArugaLife card without any fuss.",date:"May 15, 2026",helpful:6,verified:true},
+    {id:"r7",author:"Jose R.",praId:"SRRV-2021-045",rating:4,comment:"Great deal. Just make sure to arrive early for popular screenings as seats go fast even on weekdays. Staff always honor Evera card without any fuss.",date:"May 15, 2026",helpful:6,verified:true},
   ],
   "jollibee":[
     {id:"r8",author:"Maria S.",praId:"SRRV-2022-001",rating:5,comment:"My grandchildren love coming with me to Jollibee using this benefit. The combo is great value and the staff are always friendly to seniors.",date:"June 1, 2026",helpful:24,verified:true},
   ],
   "starbucks-ph":[
-    {id:"r9",author:"Carmen L.",praId:"SRRV-2023-088",rating:5,comment:"I use this every week without fail. The baristas at my branch already know about ArugaLife benefit and process it quickly. Love starting my mornings this way.",date:"May 25, 2026",helpful:31,verified:true},
+    {id:"r9",author:"Carmen L.",praId:"SRRV-2023-088",rating:5,comment:"I use this every week without fail. The baristas at my branch already know about Evera benefit and process it quickly. Love starting my mornings this way.",date:"May 25, 2026",helpful:31,verified:true},
     {id:"r10",author:"Roberto C.",praId:"SRRV-2020-012",rating:4,comment:"Good perk but some branches are unfamiliar with the benefit. Recommend showing them the voucher in the app clearly. Once they understand, no problems.",date:"May 10, 2026",helpful:14,verified:true},
   ],
 };
@@ -2824,7 +2825,7 @@ const MOCK_REVIEWS={
 const PARTNER_INFO={
   "The Medical City":{
     founded:"1977",type:"Tertiary Hospital",branches:5,employees:"5,000+",
-    about:"The Medical City is one of the Philippines' foremost tertiary hospitals, known for its Centers of Excellence in oncology, cardiology, and neuroscience. As a ArugaLife partner since 2022, they provide priority senior lanes and dedicated patient navigators for all SRRV holders.",
+    about:"The Medical City is one of the Philippines' foremost tertiary hospitals, known for its Centers of Excellence in oncology, cardiology, and neuroscience. As a Evera partner since 2022, they provide priority senior lanes and dedicated patient navigators for all SRRV holders.",
     highlights:["JCI Accredited","24/7 Emergency Services","Senior Priority Lanes","Home Service Available"],
     rating:4.8,reviewCount:142,
   },
@@ -2836,25 +2837,25 @@ const PARTNER_INFO={
   },
   "SM Cinemas":{
     founded:"1990",type:"Cinema Chain",branches:70,employees:"2,000+",
-    about:"SM Cinemas is the largest cinema chain in the Philippines with over 70 locations across the country. They pioneered senior-friendly cinema experiences including larger seats, assistive listening devices, and the popular Senior Weekday program in partnership with ArugaLife.",
+    about:"SM Cinemas is the largest cinema chain in the Philippines with over 70 locations across the country. They pioneered senior-friendly cinema experiences including larger seats, assistive listening devices, and the popular Senior Weekday program in partnership with Evera.",
     highlights:["Largest Cinema Network","Assistive Listening Devices","Senior Comfort Seats","Online Booking"],
     rating:4.7,reviewCount:301,
   },
   "Mercury Drug":{
     founded:"1945",type:"Pharmacy Chain",branches:1000,employees:"12,000+",
-    about:"Mercury Drug is the Philippines' most trusted pharmacy chain with over 1,000 branches nationwide. For 80 years, they have served Filipino families with quality medicines and health products. Their partnership with ArugaLife extends maintenance medication access to all SRRV holders.",
+    about:"Mercury Drug is the Philippines' most trusted pharmacy chain with over 1,000 branches nationwide. For 80 years, they have served Filipino families with quality medicines and health products. Their partnership with Evera extends maintenance medication access to all SRRV holders.",
     highlights:["1,000+ Branches","24/7 Locations Available","Generic Medicine Program","Home Delivery"],
     rating:4.5,reviewCount:389,
   },
   "Max's Restaurant":{
     founded:"1945",type:"Filipino Restaurant Chain",branches:120,employees:"3,500+",
-    about:"Max's Restaurant  -  'The House That Fried Chicken Built'  -  has been a cornerstone of Filipino dining culture since 1945. Known for their signature crispy fried chicken, Max's has evolved into a full-service Filipino restaurant celebrating family dining. Their weekend Senior Feast is specially crafted for ArugaLife members.",
+    about:"Max's Restaurant  -  'The House That Fried Chicken Built'  -  has been a cornerstone of Filipino dining culture since 1945. Known for their signature crispy fried chicken, Max's has evolved into a full-service Filipino restaurant celebrating family dining. Their weekend Senior Feast is specially crafted for Evera members.",
     highlights:["Since 1945","120+ Branches","Family Dining Focus","Free Delivery Program"],
     rating:4.6,reviewCount:198,
   },
   "Cebu Pacific":{
     founded:"1996",type:"Low-Cost Airline",branches:null,employees:"4,000+",
-    about:"Cebu Pacific is the Philippines' largest low-cost carrier, connecting over 60 destinations domestically and internationally. As a ArugaLife partner, they waive booking convenience fees for all SRRV holders, making domestic travel more accessible for retirees exploring the archipelago.",
+    about:"Cebu Pacific is the Philippines' largest low-cost carrier, connecting over 60 destinations domestically and internationally. As a Evera partner, they waive booking convenience fees for all SRRV holders, making domestic travel more accessible for retirees exploring the archipelago.",
     highlights:["60+ Destinations","Online & App Booking","Generous Baggage Allowance","Senior Assistance Program"],
     rating:4.2,reviewCount:215,
   },
@@ -2932,7 +2933,7 @@ function WriteReviewForm({benefitId,member,onSubmit,C}){
     <div style={{background:"rgba(26,122,74,0.08)",border:"1.5px solid #1A7A4A",borderRadius:12,padding:"16px",textAlign:"center"}}>
       <div style={{fontSize:22,marginBottom:6}}>🎉</div>
       <div style={{fontSize:14,fontWeight:700,color:"#1A7A4A",marginBottom:4}}>Thank you for your review!</div>
-      <div style={{fontSize:13,color:C.textSub}}>Your feedback helps other ArugaLife members make informed decisions.</div>
+      <div style={{fontSize:13,color:C.textSub}}>Your feedback helps other Evera members make informed decisions.</div>
     </div>
   );
   return(
@@ -3032,7 +3033,7 @@ function PartnerOverview({partnerName,C}){
 }
 
 function App(){
-  const[view,setView]=useState("dashboard"); // ArugaLife
+  const[view,setView]=useState("dashboard"); // Evera
   const[mode,setMode]=useState("member");
   const[member,setMember]=useState(null);
   const[selectedBenefit,setSelectedBenefit]=useState(null);
