@@ -148,6 +148,16 @@ body.dark .reward-badge{background:linear-gradient(135deg,rgba(232,115,10,.22),r
 .btn-ghost:active{transform:scale(.93)}
 .carousel-btn:active{transform:scale(.86)}
 
+/* ===== Vibrant theme polish ===== */
+.btn-primary{background:linear-gradient(135deg,#FF8A3D 0%,#E8730A 100%);box-shadow:0 4px 14px rgba(232,115,10,.35)}
+.btn-primary:hover{background:linear-gradient(135deg,#FF9A4D 0%,#F08030 100%);box-shadow:0 8px 24px rgba(232,115,10,.48)}
+.card{border-radius:18px;box-shadow:0 2px 14px rgba(10,37,64,.07)}
+body.dark .card{box-shadow:0 2px 16px rgba(0,0,0,.35)}
+.benefit-card:hover{box-shadow:0 14px 32px rgba(232,115,10,.18)}
+.nav-pill{position:relative}
+.nav-pill.active::before{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:46px;height:30px;border-radius:16px;background:rgba(232,115,10,.14);z-index:0}
+.sec-accent{display:inline-block;width:4px;height:18px;border-radius:3px;background:linear-gradient(180deg,#FF8A3D,#E0457B);margin-right:9px;vertical-align:-3px}
+
 @media (prefers-reduced-motion: reduce){
   *,*::after,*::before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .ambient{display:none}
@@ -552,14 +562,17 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
   const sparkMax=Math.max(...sparkData.map(d=>d.v),1);
   return(
     <div className="fade-in" style={{padding:"24px 18px"}}>
-      <div style={{background:"linear-gradient(135deg,#0A2540 0%,#1E4D7B 100%)",borderRadius:18,padding:"26px 26px 22px",color:"white",marginBottom:20,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:-36,right:-16,width:160,height:160,borderRadius:"50%",background:"rgba(232,115,10,0.1)"}}/>
-        <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",marginBottom:2}}>{t.goodDay}</div>
-        <div style={{fontSize:26,fontWeight:700,fontFamily:"'Libre Baskerville',serif",marginBottom:4}}>{member.firstName} {member.lastName}</div>
-        <div style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:18}}>Evera Member · Age {member.age} · {member.city}, {member.province}</div>
-        <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-          <div style={{background:"rgba(255,255,255,0.1)",borderRadius:8,padding:"7px 14px"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Status</div><div style={{fontSize:13,fontWeight:700,color:"#F08030",display:"flex",alignItems:"center",gap:5}}><Icon name="ShieldCheck" size={13} color="#F08030"/> Active SRRV</div></div>
-          <div style={{background:"rgba(255,255,255,0.1)",borderRadius:8,padding:"7px 14px"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>{t.benefits}</div><div style={{fontSize:13,fontWeight:700,color:"white"}}>{benefits.length} {t.available}</div></div>
+      <div style={{background:"linear-gradient(120deg,#FF8A3D 0%,#E8730A 42%,#E0457B 100%)",borderRadius:22,padding:"26px 26px 22px",color:"white",marginBottom:20,position:"relative",overflow:"hidden",boxShadow:"0 16px 38px rgba(224,69,123,0.30)"}}>
+        <div style={{position:"absolute",top:-55,right:-30,width:185,height:185,borderRadius:"50%",background:"rgba(255,255,255,0.16)"}}/>
+        <div style={{position:"absolute",bottom:-60,left:-25,width:150,height:150,borderRadius:"50%",background:"rgba(255,255,255,0.10)"}}/>
+        <div className="float-y" style={{position:"absolute",top:16,right:20,fontSize:30,filter:"drop-shadow(0 2px 6px rgba(0,0,0,0.15))"}}>☀️</div>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(110deg,rgba(0,0,0,0.26) 0%,rgba(0,0,0,0.06) 52%,transparent 80%)",pointerEvents:"none"}}/>
+        <div style={{fontSize:13,color:"rgba(255,255,255,0.9)",marginBottom:2,position:"relative",fontWeight:600}}>{t.goodDay} 👋</div>
+        <div style={{fontSize:27,fontWeight:800,fontFamily:"'Libre Baskerville',serif",marginBottom:4,position:"relative",textShadow:"0 1px 3px rgba(0,0,0,0.18)"}}>{member.firstName} {member.lastName}</div>
+        <div style={{fontSize:14,color:"rgba(255,255,255,0.9)",marginBottom:18,position:"relative"}}>{t.memberSince} · {member.age} · {member.city}, {member.province}</div>
+        <div style={{display:"flex",gap:10,flexWrap:"wrap",position:"relative"}}>
+          <div style={{background:"rgba(255,255,255,0.2)",borderRadius:12,padding:"8px 14px",border:"1px solid rgba(255,255,255,0.3)"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.8)"}}>Status</div><div style={{fontSize:13,fontWeight:800,color:"white",display:"flex",alignItems:"center",gap:5}}><Icon name="ShieldCheck" size={13} color="white"/> Active SRRV</div></div>
+          <div style={{background:"rgba(255,255,255,0.2)",borderRadius:12,padding:"8px 14px",border:"1px solid rgba(255,255,255,0.3)"}}><div style={{fontSize:11,color:"rgba(255,255,255,0.8)"}}>{t.benefits}</div><div style={{fontSize:13,fontWeight:800,color:"white"}}>{benefits.length} {t.available}</div></div>
         </div>
       </div>
       {(isBirthday||birthdayClose)&&(
@@ -580,12 +593,13 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
           {(isExpired||isUrgent)&&<button className="btn-primary" style={{width:"100%",marginTop:10,fontSize:13,padding:"10px",minHeight:40,background:isExpired?"#C0392B":"#E8730A"}} onClick={()=>onRenew&&onRenew()}><Icon name="RefreshCw" size={14} color="white"/> Start Renewal Application</button>}
         </div>
       )}
-      <div className="card fade-in" style={{padding:"16px 20px",marginBottom:20,background:"linear-gradient(135deg,#0A2540 0%,#163A5F 100%)",border:"none"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-          <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}><Icon name="Award" size={16} color="#F08030"/><div style={{fontSize:12,color:"rgba(255,255,255,0.6)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>{t.totalSavings}</div></div><div style={{fontSize:28,fontWeight:800,color:"white",fontFamily:"'Libre Baskerville',serif"}}>{fmt(totalSavings)}</div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:2}}>Across {BENEFITS.filter(b=>b.savingsAmt>0).length} discounted benefits</div></div>
+      <div className="card fade-in" style={{padding:"16px 20px",marginBottom:20,background:"linear-gradient(135deg,#0A2540 0%,#163A5F 100%)",border:"none",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-40,right:-30,width:130,height:130,borderRadius:"50%",background:"radial-gradient(circle,rgba(232,115,10,0.4),transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",position:"relative"}}>
+          <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}><Icon name="Award" size={16} color="#F08030"/><div style={{fontSize:12,color:"rgba(255,255,255,0.6)",fontWeight:600,textTransform:"uppercase",letterSpacing:.5}}>{t.totalSavings}</div></div><div style={{fontSize:28,fontWeight:800,fontFamily:"'Libre Baskerville',serif",background:"linear-gradient(135deg,#FFD580,#F08030)",WebkitBackgroundClip:"text",backgroundClip:"text",WebkitTextFillColor:"transparent"}}>{fmt(totalSavings)}</div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:2}}>Across {BENEFITS.filter(b=>b.savingsAmt>0).length} discounted benefits</div></div>
           <div style={{textAlign:"right"}}><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginBottom:4}}>Vouchers</div><div style={{fontSize:20,fontWeight:800,color:"#F08030"}}>{purchasedVouchers.length}</div></div>
         </div>
-        {purchasedVouchers.length>0&&<div style={{marginTop:12,display:"flex",gap:3,alignItems:"flex-end",height:28}}>{sparkData.map((d,i)=><div key={i} style={{flex:1,borderRadius:2,background:d.v>0?"rgba(240,128,48,0.8)":"rgba(255,255,255,0.1)",height:d.v>0?`${Math.max(4,(d.v/sparkMax)*24)}px`:"4px"}}/> )}</div>}
+        {purchasedVouchers.length>0&&<div style={{marginTop:12,display:"flex",gap:3,alignItems:"flex-end",height:28,position:"relative"}}>{sparkData.map((d,i)=><div key={i} style={{flex:1,borderRadius:2,background:d.v>0?"rgba(240,128,48,0.8)":"rgba(255,255,255,0.1)",height:d.v>0?`${Math.max(4,(d.v/sparkMax)*24)}px`:"4px"}}/> )}</div>}
       </div>
       <ProfileChecklist member={member} memberPhoto={memberPhoto||null} purchasedVouchers={purchasedVouchers||[]} claimedIds={claimedIds||[]} lang={lang||"en"} onNavigate={onNavigate} C={C}/>
       <PointsBadge points={points||0} C={C}/>
@@ -617,7 +631,7 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
       </div>
       <div style={{marginBottom:24}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-          <div style={{fontSize:17,fontWeight:700,color:C.text}}>{t.featuredBenefits}</div>
+          <div style={{fontSize:17,fontWeight:700,color:C.text}}><span className="sec-accent"/>{t.featuredBenefits}</div>
           <div style={{display:"flex",gap:6,alignItems:"center"}}>
             <button className="carousel-btn" onClick={()=>setIdx(Math.max(0,idx-1))} disabled={idx===0}><Icon name="ChevronLeft" size={16} color="currentColor"/></button>
             <span style={{fontSize:12,color:C.textSub,minWidth:36,textAlign:"center"}}>{idx+1}/{featured.length}</span>
@@ -629,18 +643,18 @@ function Dashboard({member,onNavigate,onPurchase,onClaim,claimedIds,benefits,ann
         <div style={{marginTop:14}}><button className="btn-ghost" style={{width:"100%",fontSize:14}} onClick={()=>onNavigate("benefits","all")}>{t.viewAll} <Icon name="ChevronRight" size={15} color="currentColor"/></button></div>
       </div>
       <div style={{marginBottom:8}}>
-        <div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}>{t.browseByCategory}</div>
+        <div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}><span className="sec-accent"/>{t.browseByCategory}</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{label:"Health & Wellness",iconName:"Heart",cat:"health",lightBg:"#FEF2F2",darkBg:"rgba(231,76,60,0.12)"},{label:"Travel & Hotels",iconName:"Plane",cat:"travel",lightBg:"#EFF6FF",darkBg:"rgba(52,152,219,0.12)"},{label:"Food & Dining",iconName:"UtensilsCrossed",cat:"dining",lightBg:"#F0FDF4",darkBg:"rgba(39,174,96,0.12)"},{label:"Entertainment",iconName:"Film",cat:"entertainment",lightBg:"#FAF5FF",darkBg:"rgba(155,89,182,0.12)"}].map(q=>(
-            <button key={q.cat} onClick={()=>onNavigate("benefits",q.cat)} style={{background:C.isDark?q.darkBg:q.lightBg,border:`1.5px solid ${C.border}`,borderRadius:14,padding:"18px 14px",cursor:"pointer",textAlign:"left",transition:"all .2s",display:"flex",flexDirection:"column",gap:8}} onMouseEnter={e=>{e.currentTarget.style.borderColor="#E8730A";e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor=C.border;e.currentTarget.style.transform="translateY(0)";}}>
-              <Icon name={q.iconName} size={26} color="#E8730A"/>
+          {[{label:"Health & Wellness",iconName:"Heart",cat:"health",color:"#e74c3c",lightBg:"#FEF2F2",darkBg:"rgba(231,76,60,0.12)"},{label:"Travel & Hotels",iconName:"Plane",cat:"travel",color:"#3498db",lightBg:"#EFF6FF",darkBg:"rgba(52,152,219,0.12)"},{label:"Food & Dining",iconName:"UtensilsCrossed",cat:"dining",color:"#27ae60",lightBg:"#F0FDF4",darkBg:"rgba(39,174,96,0.12)"},{label:"Entertainment",iconName:"Film",cat:"entertainment",color:"#9b59b6",lightBg:"#FAF5FF",darkBg:"rgba(155,89,182,0.12)"}].map(q=>(
+            <button key={q.cat} onClick={()=>onNavigate("benefits",q.cat)} style={{background:C.isDark?q.darkBg:q.lightBg,border:`1.5px solid ${C.border}`,borderRadius:16,padding:"18px 16px",cursor:"pointer",textAlign:"left",transition:"all .25s cubic-bezier(.34,1.4,.64,1)",display:"flex",flexDirection:"column",gap:10}} onMouseEnter={e=>{e.currentTarget.style.borderColor=q.color;e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=`0 12px 26px ${q.color}33`;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=C.border;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}>
+              <div style={{width:46,height:46,borderRadius:14,background:`linear-gradient(135deg,${q.color},${q.color}bb)`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 5px 14px ${q.color}55`}}><Icon name={q.iconName} size={24} color="white"/></div>
               <span style={{fontSize:14,fontWeight:700,color:C.text,lineHeight:1.2}}>{q.label}</span>
-              <span style={{fontSize:12,color:C.textSub}}>{benefits.filter(b=>b.category===q.cat).length} offers</span>
+              <span style={{fontSize:12,color:q.color,fontWeight:700}}>{benefits.filter(b=>b.category===q.cat).length} offers</span>
             </button>
           ))}
         </div>
       </div>
-      <div style={{marginTop:24,marginBottom:8}}><div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}>{t.digitalCard}</div><MemberCard member={member} C={C}/></div>
+      <div style={{marginTop:24,marginBottom:8}}><div style={{fontSize:17,fontWeight:700,color:C.text,marginBottom:14}}><span className="sec-accent"/>{t.digitalCard}</div><MemberCard member={member} C={C}/></div>
     </div>
   );
 }
@@ -1030,7 +1044,7 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
   const unread=allNotifs.filter(a=>!readNotifs.includes(a.id)).length;
   return(
     <>
-      <div style={{background:"#0A2540",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+      <div style={{background:"linear-gradient(100deg,#0A2540 0%,#13395f 55%,#1d4e7a 100%)",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 12px rgba(10,37,64,0.25)"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:17,letterSpacing:-.3}}>Ev<span style={{color:"#F08030"}}>era</span></div></div>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <GlobalSearch onNavigate={onNavigateFn||onNavigate} onPurchase={()=>{}} C={C} lang={lang}/>
@@ -1056,9 +1070,9 @@ function NavBar({active,onNavigate,memberName,C,notifOpen,setNotifOpen,readNotif
       </div>
       <div style={{position:"fixed",bottom:0,left:0,right:0,background:C.surface,borderTop:`1.5px solid ${C.border}`,display:"flex",zIndex:100,boxShadow:"0 -3px 12px rgba(0,0,0,0.06)"}}>
         {tabs.map(t=>(
-          <button key={t.id} onClick={()=>onNavigate(t.id)} style={{flex:1,background:"none",border:"none",padding:"10px 4px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,color:active===t.id?"#E8730A":C.gray400,cursor:"pointer",transition:"color .2s",borderTop:active===t.id?"2.5px solid #E8730A":"2.5px solid transparent"}}>
-            <Icon name={t.iconName} size={21} color={active===t.id?"#E8730A":C.gray400}/>
-            <span style={{fontSize:11,fontWeight:active===t.id?700:500}}>{t.label}</span>
+          <button key={t.id} onClick={()=>onNavigate(t.id)} className={`nav-pill tap${active===t.id?" active":""}`} style={{flex:1,background:"none",border:"none",padding:"10px 4px 12px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,color:active===t.id?"#E8730A":C.gray400,cursor:"pointer",transition:"color .2s",borderTop:active===t.id?"2.5px solid #E8730A":"2.5px solid transparent"}}>
+            <div style={{position:"relative",zIndex:1,transform:active===t.id?"translateY(-1px) scale(1.12)":"none",transition:"transform .25s cubic-bezier(.34,1.56,.64,1)"}}><Icon name={t.iconName} size={21} color={active===t.id?"#E8730A":C.gray400}/></div>
+            <span style={{fontSize:11,fontWeight:active===t.id?700:500,position:"relative",zIndex:1}}>{t.label}</span>
           </button>
         ))}
       </div>
@@ -1167,7 +1181,7 @@ function AdminPanel({onSwitchToMember,darkMode,toggleDark,C,ratings,memberData,o
       <AmbientBackground C={C}/>
       {showImportModal&&<MemberImportModal onClose={()=>setShowImportModal(false)} onImport={()=>{}} C={C}/>}
       {selectedAdminMember&&<MemberDetailModal member={selectedAdminMember} purchasedVouchers={[]} claimedCount={0} points={0} C={C} onClose={()=>setSelectedAdminMember(null)}/>}
-      <div style={{background:"#0A2540",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+      <div style={{background:"linear-gradient(100deg,#0A2540 0%,#13395f 55%,#1d4e7a 100%)",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 12px rgba(10,37,64,0.25)"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}><div style={{color:"white",fontWeight:800,fontSize:16,letterSpacing:-.3}}>Ev<span style={{color:"#F08030"}}>era</span></div><StatusBadge type="orange">Admin</StatusBadge></div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
           <AdminNotifDropdown C={C}/>
